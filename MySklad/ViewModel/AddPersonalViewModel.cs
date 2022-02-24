@@ -88,15 +88,7 @@ namespace MySklad.ViewModel
             var personal = await Api.PutAsync<PersonalApi>(personalApi, "Personal");
         }
 
-        void GetPhoto(PersonalApi personalApi)
-        {
-            if(ImagePersonal == null)
-            {
-                MessageBox.Show("Ошибка");
-                return;
-            }
-            personalApi.Image = ImagePersonal.ToString();
-        }
+        
 
         async Task GetPersonals(PersonalApi personalApi)
         {
@@ -118,7 +110,7 @@ namespace MySklad.ViewModel
 
             if(personalApi == null)
             {
-                AddPersonalVM = new PersonalApi { FirstName = "Имя", LastName = "Фамилия", Patronimyc = "Отчество", Rating = "100" };
+                AddPersonalVM = new PersonalApi { FirstName = "Имя", LastName = "Фамилия", Patronimyc = "Отчество", Rating = "100", Image= @"C:\Users\User\source\repos\MySklad-master\MySklad\materials\ron2.png" };
             }
             else
             {
@@ -135,8 +127,13 @@ namespace MySklad.ViewModel
                     Image = personalApi.Image,
                     StatusId = personalApi.StatusId
                 };
-                ImagePersonal = GetImageFromPath(Environment.CurrentDirectory + "//" + AddPersonalVM.Image);
-                GetPhoto(AddPersonalVM);
+                if(ImagePersonal == null)
+                {
+                    MessageBox.Show("Прикрепите к данному сотруднику фотографию");
+                }
+                else
+                    ImagePersonal = GetImageFromPath(Environment.CurrentDirectory + "//" + AddPersonalVM.Image);
+                
             }
 
             GetPersonals(AddPersonalVM);         
