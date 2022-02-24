@@ -1,0 +1,94 @@
+﻿<Page x:Class="MySklad.View.ShopView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MySklad.View"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="850"
+      Title="ShopView">
+
+    <Grid Background="#325f63">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Label Content="Поиск:"/>
+                <Label Grid.Column="1" Content="Критерий поиска:"/>
+                <TextBox Width="200" Grid.Row="1" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+                <ComboBox IsEditable="True" Width="200" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}"/>
+            </Grid>
+            <StackPanel Grid.Column="2">
+                <Label Content="Выбор сортирвки"/>
+                <!--<Button Command="{Binding Sortirovka}" Content="Сортировать"/>-->
+                <ComboBox IsEditable="True" Width="200" ItemsSource="{Binding SortType}" SelectedItem="{Binding SelectedSortType}"/>
+            </StackPanel>
+            <StackPanel Grid.Column="3">
+                <Label Content="Сортировка по типу"/>
+                <!--<Button Command="{Binding Sortirovka}" Content="Сортировать"/>-->
+                <ComboBox IsEditable="True" Width="200" ItemsSource="{Binding OrderType}" SelectedItem="{Binding SelectedOrderType}"/>
+            </StackPanel>
+        </Grid>
+        <ListBox x:Name="list" Grid.Row="1" ItemsSource="{Binding Shops}" SelectedItem="{Binding SelectedShop}" Background="White" HorizontalContentAlignment="Stretch" >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel  Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="{Binding Name}">
+                                </Label>
+                                <Label Content="{Binding Phone}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Email:"/>
+                                <Label Content="{Binding Email}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ContextMenu>
+                <ContextMenu>
+                    <Button Content="Изменить магазин" Command="{Binding EditShop}" Background="Transparent" BorderBrush="Transparent"/>
+                    <Button Content="Удалить магазин" Command="{Binding DeleteShop}" Background="Transparent" BorderBrush="Transparent"/>
+                </ContextMenu>
+            </ListBox.ContextMenu>
+        </ListBox>
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Label Content="{Binding SearchCountRows}"/>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="&lt;" Width="20" Command="{Binding BackPage}" BorderBrush="Transparent" Background="Transparent"/>
+                <Label Content="{Binding Pages}"/>
+                <Button Content=">" Width="20" Command="{Binding ForwardPage}" BorderBrush="Transparent" Background="Transparent"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Column="2" Height="35" HorizontalAlignment="Right">
+                <Label Content="Кол-во записей на странице:" Foreground="White"/>
+                <ComboBox IsEditable="True" Height="30" Width="200" ItemsSource="{Binding ViewCountRows}" SelectedItem="{Binding SelectedViewCountRows}"/>
+                <Button Content="Добавить Магазин" Command="{Binding AddShop}" Style="{StaticResource ButtonTheme}"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>

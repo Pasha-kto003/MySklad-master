@@ -1,0 +1,58 @@
+﻿<Window x:Class="MySklad.View.AddProduct"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MySklad.View"
+        mc:Ignorable="d"
+        Title="AddProduct" Height="450" Width="800">
+    <Grid Background="#325f63">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel DataContext="{Binding AddProductVM}" Grid.Row="0" Grid.Column="0" Width="Auto" Height="Auto" Grid.ColumnSpan="3" Orientation="Horizontal">
+            <StackPanel Margin="0 0 10 0" Width="233">
+                <Label Content="Наименование продукта" Foreground="White"/>
+                <TextBox Text="{Binding Title}"/>
+                <Label Content="Статус продукции" Foreground="White"/>
+                <TextBox Text="{Binding Status}"/>
+
+            </StackPanel>
+            <StackPanel Grid.Column="1" Width="233">
+                <Label Content="Остаток на складе" Foreground="White"/>
+                <TextBox Text="{Binding CountInStock}"/>
+                <Label Content="Начало годности" Foreground="White"/>
+                <DatePicker SelectedDate="{Binding BestBeforeDateStart, StringFormat = '{}{0:dd.MM.yyyy}'}"/>
+                <Label Content="Конец срока годности продукции" Foreground="White"/>
+                <DatePicker SelectedDate="{Binding BestBeforeDateEnd, StringFormat = '{}{0:dd.MM.yyyy}'}"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2" Margin="10 0 0 0" Width="255">
+                <Label Content="Описание" Foreground="White"/>
+                <TextBox Height="70" MaxWidth="250" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Text="{Binding Description}"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Grid.Row="2" >
+            <StackPanel Width="233" Margin="1 0 0 0">
+                <Label Content="Тип продукции:" Foreground="White"/>
+                <ComboBox IsEditable="True" ItemsSource="{Binding ProductTypes}" DisplayMemberPath="Title" SelectedItem="{Binding SelectedProductType}"/>
+            </StackPanel>
+            <StackPanel Width="auto" Grid.Column="1" Margin="10 0 0 0">
+                <Label Width="Auto" Content="Единица измерения материала" Foreground="White"/>
+                <ComboBox IsEditable="True" ItemsSource="{Binding Units}" DisplayMemberPath="Title" SelectedItem="{Binding SelectedUnit}"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal">
+            <Button Content="Отмена" Click="Button_Click" Style="{StaticResource ButtonTheme}" HorizontalAlignment="Left" Width="150"/>
+            <Button Content="Сохранить продукцию" Command="{Binding SaveProduct}" Style="{StaticResource ButtonTheme}" HorizontalAlignment="Right" Width="150"/>
+        </StackPanel>
+    </Grid>
+</Window>

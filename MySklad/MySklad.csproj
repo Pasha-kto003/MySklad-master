@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="materials\Apartment.png" />
+    <None Remove="materials\AXs.png" />
+    <None Remove="materials\erik1.png" />
+    <None Remove="materials\erik3.png" />
+    <None Remove="materials\ron2.png" />
+    <None Remove="materials\Вини.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ModelApi">
+      <HintPath>..\..\WebSkladTest1\ModelApi\bin\Debug\net5.0\ModelApi.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="materials\Apartment.png" />
+    <Resource Include="materials\AXs.png" />
+    <Resource Include="materials\erik1.png" />
+    <Resource Include="materials\erik3.png" />
+    <Resource Include="materials\ron2.png" />
+    <Resource Include="materials\Вини.png" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,34 @@
+﻿<Window x:Class="MySklad.View.AddWriteOffRegisterView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MySklad.View"
+        mc:Ignorable="d"
+        Title="AddWriteOffRegisterView" Height="450" Width="800">
+    <Grid Background="#325f63">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel DataContext="{Binding AddRegisterVM}" Orientation="Horizontal" HorizontalAlignment="Center">
+            <StackPanel Width="250"  HorizontalAlignment="Center" Grid.Row="0">
+                    <Label Content="Наименование Реестра" Foreground="White"/>
+                    <TextBox Text="{Binding Title}"/>
+                    <Label Content="Дата удаления" Foreground="White"/>
+                    <DatePicker SelectedDate="{Binding DeletedAt, StringFormat = '{}{0:dd.MM.yyyy}'}"/>
+                    <Label Content="Причина удаления" Foreground="White"/>
+                <TextBox Text="{Binding ReasonDelete}" IsReadOnly="True"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Vertical" Width="250" HorizontalAlignment="Center">
+            <Label Content="Удаленный продукт:" Foreground="White"/>
+            <ComboBox IsEditable="True" ItemsSource="{Binding Products}" DisplayMemberPath="Title" SelectedItem="{Binding SelectedProduct}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="Отмена" Click="Button_Click" Style="{StaticResource ButtonTheme}" HorizontalAlignment="Left" Width="150"/>
+            <Button Content="Сохранить реестр" Command="{Binding SaveRegister}" Style="{StaticResource ButtonTheme}" HorizontalAlignment="Right" Width="150"/>
+        </StackPanel>
+    </Grid>
+</Window>
