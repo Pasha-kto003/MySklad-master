@@ -17,7 +17,7 @@ namespace MySklad.ViewModel
         public PersonalApi AddPersonalVM { get; set; }
 
         public CustomCommand SavePersonal { get; set; }
-        public CustomCommand SelectImage { get; set; }
+        public CustomCommand SelectImage { get; set; } //команда для выбора изображения
         public CustomCommand RemovePersonal { get; set; }
 
         private BitmapImage imagePersonal;
