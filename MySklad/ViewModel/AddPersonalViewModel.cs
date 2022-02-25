@@ -110,7 +110,7 @@ namespace MySklad.ViewModel
 
             if(personalApi == null)
             {
-                AddPersonalVM = new PersonalApi { FirstName = "Имя", LastName = "Фамилия", Patronimyc = "Отчество", Rating = "100", Image = @"C:\Users\User\source\repos\MySklad-master\MySklad\materials\ron2.png" };
+                AddPersonalVM = new PersonalApi { FirstName = "Имя", LastName = "Фамилия", Patronimyc = "Отчество", Rating = 100, Image = @"C:\Users\User\source\repos\MySklad-master\MySklad\materials\ron2.png" };
             }
             else
             {

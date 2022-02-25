@@ -39,7 +39,7 @@
             </Grid>
             <StackPanel Grid.Column="1" HorizontalAlignment="Left">
                 <Label Content="Фильтрация по типу"/>
-                <ComboBox IsEditable="True" Width="200" DisplayMemberPath="Title" ItemsSource="{Binding MaterialTypeFilter}" SelectedItem="{Binding SelectedMaterialTypeFilter}"/>
+                <ComboBox IsEditable="True" Width="200" DisplayMemberPath="Title" ItemsSource="{Binding StatusFilter}" SelectedItem="{Binding SelectedStatusFilter}"/>
             </StackPanel>
             <StackPanel Grid.Column="2">
                 <Label Content="Выбор сортирвки"/>

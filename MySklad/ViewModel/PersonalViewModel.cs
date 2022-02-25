@@ -117,6 +117,16 @@ namespace MySklad.ViewModel
             }
         }
 
+        public List<StatusApi> StatusFilter { get; set; }
+        public StatusApi SelectedStatusFilter
+        {
+            get => selectedStatusFilter;
+            set
+            {
+                selectedStatusFilter = value;
+                Search();
+            }
+        }
         public List<PersonalApi> searchResult;
 
         int paginationPageIndex = 0;
@@ -124,6 +134,7 @@ namespace MySklad.ViewModel
         private string selectedViewCountRows;
         public int rows = 0;
         public int CountPages = 0;
+        private StatusApi selectedStatusFilter;
 
         public CustomCommand BackPage { get; set; }
         public CustomCommand ForwardPage { get; set; }
@@ -163,6 +174,8 @@ namespace MySklad.ViewModel
             SearchType = new List<string>();
             SearchType.AddRange(new string[] { "Фамилия", "Рейтинг"});
             selectedSearchType = SearchType.First();
+
+
 
             BackPage = new CustomCommand(() => {
                 if (searchResult == null)
@@ -242,7 +255,7 @@ namespace MySklad.ViewModel
             if (SelectedOrderType == "По убыванию")
             {
                 if (SelectedSortType == "Рейтинг")
-                    searchResult.Sort((x, y) => y.Rating.CompareTo(x.Rating));
+                    searchResult.Sort((x, y) => ((Int32)y.Rating).CompareTo(x.Rating));
                 else if (SelectedSortType == "Телефон")
                     searchResult.Sort((x, y) => y.Phone.CompareTo(x.Phone));
             }
@@ -250,7 +263,7 @@ namespace MySklad.ViewModel
             if (SelectedOrderType == "По возрастанию")
             {
                 if (SelectedSortType == "Рейтинг")
-                    searchResult.Sort((x, y) => x.Rating.CompareTo(y.Rating));
+                    searchResult.Sort((x, y) => ((Int32)x.Rating).CompareTo(y.Rating));
                 else if (SelectedSortType == "Телефон")
                     searchResult.Sort((x, y) => x.Phone.CompareTo(y.Phone));
             }
@@ -292,7 +305,7 @@ namespace MySklad.ViewModel
                     .Where(c => c.LastName.ToLower().Contains(search)).ToList();
             else if (SelectedSearchType == "Рейтинг")
                 searchResult = Personals
-                        .Where(c => c.Rating.ToLower().Contains(search)).ToList();
+                        .Where(c => c.Rating.ToString().Contains(search)).ToList();
             Sort();
             InitPagination();
             Pagination();
