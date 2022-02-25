@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace MySklad.ViewModel
 {
@@ -30,6 +31,7 @@ namespace MySklad.ViewModel
             {
                 personals = value;
                 SignalChanged();
+                
             }
         }
 
@@ -146,8 +148,8 @@ namespace MySklad.ViewModel
             GetPersonals();
             
             ViewCountRows = new List<string>();
-            ViewCountRows.AddRange(new string[] { "15", "все" });
-            selectedViewCountRows = ViewCountRows.First();
+            ViewCountRows.AddRange(new string[] { "5", "все" });
+            selectedViewCountRows = ViewCountRows.Last();
 
             SortType = new List<string>();
             SortType.AddRange(new string[] { "Рейтинг", "Телефон" });
@@ -198,21 +200,28 @@ namespace MySklad.ViewModel
             EditPersonal = new CustomCommand(() =>
             {
                 if (SelectedPersonal == null) return;
+                else if(SelectedPersonal.Image == null)
+                {
+                    MessageBox.Show("Ошибка");
+                    return;
+                }
                 AddPersonalView addPersonal = new AddPersonalView(SelectedPersonal);
                 addPersonal.ShowDialog();
                 GetPersonals();
             });
 
-            searchResult = new List<PersonalApi>();
-            GetPersonals();
-            InitPagination();
-            Pagination();      
+            Search();
+            //GetPersonals();
+            GetsearchResult();
+                
         }
 
-        //private async Task GetsearchResult()
-        //{
-        //    searchResult = await Api.GetListAsync<List<PersonalApi>>("Personal");
-        //}
+        private async Task GetsearchResult()
+        {
+            //searchResult = await Api.GetListAsync<List<PersonalApi>>("Personal");
+            InitPagination();
+            Pagination();
+        }
 
         private async Task GetPersonals()
         {    
@@ -246,14 +255,15 @@ namespace MySklad.ViewModel
                     searchResult.Sort((x, y) => x.Phone.CompareTo(y.Phone));
             }
             paginationPageIndex = 0;
+            
             Pagination();
-            SignalChanged("Shops");
+            SignalChanged("Personals");
             GetPersonals();
         }
 
         private void InitPagination()
         {
-            SearchCountRows = $"Найдено записей: {searchResult.Count} из {Personals.Count}";
+            SearchCountRows = $"Найдено записей: {searchResult.Count} из {Personals.Count()}";
             paginationPageIndex = 0;
         }
 
@@ -262,14 +272,14 @@ namespace MySklad.ViewModel
             int rowsOnPage = 0;
             if (!int.TryParse(SelectedViewCountRows, out rowsOnPage))
             {
-                Personals = searchResult;
+               Personals = searchResult;
             }
             else
             {
-                Personals = searchResult.Skip(rowsOnPage * paginationPageIndex).Take(rowsOnPage).ToList();
+                searchResult = Personals.Skip(rowsOnPage * paginationPageIndex).Take(rowsOnPage).ToList();
                 SignalChanged("Personals");
                 int.TryParse(SelectedViewCountRows, out rows);
-                CountPages = searchResult.Count() / rows;
+                CountPages = (searchResult.Count() -1) / rows;
                 Pages = $"{paginationPageIndex + 1} из {CountPages + 1}";
             }
         }
@@ -286,8 +296,7 @@ namespace MySklad.ViewModel
             Sort();
             InitPagination();
             Pagination();
-            SignalChanged("Personls");
-            
+            SignalChanged("Personls");  
         }
     }
 }

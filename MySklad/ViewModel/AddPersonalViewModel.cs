@@ -129,7 +129,7 @@ namespace MySklad.ViewModel
                 };
                 if(ImagePersonal == null)
                 {
-                    MessageBox.Show("Прикрепите к данному сотруднику фотографию");
+                    ImagePersonal = GetImageFromPath(Environment.CurrentDirectory + "//" + AddPersonalVM.Image);
                 }
                 else
                     ImagePersonal = GetImageFromPath(Environment.CurrentDirectory + "//" + AddPersonalVM.Image);
