@@ -224,7 +224,7 @@ namespace MySklad.ViewModel
             });
 
             Search();
-            //GetPersonals();
+            GetPersonals();
             GetsearchResult();
                 
         }
@@ -256,16 +256,12 @@ namespace MySklad.ViewModel
             {
                 if (SelectedSortType == "Рейтинг")
                     searchResult.Sort((x, y) => ((Int32)y.Rating).CompareTo(x.Rating));
-                else if (SelectedSortType == "Телефон")
-                    searchResult.Sort((x, y) => y.Phone.CompareTo(x.Phone));
             }
 
             if (SelectedOrderType == "По возрастанию")
             {
                 if (SelectedSortType == "Рейтинг")
                     searchResult.Sort((x, y) => ((Int32)x.Rating).CompareTo(y.Rating));
-                else if (SelectedSortType == "Телефон")
-                    searchResult.Sort((x, y) => x.Phone.CompareTo(y.Phone));
             }
             paginationPageIndex = 0;
             
