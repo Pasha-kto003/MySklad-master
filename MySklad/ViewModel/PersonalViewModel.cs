@@ -251,10 +251,14 @@ namespace MySklad.ViewModel
             GetPersonals();
         }
 
+        private void InitPagination()
+        {
+            SearchCountRows = $"Найдено записей: {searchResult.Count} из {Personals.Count}";
+            paginationPageIndex = 0;
+        }
 
         private void Pagination()
         {
-
             int rowsOnPage = 0;
             if (!int.TryParse(SelectedViewCountRows, out rowsOnPage))
             {
@@ -270,13 +274,6 @@ namespace MySklad.ViewModel
             }
         }
 
-        private void InitPagination()
-        {
-            SearchCountRows = $"Найдено записей: {searchResult.Count} из {Personals.Count}";
-            paginationPageIndex = 0;
-        }
-
-
         private void Search()
         {
             var search = SearchText.ToLower();
@@ -289,7 +286,7 @@ namespace MySklad.ViewModel
             Sort();
             InitPagination();
             Pagination();
-            SignalChanged("Shops");
+            SignalChanged("Personls");
             
         }
     }
