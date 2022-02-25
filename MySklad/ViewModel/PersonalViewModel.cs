@@ -271,7 +271,7 @@ namespace MySklad.ViewModel
             
             Pagination();
             SignalChanged("Personals");
-            GetPersonals();
+            //GetPersonals();
         }
 
         private void InitPagination()
