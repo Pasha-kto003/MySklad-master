@@ -144,7 +144,7 @@ namespace MySklad.ViewModel
             Personals = new List<PersonalApi>();
             Statuses = new List<StatusApi>();
             GetPersonals();
-
+            
             ViewCountRows = new List<string>();
             ViewCountRows.AddRange(new string[] { "15", "все" });
             selectedViewCountRows = ViewCountRows.First();
@@ -167,7 +167,7 @@ namespace MySklad.ViewModel
                 if (paginationPageIndex > 0)
                     paginationPageIndex--;
                 Pagination();
-                GetPersonals();
+                
             });
 
             ForwardPage = new CustomCommand(() =>
@@ -183,10 +183,9 @@ namespace MySklad.ViewModel
                     countPage++;
                 if (countPage > paginationPageIndex + 1)
                     paginationPageIndex++;
-                Pagination();
                 InitPagination();
                 Pagination();
-                GetPersonals();
+                
             });
 
             AddPersonal = new CustomCommand(() =>
@@ -203,10 +202,20 @@ namespace MySklad.ViewModel
                 addPersonal.ShowDialog();
                 GetPersonals();
             });
+
+            searchResult = new List<PersonalApi>();
+            GetPersonals();
+            InitPagination();
+            Pagination();      
         }
 
+        //private async Task GetsearchResult()
+        //{
+        //    searchResult = await Api.GetListAsync<List<PersonalApi>>("Personal");
+        //}
+
         private async Task GetPersonals()
-        {
+        {    
             Personals = await Api.GetListAsync<List<PersonalApi>>("Personal");
             Statuses = await Api.GetListAsync<List<StatusApi>>("Status");
             foreach (PersonalApi personal in Personals)
@@ -242,11 +251,6 @@ namespace MySklad.ViewModel
             GetPersonals();
         }
 
-        private void InitPagination()
-        {
-            SearchCountRows = $"Найдено записей: {searchResult.Count} из {Personals.Count}";
-            paginationPageIndex = 0;
-        }
 
         private void Pagination()
         {
@@ -254,7 +258,7 @@ namespace MySklad.ViewModel
             int rowsOnPage = 0;
             if (!int.TryParse(SelectedViewCountRows, out rowsOnPage))
             {
-                searchResult = Personals;
+                Personals = searchResult;
             }
             else
             {
@@ -264,8 +268,14 @@ namespace MySklad.ViewModel
                 CountPages = searchResult.Count() / rows;
                 Pages = $"{paginationPageIndex + 1} из {CountPages + 1}";
             }
-            //ShopsApi();
         }
+
+        private void InitPagination()
+        {
+            SearchCountRows = $"Найдено записей: {searchResult.Count} из {Personals.Count}";
+            paginationPageIndex = 0;
+        }
+
 
         private void Search()
         {
@@ -280,7 +290,7 @@ namespace MySklad.ViewModel
             InitPagination();
             Pagination();
             SignalChanged("Shops");
-            GetPersonals();
+            
         }
     }
 }
