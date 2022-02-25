@@ -185,7 +185,6 @@ namespace MySklad.ViewModel
                     countPage++;
                 if (countPage > paginationPageIndex + 1)
                     paginationPageIndex++;
-                InitPagination();
                 Pagination();
                 
             });
@@ -272,11 +271,11 @@ namespace MySklad.ViewModel
             int rowsOnPage = 0;
             if (!int.TryParse(SelectedViewCountRows, out rowsOnPage))
             {
-               Personals = searchResult;
+                Personals = searchResult;
             }
             else
             {
-                searchResult = Personals.Skip(rowsOnPage * paginationPageIndex).Take(rowsOnPage).ToList();
+                Personals = searchResult.Skip(rowsOnPage * paginationPageIndex).Take(rowsOnPage).ToList();
                 SignalChanged("Personals");
                 int.TryParse(SelectedViewCountRows, out rows);
                 CountPages = (searchResult.Count() -1) / rows;
