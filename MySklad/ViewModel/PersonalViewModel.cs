@@ -264,10 +264,9 @@ namespace MySklad.ViewModel
                     searchResult.Sort((x, y) => ((Int32)x.Rating).CompareTo(y.Rating));
             }
             paginationPageIndex = 0;
-            
+           
             Pagination();
-            SignalChanged("Personals");
-            //GetPersonals();
+            SignalChanged("Personals");          
         }
 
         private void InitPagination()
