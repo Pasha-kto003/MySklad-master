@@ -37,10 +37,10 @@
                 <TextBox Width="200" Grid.Row="1" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
                 <ComboBox IsEditable="True" Width="200" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}"/>
             </Grid>
-            <StackPanel Grid.Column="1" HorizontalAlignment="Left">
+            <!--<StackPanel Grid.Column="1" HorizontalAlignment="Left">
                 <Label Content="Фильтрация по типу"/>
                 <ComboBox IsEditable="True" Width="200" DisplayMemberPath="Title" ItemsSource="{Binding StatusFilter}" SelectedItem="{Binding SelectedStatusFilter}"/>
-            </StackPanel>
+            </StackPanel>-->
             <StackPanel Grid.Column="2">
                 <Label Content="Выбор сортирвки"/>
                 <!--<Button Command="{Binding Sortirovka}" Content="Сортировать"/>-->

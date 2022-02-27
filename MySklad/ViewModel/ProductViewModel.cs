@@ -237,7 +237,7 @@ namespace MySklad.ViewModel
             });
             SignalChanged("Products");
             Search();
-            GetProducts();
+            //GetProducts();
             GetsearchResult();
         }
 
@@ -279,7 +279,6 @@ namespace MySklad.ViewModel
 
         internal void Sort()
         {
-            
             if (SelectedOrderType == "По умолчанию")
                 return;
 
@@ -308,7 +307,7 @@ namespace MySklad.ViewModel
                     .Where(c => c.Title.ToLower().Contains(search)).ToList();
             else if (SelectedSearchType == "Описание")
                 searchResult = Products
-                        .Where(c => c.Description.Contains(search)).ToList();
+                        .Where(c => c.Description.ToLower().Contains(search)).ToList();
             Sort();
             InitPagination();
             Pagination();
