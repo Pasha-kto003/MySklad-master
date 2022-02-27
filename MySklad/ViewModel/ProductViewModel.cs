@@ -136,8 +136,6 @@ namespace MySklad.ViewModel
             }
         }
 
-
-
         public CustomCommand CreateProduct { get; set; }
         public CustomCommand EditProduct { get; set; }
         public CustomCommand BackPage { get; set; }
