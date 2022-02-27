@@ -279,6 +279,7 @@ namespace MySklad.ViewModel
 
         internal void Sort()
         {
+            
             if (SelectedOrderType == "По умолчанию")
                 return;
 

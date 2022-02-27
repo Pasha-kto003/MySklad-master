@@ -172,7 +172,7 @@ namespace MySklad.ViewModel
             selectedOrderType = OrderType.Last();
 
             SearchType = new List<string>();
-            SearchType.AddRange(new string[] { "Фамилия", "Рейтинг"});
+            SearchType.AddRange(new string[] { "Фамилия", "Рейтинг", "Имя", "Отчество", "Статус"});
             selectedSearchType = SearchType.First();
 
 
@@ -301,10 +301,19 @@ namespace MySklad.ViewModel
             else if (SelectedSearchType == "Рейтинг")
                 searchResult = Personals
                         .Where(c => c.Rating.ToString().Contains(search)).ToList();
+            else if (SelectedSearchType == "Имя")
+                searchResult = Personals
+                        .Where(c => c.FirstName.ToLower().Contains(search)).ToList();
+            else if (SelectedSearchType == "Отчество")
+                searchResult = Personals
+                        .Where(c => c.Patronimyc.ToLower().Contains(search)).ToList();
+            else if (SelectedSearchType == "Статус")
+                searchResult = Personals
+                        .Where(c => c.Status.Title.ToLower().Contains(search)).ToList();
             Sort();
             InitPagination();
             Pagination();
-            SignalChanged("Personls");  
+            SignalChanged("Personls");
         }
     }
 }
