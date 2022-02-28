@@ -188,8 +188,6 @@ namespace MySklad.ViewModel
                 }
                 SignalChanged("Products");
             });
-
-            
         }
     }
 }

@@ -1,0 +1,59 @@
+﻿<Window x:Class="MySklad.View.AddSupplierView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MySklad.View"
+        mc:Ignorable="d"
+        Title="AddSupplierView" Height="450" Width="800">
+    <Grid Background="#325f63">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition/>
+
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel DataContext="{Binding AddSupplierVM}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+            <StackPanel Width="233" HorizontalAlignment="Left">
+
+                <Label Content="Название:" Foreground="White"/>
+                <TextBox Text="{Binding Title}"/>
+
+                <Label Content="Рейтинг поставщика:" Foreground="White"/>
+                <TextBox Text="{Binding Rating}"/>
+                <Label Content="Почта:" Foreground="White"/>
+                <TextBox Text="{Binding Email}"/>
+                <Label Content="Номер телефона:" Foreground="White"/>
+                <TextBox Text="{Binding Phone}" Foreground="White"/>
+            </StackPanel>
+            <StackPanel Width="233" Grid.Column="1">
+                <Label Content="Поставляемые продукты" Foreground="White"/>
+                <ListBox Height="170" ItemsSource="{Binding SelectedSupplierMaterials}" SelectedItem="{Binding SelectedMaterialSupplier}">
+                    
+                </ListBox>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0 10 0 0">
+            <Button Height="30" Width="150" Style="{StaticResource ButtonTheme}" HorizontalAlignment="Center" Content="Удалить работника" Command="{Binding RemovePersonal}"/>
+        </StackPanel>
+        <StackPanel Width="325" Grid.Column="2">
+            <Label Content="Вся продукция" Foreground="White"/>
+            <ComboBox ItemsSource="{Binding Product}" SelectedItem="{Binding SelectedProduct}" DisplayMemberPath="Title" IsEditable="True"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Width="100" Content="Добавить" Margin="0 70 0 0" Height="30" VerticalAlignment="Bottom" Command="{Binding AddProduct}" Style="{StaticResource ButtonTheme}"/>
+                <Button Width="100" Content="Убрать" Margin="10 70 0 0" Height="30" VerticalAlignment="Bottom" Command="{Binding RemoveProduct}" Style="{StaticResource ButtonTheme}"/>
+                <Button Width="100" Content="Изменить" Margin="10 70 0 0" Height="30" VerticalAlignment="Bottom" Command="{Binding EditProduct}" Style="{StaticResource ButtonTheme}"/>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal">
+            <Button Style="{StaticResource ButtonTheme}" Width="150" Height="30" Content="Отмена" HorizontalAlignment="Left" Click="Button_Click"/>
+            <Button Command="{Binding SaveSupplier}" Style="{StaticResource ButtonTheme}" Width="150" Height="30" Content="Сохранить" HorizontalAlignment="Right"/>
+        </StackPanel>
+    </Grid>
+</Window>

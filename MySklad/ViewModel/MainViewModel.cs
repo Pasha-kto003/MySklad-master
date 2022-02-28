@@ -54,6 +54,11 @@ namespace MySklad.ViewModel
             {
                 CurrentView = new PersonalView();
             });
+
+            OpenSupplier = new CustomCommand(() =>
+            {
+                CurrentView = new SupplierView();
+            });
         }
     }
 }
