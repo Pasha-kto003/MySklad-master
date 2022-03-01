@@ -1,0 +1,98 @@
+﻿<Page x:Class="MySklad.View.OrderInView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MySklad.View"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="OrderInView">
+
+    <Grid Background="#325f63">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Label Content="Поиск:"/>
+                <Label Grid.Column="1" Content="Критерий поиска:"/>
+                <TextBox Width="200" Grid.Row="1" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+                <ComboBox IsEditable="True" Width="200" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}"/>
+
+            </Grid>
+            <StackPanel Grid.Column="2">
+                <Label Content="Выбор сортирвки"/>
+                <!--<Button Command="{Binding Sortirovka}" Content="Сортировать"/>-->
+                <ComboBox IsEditable="True" Width="200" ItemsSource="{Binding SortType}" SelectedItem="{Binding SelectedSortType}"/>
+            </StackPanel>
+            <StackPanel Grid.Column="3">
+                <Label Content="Сортировка по типу"/>
+                <!--<Button Command="{Binding Sortirovka}" Content="Сортировать"/>-->
+                <ComboBox IsEditable="True" Width="200" ItemsSource="{Binding OrderType}" SelectedItem="{Binding SelectedOrderType}"/>
+            </StackPanel>
+        </Grid>
+        <ListBox Grid.Row="1" ItemsSource="{Binding Orders}" SelectedItem="{Binding SelectedOrderIn}" Background="White">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel  Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Дата накладной:"/>
+                                <Label Content="{Binding DateOrderIn}">
+                                </Label>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Поставщик:"/>
+                                <Label Content="{Binding Supplier.Title}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Статус накладной:"/>
+                                <Label Content="{Binding Status}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Количество привезенной продукции:"/>
+                                <Label Content="{Binding CrossProductOrder.CountInOrder}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Label Content="{Binding SearchCountRows}"/>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="&lt;" Width="20" Command="{Binding BackPage}" BorderBrush="Transparent" Style="{StaticResource ButtonTheme}"/>
+                <Label Content="{Binding Pages}"/>
+                <Button Content=">" Width="20" Command="{Binding ForwardPage}" BorderBrush="Transparent" Style="{StaticResource ButtonTheme}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
+                <Label Content="Кол-во записей на странице:" Foreground="White"/>
+                <ComboBox IsEditable="True" Width="200" ItemsSource="{Binding ViewCountRows}" SelectedItem="{Binding SelectedViewCountRows}"/>
+            </StackPanel>
+        </StackPanel>
+        <Button Content="Добавить накладную" Command="{Binding CreateOrderIn}" Style="{StaticResource ButtonTheme}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Width="250"/>
+    </Grid>
+</Page>

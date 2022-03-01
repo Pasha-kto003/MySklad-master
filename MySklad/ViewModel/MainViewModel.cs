@@ -59,6 +59,11 @@ namespace MySklad.ViewModel
             {
                 CurrentView = new SupplierView();
             });
+
+            OpenOrderIn = new CustomCommand(() =>
+            {
+                CurrentView = new OrderInView();
+            });
         }
     }
 }
