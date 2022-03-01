@@ -73,12 +73,10 @@
                                 <Label Content="{Binding Status}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Количество привезенной продукции:"/>
-                                <Label Content="{Binding CrossProductOrder.CountInOrder}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
                                 <Label Content="Привезенная продукция"/>
                                 <Label Content="{Binding StringProduct}"/>
+                                <Label Content="Количество привезенной продукции:"/>
+                                <Label Content="{Binding CrossProductOrder.CountInOrder}"/>
                             </StackPanel>
                         </StackPanel>
                     </Grid>
