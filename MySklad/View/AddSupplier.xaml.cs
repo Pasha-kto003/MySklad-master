@@ -17,16 +17,17 @@ using System.Windows.Shapes;
 namespace MySklad.View
 {
     /// <summary>
-    /// Логика взаимодействия для AddSupplierView.xaml
+    /// Логика взаимодействия для AddSupplier.xaml
     /// </summary>
-    public partial class AddSupplierView : Window
+    public partial class AddSupplier : Window
     {
-        public AddSupplierView()
+        public AddSupplier()
         {
             InitializeComponent();
             DataContext = new AddSupplierViewModel(null);
         }
-        public AddSupplierView(SupplierApi supplierApi)
+
+        public AddSupplier(SupplierApi supplierApi)
         {
             InitializeComponent();
             DataContext = new AddSupplierViewModel(supplierApi);

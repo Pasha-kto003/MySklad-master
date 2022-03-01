@@ -11,93 +11,79 @@ namespace MySklad.ViewModel
 {
     public class AddSupplierViewModel : BaseViewModel
     {
-        public ProductApi SelectedSupplierProduct { get; set; }
-
-        private List<ProductApi> selectedSupplierProducts = new List<ProductApi>();
-        public List<ProductApi> SelectedSupplierProducts
-        {
-            get => selectedSupplierProducts;
-            set
-            {
-                selectedSupplierProducts = value;
-                SignalChanged();
-            }
-        }
+        public CustomCommand SaveSupplier { get; set; }
 
         public SupplierApi AddSupplierVM { get; set; }
 
-        public ProductApi SelectedProduct { get; set; }
-        private List<ProductApi> product { get; set; }
-        public List<ProductApi> Product
+        private List<SupplierApi> suppliers { get; set; }
+        public List<SupplierApi> Suppliers
         {
-            get => product;
+            get => suppliers;
             set
             {
-                product = value;
+                suppliers = value;
                 SignalChanged();
             }
         }
 
-        public List<ProductSupplierApi> ProductSuppliers { get; set; }
-        public List<SupplierApi> Suppliers { get; set; }
-        public List<ProductApi> Products { get; set; }
+        public void CloseWindow(object obj)
+        {
+            Window window = obj as Window;
+            window.Close();
+        }
 
-        public CustomCommand AddProduct { get; set; }
-        public CustomCommand EditProduct { get; set; }
-        public CustomCommand RemoveProduct { get; set; }
-        public CustomCommand SaveSupplier { get; set; }
+        private async Task GetSuppliers()
+        {
+            var suppliers = await Api.GetListAsync<SupplierApi>("Supplier");
+        }
+
+        private async Task PostSupplier(SupplierApi supplierApi)
+        {
+            var supplier = await Api.PostAsync<SupplierApi>(supplierApi, "Supplier");
+        }
+        private async Task EditSupplier(SupplierApi supplierApi)
+        {
+            var supplier = await Api.PutAsync<SupplierApi>(supplierApi, "Supplier");
+        }
 
         public AddSupplierViewModel(SupplierApi supplierApi)
         {
-            Product = new List<ProductApi>();
             Suppliers = new List<SupplierApi>();
-            GetProduct();
-            if (supplierApi == null)
+            if(supplierApi == null)
             {
-                AddSupplierVM = new SupplierApi { Title = "Название", Rating = 100, Email = "почта@" };
+                AddSupplierVM = new SupplierApi { Title = "Название компании", Email = "Email", Rating = 100 };
             }
-
             else
             {
                 AddSupplierVM = new SupplierApi
                 {
                     Id = supplierApi.Id,
                     Title = supplierApi.Title,
-                    Rating = supplierApi.Rating,
-                    ProductSupplier = supplierApi.ProductSupplier,
                     Email = supplierApi.Email,
+                    Rating = supplierApi.Rating,
                     Phone = supplierApi.Phone
                 };
-
-                if(supplierApi.Products != null)
-                {
-                    SelectedSupplierProducts = new List<ProductApi>();
-                }
-
             }
 
-            AddProduct = new CustomCommand(() =>
+            SaveSupplier = new CustomCommand(() =>
             {
-                if(SelectedProduct == null)
+                if(AddSupplierVM.Id == 0)
                 {
-                    MessageBox.Show("Ошибка");
-                    return;
-                }
-                else if (SelectedSupplierProducts.Contains(SelectedProduct))
-                {
-                    MessageBox.Show("Этот уже есть");
+                    PostSupplier(AddSupplierVM);
                 }
                 else
                 {
-                    SelectedSupplierProducts.Add(SelectedProduct);
-                    SignalChanged("SelectedSupplierProducts");
+                    EditSupplier(AddSupplierVM);
                 }
+                foreach (Window window in Application.Current.Windows)
+                {
+                    if (window.DataContext == this)
+                    {
+                        CloseWindow(window);
+                    }
+                }
+                SignalChanged("Shops");
             });
-        }
-
-        private async Task GetProduct()
-        {
-            Product = await Api.GetListAsync<List<ProductApi>>("Product");
         }
     }
 }

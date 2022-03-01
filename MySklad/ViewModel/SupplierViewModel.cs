@@ -61,19 +61,22 @@ namespace MySklad.ViewModel
         {
             
             Suppliers = new List<SupplierApi>();
-            Products = new List<ProductApi>();
-            ProductSuppliers = new List<ProductSupplierApi>();
             GetSuppliers();
+
             AddSupplier = new CustomCommand(() =>
             {
-                AddSupplierView addSupplier = new AddSupplierView();
+                AddSupplier addSupplier = new AddSupplier();
                 addSupplier.ShowDialog();
+                GetSuppliers();
                 SignalChanged("Suppliers");
             });
+
             EditSupplier = new CustomCommand(() =>
             {
                 if (SelectedSupplier == null) return;
-                AddSupplierView addSupplier = new AddSupplierView(SelectedSupplier);
+                AddSupplier addSupplier = new AddSupplier(SelectedSupplier);
+                addSupplier.ShowDialog();
+                GetSuppliers();
                 SignalChanged("Suppliers");
             });
             SignalChanged("Suppliers");
@@ -82,14 +85,13 @@ namespace MySklad.ViewModel
         private async Task GetSuppliers()
         {
             Suppliers = await Api.GetListAsync<List<SupplierApi>>("Supplier");
-            Products = await Api.GetListAsync<List<ProductApi>>("Product");
-            ProductSuppliers = await Api.GetListAsync<List<ProductSupplierApi>>("ProductSupplier");
-            //ProductSuppliers = new List<ProductSupplierApi>();
-            foreach (SupplierApi supplier in Suppliers)
-            {
-                supplier.ProductSupplier = ProductSuppliers.First(s => s.ProductId == s.Product.Id);
-            }
-            SignalChanged("Suppliers");
+            //Products = await Api.GetListAsync<List<ProductApi>>("Product");
+            //Suppliers.Select(s =>
+            //{
+            //    var products = ProductSuppliers.Where(t => t.SupplierId == s.Id).Select(t => t.Product).ToList();
+            //    return products;
+            //});
+            //SignalChanged("Suppliers");
         }
     }
 }

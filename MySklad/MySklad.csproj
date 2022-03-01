@@ -30,8 +30,4 @@
     <Resource Include="materials\Вини.png" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="extentions\" />
-  </ItemGroup>
-
 </Project>

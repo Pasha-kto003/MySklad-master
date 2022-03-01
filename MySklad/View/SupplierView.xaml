@@ -80,7 +80,7 @@
             </ListBox.ItemTemplate>
             <ListBox.ContextMenu>
                 <ContextMenu>
-                    <Button Content="Изменить поставшика" Command="{Binding EditSupplier}" Background="Transparent" BorderBrush="Transparent"/>
+                    <MenuItem Header="Изменить поставшика" Command="{Binding EditSupplier}" Background="Transparent" BorderBrush="Transparent"/>
                     <Button Content="Удалить поставщика" Command="{Binding DeleteSupplier}" Background="Transparent" BorderBrush="Transparent"/>
                 </ContextMenu>
             </ListBox.ContextMenu>
