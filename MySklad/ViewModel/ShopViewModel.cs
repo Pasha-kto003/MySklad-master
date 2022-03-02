@@ -142,7 +142,7 @@ namespace MySklad.ViewModel
 
             ViewCountRows = new List<string>();
             ViewCountRows.AddRange(new string[] { "4", "все" });
-            selectedViewCountRows = ViewCountRows.First();
+            selectedViewCountRows = ViewCountRows.Last();
 
             SortType = new List<string>();
             SortType.AddRange(new string[] { "Наименование"});
@@ -163,7 +163,6 @@ namespace MySklad.ViewModel
                 if (paginationPageIndex > 0)
                     paginationPageIndex--;
                 Pagination();
-                ShopsApi();
             });
 
             ForwardPage = new CustomCommand(() =>
@@ -180,9 +179,6 @@ namespace MySklad.ViewModel
                 if (countPage > paginationPageIndex + 1)
                     paginationPageIndex++;
                 Pagination();
-                InitPagination();
-                Pagination();
-                ShopsApi();
             });
 
             AddShop = new CustomCommand(() =>
@@ -199,11 +195,13 @@ namespace MySklad.ViewModel
                 addShop.ShowDialog();
                 ShopsApi();
             });
+            Search();
+            ShopsApi();
         }
 
         private void InitPagination()
         {
-            SearchCountRows = $"Найдено записей: {searchResult.Count} из {Shops.Count}";
+            SearchCountRows = $"Найдено записей: {searchResult.Count} из {Shops.Count()}";
             paginationPageIndex = 0;
         }
 
@@ -213,7 +211,7 @@ namespace MySklad.ViewModel
             int rowsOnPage = 0;
             if (!int.TryParse(SelectedViewCountRows, out rowsOnPage))
             {
-                searchResult = Shops;            
+                Shops = searchResult;
             }
             else
             {
@@ -223,7 +221,7 @@ namespace MySklad.ViewModel
                 CountPages = searchResult.Count() / rows;
                 Pages = $"{paginationPageIndex + 1} из {CountPages + 1}";
             }
-            //ShopsApi();
+            
         }
 
         private void Search()
@@ -239,7 +237,6 @@ namespace MySklad.ViewModel
             InitPagination();
             Pagination();         
             SignalChanged("Shops");
-            ShopsApi();
         }
 
         internal void Sort()
@@ -261,7 +258,6 @@ namespace MySklad.ViewModel
             paginationPageIndex = 0;
             Pagination();
             SignalChanged("Shops");
-            ShopsApi();
         }
     }
 }

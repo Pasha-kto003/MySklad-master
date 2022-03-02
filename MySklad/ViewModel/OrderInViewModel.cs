@@ -67,7 +67,7 @@ namespace MySklad.ViewModel
             foreach(OrderInApi orderIn in Orders)
             {
                 orderIn.Supplier = Suppliers.First(s => s.Id == orderIn.SupplierId);
-                //orderIn.CrossProductOrderApi.CountInOrder = CrossProductOrder.CountInOrder;
+                
             }
         }
 
@@ -78,6 +78,5 @@ namespace MySklad.ViewModel
             Orders = new List<OrderInApi>();
             GetOrders();
         }
-
-    }   
+    }
 }
