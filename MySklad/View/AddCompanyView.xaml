@@ -1,0 +1,50 @@
+﻿<Window x:Class="MySklad.View.AddCompanyView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MySklad.View"
+        mc:Ignorable="d"
+        Title="AddCompanyView" Height="450" Width="800">
+    <Grid Background="#325f63">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel DataContext="{Binding AddCompanyVM}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+            <StackPanel Width="233" HorizontalAlignment="Left">
+
+                <Label Content="Название компании:" Foreground="White"/>
+                <TextBox Text="{Binding NameOfCompany}"/>
+                <Label Content="Почта компании:" Foreground="White"/>
+                <TextBox Text="{Binding Email}"/>
+            </StackPanel>
+            <StackPanel Width="233" Grid.Column="1">
+                <Label Content="Дата старта работы:" Foreground="White"/>
+                <DatePicker SelectedDate="{Binding RegistrationDate, StringFormat = '{}{0:dd.MM.yyyy}'}"/>
+                <Label Content="Номер телефона:" Foreground="White"/>
+                <TextBox Text="{Binding Phone}" Foreground="White"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" Grid.Row="1" >
+
+            <StackPanel Grid.Column="1">
+                <Label Content="Изображение:" Foreground="White"/>
+                <Image Source="{Binding ImageCompany}" Width="150" Height="150"/>
+                <Button Height="30" Style="{StaticResource ButtonTheme}" Content="Выбрать изображение" Command="{Binding SelectImage}"/>
+            </StackPanel>
+
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal">
+            <Button Style="{StaticResource ButtonTheme}" Width="150" Height="30" Content="Отмена" HorizontalAlignment="Left" Click="Button_Click"/>
+            <Button Command="{Binding SaveCompany}" Style="{StaticResource ButtonTheme}" Width="150" Height="30" Content="Сохранить" HorizontalAlignment="Right"/>
+        </StackPanel>
+    </Grid>
+</Window>

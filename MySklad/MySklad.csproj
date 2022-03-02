@@ -7,6 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="companies\**" />
+    <EmbeddedResource Remove="companies\**" />
+    <None Remove="companies\**" />
+    <Page Remove="companies\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="company\Amazon-logo-0726.png" />
+    <None Remove="company\Screenshot_28.png" />
+    <None Remove="company\Screenshot_29.png" />
+    <None Remove="company\Screenshot_30.png" />
+    <None Remove="company\Screenshot_31.png" />
+    <None Remove="company\Screenshot_32.png" />
     <None Remove="materials\Apartment.png" />
     <None Remove="materials\AXs.png" />
     <None Remove="materials\erik1.png" />
@@ -22,6 +35,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="company\Amazon-logo-0726.png" />
+    <Resource Include="company\Screenshot_28.png" />
+    <Resource Include="company\Screenshot_29.png" />
+    <Resource Include="company\Screenshot_30.png" />
+    <Resource Include="company\Screenshot_31.png" />
+    <Resource Include="company\Screenshot_32.png" />
     <Resource Include="materials\Apartment.png" />
     <Resource Include="materials\AXs.png" />
     <Resource Include="materials\erik1.png" />

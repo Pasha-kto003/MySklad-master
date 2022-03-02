@@ -22,6 +22,7 @@ namespace MySklad.ViewModel
         public CustomCommand OpenPersonal { get; set; }
         public CustomCommand OpenShop { get; set; }
         public CustomCommand OpenCatalog { get; set; }
+        public CustomCommand OpenCompany { get; set; }
 
         private Page _currentView;
 
@@ -63,6 +64,11 @@ namespace MySklad.ViewModel
             OpenOrderIn = new CustomCommand(() =>
             {
                 CurrentView = new OrderInView();
+            });
+
+            OpenCompany = new CustomCommand(() =>
+            {
+                CurrentView = new CompanyView();
             });
         }
     }
