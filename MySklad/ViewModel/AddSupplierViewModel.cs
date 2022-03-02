@@ -26,15 +26,50 @@ namespace MySklad.ViewModel
             }
         }
 
+        private List<CompanyApi> companies { get; set; }
+        public List<CompanyApi> Companies
+        {
+            get => companies;
+            set
+            {
+                companies = value;
+                SignalChanged();
+            }
+        }
+
+        private CompanyApi selectedCompany { get; set; }
+        public CompanyApi SelectedCompany
+        {
+            get => selectedCompany;
+            set
+            {
+                selectedCompany = value;
+                SignalChanged();
+            }
+        }
+
         public void CloseWindow(object obj)
         {
             Window window = obj as Window;
             window.Close();
         }
 
-        private async Task GetSuppliers()
+        private async Task GetCompanies()
         {
-            var suppliers = await Api.GetListAsync<SupplierApi>("Supplier");
+            var companies = await Api.GetListAsync<List<CompanyApi>>("Company");
+        }
+
+        private async Task GetSuppliers(SupplierApi supplierApi)
+        {
+            Companies = await Api.GetListAsync<List<CompanyApi>>("Company");
+            if (supplierApi == null)
+            {
+                SelectedCompany = Companies.First();
+            }
+            else
+            {
+                SelectedCompany = Companies.First(s => s.Id == supplierApi.CompanyId);
+            }
         }
 
         private async Task PostSupplier(SupplierApi supplierApi)
@@ -49,7 +84,9 @@ namespace MySklad.ViewModel
         public AddSupplierViewModel(SupplierApi supplierApi)
         {
             Suppliers = new List<SupplierApi>();
-            if(supplierApi == null)
+            GetCompanies();
+            GetSuppliers(AddSupplierVM);
+            if (supplierApi == null)
             {
                 AddSupplierVM = new SupplierApi { Title = "Название компании", Email = "Email", Rating = 100 };
             }
@@ -61,7 +98,8 @@ namespace MySklad.ViewModel
                     Title = supplierApi.Title,
                     Email = supplierApi.Email,
                     Rating = supplierApi.Rating,
-                    Phone = supplierApi.Phone
+                    Phone = supplierApi.Phone,
+                    CompanyId = supplierApi.CompanyId
                 };
             }
 
@@ -69,10 +107,12 @@ namespace MySklad.ViewModel
             {
                 if(AddSupplierVM.Id == 0)
                 {
+                    AddSupplierVM.CompanyId = SelectedCompany.Id;
                     PostSupplier(AddSupplierVM);
                 }
                 else
                 {
+                    AddSupplierVM.CompanyId = SelectedCompany.Id;
                     EditSupplier(AddSupplierVM);
                 }
                 foreach (Window window in Application.Current.Windows)
@@ -82,7 +122,7 @@ namespace MySklad.ViewModel
                         CloseWindow(window);
                     }
                 }
-                SignalChanged("Shops");
+                SignalChanged("Suppliers");
             });
         }
     }

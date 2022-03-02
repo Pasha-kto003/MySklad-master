@@ -92,6 +92,17 @@ namespace MySklad.ViewModel
             }
         }
 
+        private List<CompanyApi> companies { get; set; }
+        public List<CompanyApi> Companies
+        {
+            get => companies;
+            set
+            {
+                companies = value;
+                SignalChanged();
+            }
+        }
+
         private SupplierApi selectedSupplier { get; set; }
         public SupplierApi SelectedSupplier
         {
@@ -130,8 +141,8 @@ namespace MySklad.ViewModel
 
         public SupplierViewModel()
         {
-            
             Suppliers = new List<SupplierApi>();
+            Companies = new List<CompanyApi>();
             GetSuppliers();
 
             ViewCountRows = new List<string>();
@@ -199,14 +210,13 @@ namespace MySklad.ViewModel
 
         private async Task GetSuppliers()
         {
+            Companies = await Api.GetListAsync<List<CompanyApi>>("Company");
             Suppliers = await Api.GetListAsync<List<SupplierApi>>("Supplier");
-            //Products = await Api.GetListAsync<List<ProductApi>>("Product");
-            //Suppliers.Select(s =>
-            //{
-            //    var products = ProductSuppliers.Where(t => t.SupplierId == s.Id).Select(t => t.Product).ToList();
-            //    return products;
-            //});
-            //SignalChanged("Suppliers");
+            foreach(SupplierApi supplier in Suppliers)
+            {
+                supplier.Company = Companies.First(s => s.Id == supplier.CompanyId);
+            }
+            SignalChanged("Suppliers");
         }
 
         internal void Sort()

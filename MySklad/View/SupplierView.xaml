@@ -74,6 +74,10 @@
                                 <Label Content="Телефон:"/>
                                 <Label Content="{Binding Phone}"/>
                             </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Компания"/>
+                                <Label Content="{Binding Company.NameOfCompany}"/>
+                            </StackPanel>
                         </StackPanel>
                     </Grid>
                 </DataTemplate>
