@@ -169,7 +169,7 @@ namespace MySklad.ViewModel
                 else
                 {
                     AddProductVM.UnitId = SelectedUnit.Id;
-                    AddProductVM.ProductTypeId = SelectedProductType.Id; //
+                    AddProductVM.ProductTypeId = SelectedProductType.Id;
                     EditProduct(AddProductVM);
                 }
 
