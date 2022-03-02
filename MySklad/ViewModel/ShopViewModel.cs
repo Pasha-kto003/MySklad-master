@@ -197,6 +197,8 @@ namespace MySklad.ViewModel
             });
             Search();
             ShopsApi();
+            InitPagination();
+            Pagination();
         }
 
         private void InitPagination()
@@ -207,7 +209,6 @@ namespace MySklad.ViewModel
 
         private void Pagination()
         {
-            
             int rowsOnPage = 0;
             if (!int.TryParse(SelectedViewCountRows, out rowsOnPage))
             {
@@ -221,7 +222,6 @@ namespace MySklad.ViewModel
                 CountPages = searchResult.Count() / rows;
                 Pages = $"{paginationPageIndex + 1} из {CountPages + 1}";
             }
-            
         }
 
         private void Search()

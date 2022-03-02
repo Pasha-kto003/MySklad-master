@@ -11,16 +11,76 @@ namespace MySklad.ViewModel
 {
     public class SupplierViewModel : BaseViewModel
     {
-        private List<ProductSupplierApi> productSuppliers { get; set; }
-        public List<ProductSupplierApi> ProductSuppliers
+        public string SearchCountRows
         {
-            get => productSuppliers;
+            get => searchCountRows;
             set
             {
-                productSuppliers = value;
+                searchCountRows = value;
                 SignalChanged();
             }
         }
+
+        private string searchText = "";
+        public string SearchText
+        {
+            get => searchText;
+            set
+            {
+                searchText = value;
+                Search();
+            }
+        }
+
+        public List<string> ViewCountRows { get; set; }
+        public string SelectedViewCountRows
+        {
+            get => selectedViewCountRows;
+            set
+            {
+                selectedViewCountRows = value;
+                paginationPageIndex = 0;
+                Pagination();
+            }
+        }
+
+        public List<string> SearchType { get; set; }
+        private string selectedSearchType;
+        public string SelectedSearchType
+        {
+            get => selectedSearchType;
+            set
+            {
+                selectedSearchType = value;
+                Search();
+            }
+        }
+
+        private string selectedOrderType;
+        public List<string> OrderType { get; set; }
+        public string SelectedOrderType
+        {
+            get => selectedOrderType;
+            set
+            {
+                selectedOrderType = value;
+                Sort();
+            }
+        }
+
+        public List<string> SortType { get; set; }
+        private string selectedSortType;
+        public string SelectedSortType
+        {
+            get => selectedSortType;
+
+            set
+            {
+                selectedSortType = value;
+                Sort();
+            }
+        }
+
         private List<SupplierApi> suppliers { get; set; }
         public List<SupplierApi> Suppliers
         {
@@ -28,17 +88,6 @@ namespace MySklad.ViewModel
             set
             {
                 suppliers = value;
-                SignalChanged();
-            }
-        }
-
-        private List<ProductApi> products { get; set; }
-        public List<ProductApi> Products
-        {
-            get => products;
-            set
-            {
-                products = value;
                 SignalChanged();
             }
         }
@@ -54,14 +103,75 @@ namespace MySklad.ViewModel
             }
         }
 
+        public List<SupplierApi> searchResult;
+
+        int paginationPageIndex = 0;
+        private string searchCountRows;
+        private string selectedViewCountRows;
+        public int rows = 0;
+        public int CountPages = 0;
+        private StatusApi selectedStatusFilter;
+
+        public CustomCommand BackPage { get; set; }
+        public CustomCommand ForwardPage { get; set; }
         public CustomCommand AddSupplier { get; set; }
         public CustomCommand EditSupplier { get; set; }
+
+        private string pages;
+        public string Pages
+        {
+            get => pages;
+            set
+            {
+                pages = value;
+                SignalChanged();
+            }
+        }
 
         public SupplierViewModel()
         {
             
             Suppliers = new List<SupplierApi>();
             GetSuppliers();
+
+            ViewCountRows = new List<string>();
+            ViewCountRows.AddRange(new string[] { "5", "все" });
+            selectedViewCountRows = ViewCountRows.Last();
+
+            SortType = new List<string>();
+            SortType.AddRange(new string[] { "Рейтинг" });
+            selectedSortType = SortType.First();
+
+
+            SearchType = new List<string>();
+            SearchType.AddRange(new string[] { "Название поставщика", "Рейтинг"});
+            selectedSearchType = SearchType.First();
+
+            BackPage = new CustomCommand(() => {
+                if (searchResult == null)
+                    return;
+                if (paginationPageIndex > 0)
+                    paginationPageIndex--;
+                Pagination();
+
+            });
+
+            ForwardPage = new CustomCommand(() =>
+            {
+                if (searchResult == null)
+                    return;
+                int.TryParse(SelectedViewCountRows, out int rowsOnPage);
+                if (rowsOnPage == 0)
+                    return;
+                int countPage = searchResult.Count / rowsOnPage;
+                CountPages = countPage;
+                if (searchResult.Count() % rowsOnPage != 0)
+                    countPage++;
+                if (countPage > paginationPageIndex + 1)
+                    paginationPageIndex++;
+                Pagination();
+
+            });
 
             AddSupplier = new CustomCommand(() =>
             {
@@ -80,6 +190,11 @@ namespace MySklad.ViewModel
                 SignalChanged("Suppliers");
             });
             SignalChanged("Suppliers");
+
+            Search();
+            GetSuppliers();
+            InitPagination();
+            Pagination();
         }
 
         private async Task GetSuppliers()
@@ -92,6 +207,68 @@ namespace MySklad.ViewModel
             //    return products;
             //});
             //SignalChanged("Suppliers");
+        }
+
+        internal void Sort()
+        {
+            if (SelectedOrderType == "По умолчанию")
+                return;
+            if (SelectedOrderType == "По убыванию")
+            {
+                if (SelectedSortType == "Рейтинг")
+                    searchResult.Sort((x, y) => ((Int32)y.Rating).CompareTo(x.Rating));
+            }
+
+            if (SelectedOrderType == "По возрастанию")
+            {
+                if (SelectedSortType == "Рейтинг")
+                    searchResult.Sort((x, y) => ((Int32)x.Rating).CompareTo(y.Rating));
+            }
+            paginationPageIndex = 0;
+
+            Pagination();
+            SignalChanged("Suppliers");
+        }
+
+        private void InitPagination()
+        {
+            SearchCountRows = $"Найдено записей: {searchResult.Count} из {Suppliers.Count()}";
+            paginationPageIndex = 0;
+        }
+
+        private void Pagination()
+        {
+            
+            int rowsOnPage = 0;
+            if (!int.TryParse(SelectedViewCountRows, out rowsOnPage))
+            {
+                Suppliers = searchResult;
+            }
+            else
+            {
+                Suppliers = searchResult.Skip(rowsOnPage * paginationPageIndex).Take(rowsOnPage).ToList();
+                SignalChanged("Personals");
+                int.TryParse(SelectedViewCountRows, out rows);
+                CountPages = (searchResult.Count() - 1) / rows;
+                Pages = $"{paginationPageIndex + 1} из {CountPages + 1}";
+            }
+        }
+
+        private void Search()
+        {
+            var search = SearchText.ToLower();
+            if (SelectedSearchType == "Название поставщика")
+            {
+                searchResult = Suppliers.Where(c => c.Title.ToLower().Contains(search)).ToList();
+            }
+            else if (SelectedSearchType == "Рейтинг")
+                searchResult = Suppliers.Where(c => c.Rating.ToString().ToLower().Contains(search)).ToList();
+            else if(SelectedSearchType == "Почта")
+                searchResult = Suppliers.Where(c => c.Email.ToLower().Contains(search)).ToList();
+            Sort();
+            InitPagination();
+            Pagination();
+            SignalChanged("Suppliers");
         }
     }
 }

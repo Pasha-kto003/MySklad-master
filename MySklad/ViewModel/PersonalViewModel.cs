@@ -226,7 +226,6 @@ namespace MySklad.ViewModel
             Search();
             GetPersonals();
             GetsearchResult();
-                
         }
 
         private async Task GetsearchResult()
@@ -237,7 +236,7 @@ namespace MySklad.ViewModel
         }
 
         private async Task GetPersonals()
-        {    
+        {
             Personals = await Api.GetListAsync<List<PersonalApi>>("Personal");
             Statuses = await Api.GetListAsync<List<StatusApi>>("Status");
             foreach (PersonalApi personal in Personals)
@@ -264,9 +263,8 @@ namespace MySklad.ViewModel
                     searchResult.Sort((x, y) => ((Int32)x.Rating).CompareTo(y.Rating));
             }
             paginationPageIndex = 0;
-           
             Pagination();
-            SignalChanged("Personals");          
+            SignalChanged("Personals");
         }
 
         private void InitPagination()
