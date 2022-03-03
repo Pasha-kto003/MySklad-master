@@ -82,6 +82,9 @@ namespace MySklad.ViewModel
         }
 
         public CustomCommand SaveOrder { get; set; }
+        public CustomCommand AddProduct { get; set; }
+        public CustomCommand EditProduct { get; set; }
+        public CustomCommand RemoveProduct { get; set; }
 
         public void CloseWindow(object obj)
         {
@@ -161,11 +164,24 @@ namespace MySklad.ViewModel
                 if (AddOrderVM.Id == 0)
                 {
                     AddOrderVM.SupplierId = SelectedSupplier.Id;
+                    CrossProductOrderApi crossProduct = new CrossProductOrderApi
+                    {
+                        ProductId = SelectedProduct.Id,
+                        OrderInId = AddOrderVM.Id,
+                        //CountInOrder = 
+                    };
                     PostOrder(AddOrderVM);
                 }
                 else
                 {
                     AddOrderVM.SupplierId = SelectedSupplier.Id;
+                    AddOrderVM.SupplierId = SelectedSupplier.Id;
+                    AddOrderVM.CrossProductOrderApi = new CrossProductOrderApi
+                    {
+                        ProductId = SelectedProduct.Id,
+                        OrderInId = AddOrderVM.Id,
+                        //CountInOrder = 
+                    };
                     EditOrder(AddOrderVM);
                 }
                 foreach (Window window in Application.Current.Windows)
@@ -176,6 +192,24 @@ namespace MySklad.ViewModel
                     }
                 }
                 SignalChanged("OrderIns");
+            });
+
+            AddProduct = new CustomCommand(() =>
+            {
+                if(SelectedProduct == null)
+                {
+                    MessageBox.Show("Выберите продукцию!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                else if (SelectedOrderProducts.Contains(SelectedProduct))
+                {
+                    MessageBox.Show("Данная продукция уже есть в заказе!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                else
+                {
+                    SelectedOrderProducts.Add(SelectedProduct);
+                    SignalChanged("SelectedOrderProducts");
+                }
             });
         }
     }
