@@ -1,5 +1,6 @@
 ﻿using ModelApi;
 using MySklad.Core;
+using MySklad.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,6 +78,20 @@ namespace MySklad.ViewModel
             Suppliers = new List<SupplierApi>();
             Orders = new List<OrderInApi>();
             GetOrders();
+
+            CreateOrderIn = new CustomCommand(() =>
+            {
+                AddOrderIn addOrderIn = new AddOrderIn();
+                addOrderIn.ShowDialog();
+                GetOrders();
+            });
+            EditOrderIn = new CustomCommand(() =>
+            {
+                if (SelectedOrderIn == null) return;
+                AddOrderIn addOrderIn = new AddOrderIn(SelectedOrderIn);
+                addOrderIn.ShowDialog();
+                GetOrders();
+            });
         }
     }
 }

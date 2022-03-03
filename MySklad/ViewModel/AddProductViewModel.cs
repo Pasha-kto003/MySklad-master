@@ -124,7 +124,6 @@ namespace MySklad.ViewModel
                     SelectedUnit = Units.FirstOrDefault(s => s.Id == productApi.UnitId);
                     SelectedProductType = ProductTypes.FirstOrDefault(s => s.Id == productApi.ProductTypeId);
                 }
-            
         }
 
         public AddProductViewModel(ProductApi productApi)
