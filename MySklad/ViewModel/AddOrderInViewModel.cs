@@ -164,7 +164,7 @@ namespace MySklad.ViewModel
                 if (AddOrderVM.Id == 0)
                 {
                     AddOrderVM.SupplierId = SelectedSupplier.Id;
-                    CrossProductOrderApi crossProduct = new CrossProductOrderApi
+                    AddOrderVM.CrossProductOrderApi = new CrossProductOrderApi
                     {
                         ProductId = SelectedProduct.Id,
                         OrderInId = AddOrderVM.Id,
@@ -174,7 +174,6 @@ namespace MySklad.ViewModel
                 }
                 else
                 {
-                    AddOrderVM.SupplierId = SelectedSupplier.Id;
                     AddOrderVM.SupplierId = SelectedSupplier.Id;
                     AddOrderVM.CrossProductOrderApi = new CrossProductOrderApi
                     {
