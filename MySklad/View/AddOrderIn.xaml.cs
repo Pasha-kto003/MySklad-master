@@ -21,6 +21,7 @@ namespace MySklad.View
     /// </summary>
     public partial class AddOrderIn : Window
     {
+        public List<OrderInApi> Orders = new List<OrderInApi>();
         public AddOrderIn()
         {
             InitializeComponent();
@@ -37,5 +38,6 @@ namespace MySklad.View
         {
             Close();
         }
+
     }
 }

@@ -14,6 +14,8 @@ namespace MySklad.ViewModel
     {
         public OrderInApi AddOrderVM { get; set; }
 
+        public CrossProductOrderApi CrossProductOrderApi { get; set; }
+
         private ProductApi selectedOrderProduct { get; set; }
 
         public ProductApi SelectedOrderProduct
@@ -25,6 +27,8 @@ namespace MySklad.ViewModel
                 SignalChanged();
             }
         }
+
+        public string NewCount { get; set; }
 
         private List<ProductApi> selectedOrderProducts = new List<ProductApi>();
         public List<ProductApi> SelectedOrderProducts
@@ -179,8 +183,9 @@ namespace MySklad.ViewModel
                     {
                         ProductId = SelectedProduct.Id,
                         OrderInId = AddOrderVM.Id,
-                        //CountInOrder = 
+                        CountInOrder = AddOrderVM.CrossProductOrderApi.CountInOrder
                     };
+                    
                     EditOrder(AddOrderVM);
                 }
                 foreach (Window window in Application.Current.Windows)

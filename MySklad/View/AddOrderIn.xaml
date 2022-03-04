@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MySklad.View"
         mc:Ignorable="d"
-        Title="AddOrderIn" Height="450" Width="950">
+        Title="AddOrderIn" Height="450" Width="990">
     <Grid Background="#325f63">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
@@ -29,19 +29,25 @@
                 <Label Content="Статус заказа" Foreground="White"/>
                 <TextBox Text="{Binding Status}"/>
             </StackPanel>
-            
         </StackPanel>
         <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Orientation="Vertical" Grid.Row="1" >
             <Label HorizontalAlignment="Center" HorizontalContentAlignment="Center" Width="250" Content="Поставщик продукции:" Foreground="White"/>
             <ComboBox Width="250" IsEditable="True" ItemsSource="{Binding Suppliers}" DisplayMemberPath="Title" SelectedItem="{Binding SelectedSupplier}"/>
         </StackPanel>
-        <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Vertical" Width="250">
+        <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Vertical" Width="auto">
             <Label Content="Продукция заказа" Foreground="White"/>
-            <ListBox ItemsSource="{Binding SelectedOrderProducts}" SelectedItem="{Binding SelectedOrderProduct}" MinHeight="30" DisplayMemberPath="Title"/>
+            <DataGrid x:Name="list" ItemsSource="{Binding SelectedOrderProducts}" SelectedItem="{Binding SelectedOrderProduct}" MinHeight="30" AutoGenerateColumns="False" Width="300">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Продукция" Binding="{Binding Title}"/>
+                    <!--<DataGridTextColumn Header="Количество привезенной продукции" Binding="{Binding CrossProductOrderApi.CountInOrder}"/>-->
+                </DataGrid.Columns>
+            </DataGrid>
         </StackPanel>
         <StackPanel Grid.Row="0" Grid.Column="3" Orientation="Vertical" Width="250">
             <Label Content="Продукты для добавления в заказ" Foreground="White"/>
             <ComboBox ItemsSource="{Binding Product}" SelectedItem="{Binding SelectedProduct}" DisplayMemberPath="Title" MinHeight="30"/>
+            <Label Content="Введите количество привезенного товара"/>
+            <TextBox Text="{Binding CrossProductOrderApi.CountInOrder}"/>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="3" Orientation="Horizontal">
             <Button Width="100" Content="Добавить" Margin="0 70 0 0" Height="30" VerticalAlignment="Bottom" Command="{Binding AddProduct}" Style="{StaticResource ButtonTheme}"/>
