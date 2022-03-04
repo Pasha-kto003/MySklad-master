@@ -39,7 +39,7 @@
             <DataGrid x:Name="list" ItemsSource="{Binding SelectedOrderProducts}" SelectedItem="{Binding SelectedOrderProduct}" MinHeight="30" AutoGenerateColumns="False" Width="300">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Продукция" Binding="{Binding Title}"/>
-                    <!--<DataGridTextColumn Header="Количество привезенной продукции" Binding="{Binding CrossProductOrderApi.CountInOrder}"/>-->
+                    <DataGridTextColumn Header="Количество привезенной продукции" Binding="{Binding CrossProductOrderApi.CountInOrder}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>
@@ -47,7 +47,7 @@
             <Label Content="Продукты для добавления в заказ" Foreground="White"/>
             <ComboBox ItemsSource="{Binding Product}" SelectedItem="{Binding SelectedProduct}" DisplayMemberPath="Title" MinHeight="30"/>
             <Label Content="Введите количество привезенного товара"/>
-            <TextBox Text="{Binding CrossProductOrderApi.CountInOrder}"/>
+            <TextBox Text="{Binding NewCross}"/>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="3" Orientation="Horizontal">
             <Button Width="100" Content="Добавить" Margin="0 70 0 0" Height="30" VerticalAlignment="Bottom" Command="{Binding AddProduct}" Style="{StaticResource ButtonTheme}"/>

@@ -14,7 +14,7 @@ namespace MySklad.ViewModel
     {
         public OrderInApi AddOrderVM { get; set; }
 
-        public CrossProductOrderApi CrossProductOrderApi { get; set; }
+        public int NewCross { get; set; }
 
         private ProductApi selectedOrderProduct { get; set; }
 
@@ -27,8 +27,6 @@ namespace MySklad.ViewModel
                 SignalChanged();
             }
         }
-
-        public string NewCount { get; set; }
 
         private List<ProductApi> selectedOrderProducts = new List<ProductApi>();
         public List<ProductApi> SelectedOrderProducts
@@ -159,7 +157,29 @@ namespace MySklad.ViewModel
             
             GetOrders(AddOrderVM);
 
-            
+            AddProduct = new CustomCommand(() =>
+            {
+                if (SelectedProduct == null)
+                {
+                    MessageBox.Show("Выберите продукцию!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                else if (SelectedOrderProducts.Contains(SelectedProduct))
+                {
+                    MessageBox.Show("Данная продукция уже есть в заказе!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                else
+                {
+                    SelectedOrderProducts.Add(SelectedProduct);
+                    AddOrderVM.CrossProductOrderApi = new CrossProductOrderApi
+                    {
+                        ProductId = SelectedProduct.Id,
+                        OrderInId = AddOrderVM.Id,
+                        CountInOrder = NewCross
+                    };
+                    SignalChanged("SelectedOrderProducts");
+                }
+            });
 
             SaveOrder = new CustomCommand(() =>
             {
@@ -172,7 +192,7 @@ namespace MySklad.ViewModel
                     {
                         ProductId = SelectedProduct.Id,
                         OrderInId = AddOrderVM.Id,
-                        //CountInOrder = 
+                        CountInOrder = NewCross
                     };
                     PostOrder(AddOrderVM);
                 }
@@ -183,9 +203,8 @@ namespace MySklad.ViewModel
                     {
                         ProductId = SelectedProduct.Id,
                         OrderInId = AddOrderVM.Id,
-                        CountInOrder = AddOrderVM.CrossProductOrderApi.CountInOrder
+                        CountInOrder = NewCross
                     };
-                    
                     EditOrder(AddOrderVM);
                 }
                 foreach (Window window in Application.Current.Windows)
@@ -198,23 +217,7 @@ namespace MySklad.ViewModel
                 SignalChanged("OrderIns");
             });
 
-            AddProduct = new CustomCommand(() =>
-            {
-                if(SelectedProduct == null)
-                {
-                    MessageBox.Show("Выберите продукцию!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-                else if (SelectedOrderProducts.Contains(SelectedProduct))
-                {
-                    MessageBox.Show("Данная продукция уже есть в заказе!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
-                else
-                {
-                    SelectedOrderProducts.Add(SelectedProduct);
-                    SignalChanged("SelectedOrderProducts");
-                }
-            });
+            
         }
     }
 }
