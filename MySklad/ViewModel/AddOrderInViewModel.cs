@@ -189,7 +189,7 @@ namespace MySklad.ViewModel
                         ProductId = SelectedProduct.Id,
                         OrderInId = AddOrderVM.Id,
                         CountInOrder = SelectedProduct.CountProducts
-                    };
+                    };//
                     PostOrder(AddOrderVM);
                 }
                 else
