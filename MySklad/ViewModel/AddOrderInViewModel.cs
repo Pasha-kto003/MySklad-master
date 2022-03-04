@@ -146,7 +146,7 @@ namespace MySklad.ViewModel
                     Id = orderInApi.Id,
                     DateOrderIn = orderInApi.DateOrderIn,
                     Status = orderInApi.Status,
-                    SupplierId = orderInApi.SupplierId,
+                    SupplierId = orderInApi.SupplierId
                 };
 
                 if (orderInApi.Products != null)
