@@ -182,7 +182,7 @@ namespace MySklad.ViewModel
             {
                 
                 AddOrderVM.Products = SelectedOrderProducts;
-                
+                SelectedOrderProduct.CountProducts = NewCross;
                 if (AddOrderVM.Id == 0)
                 {
                     AddOrderVM.SupplierId = SelectedSupplier.Id;
