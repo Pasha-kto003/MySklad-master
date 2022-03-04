@@ -171,12 +171,6 @@ namespace MySklad.ViewModel
                 else
                 {
                     SelectedOrderProducts.Add(SelectedProduct);
-                    AddOrderVM.CrossProductOrderApi = new CrossProductOrderApi
-                    {
-                        ProductId = SelectedProduct.Id,
-                        OrderInId = AddOrderVM.Id,
-                        CountInOrder = NewCross
-                    };
                     SignalChanged("SelectedOrderProducts");
                 }
             });
@@ -216,8 +210,6 @@ namespace MySklad.ViewModel
                 }
                 SignalChanged("OrderIns");
             });
-
-            
         }
     }
 }
