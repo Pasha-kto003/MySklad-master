@@ -190,7 +190,7 @@ namespace MySklad.ViewModel
                     {
                         ProductId = SelectedProduct.Id,
                         OrderInId = AddOrderVM.Id,
-                        CountInOrder = SelectedOrderProduct.CountProducts
+                        CountInOrder = SelectedProduct.CountProducts
                     };//
                     PostOrder(AddOrderVM);
                 }
@@ -201,7 +201,7 @@ namespace MySklad.ViewModel
                     {
                         ProductId = SelectedProduct.Id,
                         OrderInId = AddOrderVM.Id,
-                        CountInOrder = SelectedOrderProduct.CountProducts
+                        CountInOrder = SelectedProduct.CountProducts
                     };
                     EditOrder(AddOrderVM);
                 }
