@@ -36,7 +36,7 @@
         </StackPanel>
         <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Vertical" Width="auto">
             <Label Content="Продукция заказа" Foreground="White"/>
-            <DataGrid x:Name="list" ItemsSource="{Binding SelectedOrderProducts}" SelectedItem="{Binding SelectedOrderProduct}" MinHeight="30" AutoGenerateColumns="False" Width="300">
+            <DataGrid ItemsSource="{Binding SelectedOrderProducts}" SelectedItem="{Binding SelectedOrderProduct}" MinHeight="30" AutoGenerateColumns="False" Width="300">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Продукция" Binding="{Binding Title}"/>
                     <DataGridTextColumn Header="Количество привезенной продукции" Binding="{Binding CountProducts}"/>

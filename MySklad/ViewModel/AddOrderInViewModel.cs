@@ -172,7 +172,8 @@ namespace MySklad.ViewModel
                 {
                     SelectedOrderProduct = SelectedProduct;
                     SelectedOrderProduct.CountProducts = NewCross;
-                    SelectedOrderProducts.Add(SelectedOrderProduct);
+                    SelectedProduct.CountProducts = NewCross;
+                    SelectedOrderProducts.Add(SelectedProduct);
                     SignalChanged("SelectedOrderProducts");
                 }
             });
@@ -190,8 +191,7 @@ namespace MySklad.ViewModel
                         ProductId = SelectedProduct.Id,
                         OrderInId = AddOrderVM.Id,
                         CountInOrder = SelectedProduct.CountProducts
-                    };//
-
+                    };
                     PostOrder(AddOrderVM);
                 }
                 else
