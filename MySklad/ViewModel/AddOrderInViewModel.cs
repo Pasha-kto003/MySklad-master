@@ -204,7 +204,6 @@ namespace MySklad.ViewModel
                         CountInOrder = SelectedProduct.CountProducts
                     };
 
-                    SelectedOrderProduct.CountProducts = NewCross;
                     EditOrder(AddOrderVM);
                 }
                 foreach (Window window in Application.Current.Windows)
