@@ -106,6 +106,11 @@ namespace MySklad.ViewModel
             Product = (List<ProductApi>)products;
         }
 
+        async Task EditProduction(ProductApi productApi)
+        {
+            var prod = Api.PutAsync<ProductApi>(productApi, "Product");
+        }
+
         async Task GetOrders(OrderInApi orderInApi)
         {
             Suppliers = await Api.GetListAsync<List<SupplierApi>>("Supplier");
@@ -172,7 +177,7 @@ namespace MySklad.ViewModel
                 {
                     SelectedOrderProduct = SelectedProduct;
                     SelectedOrderProduct.CountProducts = NewCross;
-                    SelectedProduct.CountProducts = NewCross;
+                    EditProduction(SelectedOrderProduct);
                     SelectedOrderProducts.Add(SelectedProduct);
                     SignalChanged("SelectedOrderProducts");
                 }
@@ -203,9 +208,17 @@ namespace MySklad.ViewModel
                         OrderInId = AddOrderVM.Id,
                         CountInOrder = SelectedProduct.CountProducts
                     };
-
                     EditOrder(AddOrderVM);
                 }
+
+                if (AddOrderVM.Products != null)
+                {
+                    SelectedOrderProduct.CountProducts = NewCross;
+                    AddOrderVM.CrossProductOrderApi.CountInOrder = SelectedOrderProduct.CountProducts;
+                    EditProduction(SelectedOrderProduct);
+                    MessageBox.Show("Записано");
+                }
+
                 foreach (Window window in Application.Current.Windows)
                 {
                     if (window.DataContext == this)
