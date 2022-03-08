@@ -54,7 +54,7 @@
             <Label Content="Введите количество привезенного товара" Foreground="White"/>
             <TextBox Text="{Binding NewCross}"/>
         </StackPanel>
-        <StackPanel Grid.Row="1" Grid.Column="3" Orientation="Horizontal">
+        <StackPanel Grid.Row="1" Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Width="100" Content="Добавить" Margin="0 70 0 0" Height="30" VerticalAlignment="Bottom" Command="{Binding AddProduct}" Style="{StaticResource ButtonTheme}"/>
             <Button Width="100" Content="Убрать" Margin="10 70 0 0" Height="30" VerticalAlignment="Bottom" Command="{Binding RemoveProduct}" Style="{StaticResource ButtonTheme}"/>
         </StackPanel>
