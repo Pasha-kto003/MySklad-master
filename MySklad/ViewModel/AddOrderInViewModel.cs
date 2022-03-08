@@ -201,6 +201,7 @@ namespace MySklad.ViewModel
                         OrderInId = AddOrderVM.Id,
                         CountInOrder = SelectedProduct.CountProducts
                     };
+
                     PostOrder(AddOrderVM);
                 }
                 else
@@ -243,7 +244,6 @@ namespace MySklad.ViewModel
                 {
                     EditProductCount prod = new EditProductCount(SelectedOrderProduct);                
                     prod.ShowDialog();
-                    
                     EditProduction(SelectedOrderProduct);
                 }
             });
