@@ -39,7 +39,7 @@
             <DataGrid ItemsSource="{Binding SelectedOrderProducts}" SelectedItem="{Binding SelectedOrderProduct}" MinHeight="30" AutoGenerateColumns="False" Width="300">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Продукция" Binding="{Binding Title}"/>
-                    <DataGridTextColumn Header="Количество привезенной продукции" Binding="{Binding CrossProductOrderApi.CountInOrder}"/>
+                    <DataGridTextColumn Header="Количество привезенной продукции" Binding="{Binding CountProducts}"/>
                 </DataGrid.Columns>
                 <DataGrid.ContextMenu>
                     <ContextMenu>
