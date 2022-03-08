@@ -41,19 +41,23 @@
                     <DataGridTextColumn Header="Продукция" Binding="{Binding Title}"/>
                     <DataGridTextColumn Header="Количество привезенной продукции" Binding="{Binding CountProducts}"/>
                 </DataGrid.Columns>
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Command="{Binding EditProductCount}" Header="Изменить привезенное количество"/>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
             </DataGrid>
         </StackPanel>
         <StackPanel Grid.Row="0" Grid.Column="3" Orientation="Vertical" Width="250">
             <Label Content="Продукты для добавления в заказ" Foreground="White"/>
             <ComboBox ItemsSource="{Binding Product}" SelectedItem="{Binding SelectedProduct}" DisplayMemberPath="Title" MinHeight="30"/>
-            <Label Content="Введите количество привезенного товара"/>
+            <Label Content="Введите количество привезенного товара" Foreground="White"/>
             <TextBox Text="{Binding NewCross}"/>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="3" Orientation="Horizontal">
             <Button Width="100" Content="Добавить" Margin="0 70 0 0" Height="30" VerticalAlignment="Bottom" Command="{Binding AddProduct}" Style="{StaticResource ButtonTheme}"/>
             <Button Width="100" Content="Убрать" Margin="10 70 0 0" Height="30" VerticalAlignment="Bottom" Command="{Binding RemoveProduct}" Style="{StaticResource ButtonTheme}"/>
-            <Button Width="100" Content="Изменить" Margin="10 70 0 0" Height="30" VerticalAlignment="Bottom" Command="{Binding EditProduct}" Style="{StaticResource ButtonTheme}"/>
-            </StackPanel>
+        </StackPanel>
         <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal">
             <Button Content="Отмена" Click="Button_Click" Style="{StaticResource ButtonTheme}" HorizontalAlignment="Left" Width="150"/>
             <Button Content="Сохранить продукцию" Command="{Binding SaveOrder}" Style="{StaticResource ButtonTheme}" HorizontalAlignment="Right" Width="150"/>

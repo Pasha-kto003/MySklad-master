@@ -1,5 +1,6 @@
 ﻿using ModelApi;
 using MySklad.Core;
+using MySklad.View;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -87,6 +88,7 @@ namespace MySklad.ViewModel
         public CustomCommand AddProduct { get; set; }
         public CustomCommand EditProduct { get; set; }
         public CustomCommand RemoveProduct { get; set; }
+        public CustomCommand EditProductCount { get; set; }
 
         public void CloseWindow(object obj)
         {
@@ -183,6 +185,8 @@ namespace MySklad.ViewModel
                 }
             });
 
+
+
             SaveOrder = new CustomCommand(() =>
             {
                 
@@ -227,6 +231,21 @@ namespace MySklad.ViewModel
                     }
                 }
                 SignalChanged("OrderIns");
+            });
+            EditProductCount = new CustomCommand(() =>
+            {
+                if(SelectedOrderProduct == null)
+                {
+                    MessageBox.Show("Выберите продукцию");
+                    return;
+                }
+                else
+                {
+                    EditProductCount prod = new EditProductCount(SelectedOrderProduct);                
+                    prod.ShowDialog();
+                    
+                    EditProduction(SelectedOrderProduct);
+                }
             });
         }
     }
