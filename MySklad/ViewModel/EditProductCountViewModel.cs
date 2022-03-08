@@ -46,6 +46,14 @@ namespace MySklad.ViewModel
                 productApi.CrossProductOrderApi = crossProductOrderApi;
                 crossProductOrderApi.CountInOrder = productApi.CountProducts;
                 EditCount(productApi);
+
+                foreach (Window window in Application.Current.Windows)
+                {
+                    if (window.DataContext == this)
+                    {
+                        CloseWindow(window);
+                    }
+                }
             });
         }
     }
