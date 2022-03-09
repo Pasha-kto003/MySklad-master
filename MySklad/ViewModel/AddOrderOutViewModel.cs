@@ -1,9 +1,7 @@
 ﻿using ModelApi;
 using MySklad.Core;
-using MySklad.View;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,12 +9,10 @@ using System.Windows;
 
 namespace MySklad.ViewModel
 {
-    public class AddOrderInViewModel : BaseViewModel
+    public class AddOrderOutViewModel : BaseViewModel
     {
-        public OrderInApi AddOrderVM { get; set; }
-
+        public OrderOutApi AddOrderVM { get; set; }
         public int NewCross { get; set; }
-
         private ProductApi selectedOrderProduct { get; set; }
 
         public ProductApi SelectedOrderProduct
@@ -39,8 +35,6 @@ namespace MySklad.ViewModel
                 SignalChanged();
             }
         }
-
-
 
         private ProductApi selectedProduct { get; set; }
         public ProductApi SelectedProduct
@@ -115,23 +109,23 @@ namespace MySklad.ViewModel
             var prod = Api.PutAsync<ProductApi>(productApi, "Product");
         }
 
-        async Task GetOrders(OrderInApi orderInApi)
+        async Task GetOrders(OrderOutApi orderOutApi)
         {
             Suppliers = await Api.GetListAsync<List<SupplierApi>>("Supplier");
             Product = await Api.GetListAsync<List<ProductApi>>("Product");
-            if(orderInApi == null)
+            if (orderOutApi == null)
             {
                 SelectedSupplier = Suppliers.FirstOrDefault();
             }
             else
             {
-                SelectedSupplier = Suppliers.FirstOrDefault(s => s.Id == orderInApi.SupplierId);
+                SelectedSupplier = Suppliers.FirstOrDefault(s => s.Id == orderOutApi.SupplierId);
             }
         }
 
         async Task PostOrder(OrderInApi orderInApi)
         {
-            var order = await Api.PostAsync<OrderInApi>(orderInApi,"OrderIn");
+            var order = await Api.PostAsync<OrderInApi>(orderInApi, "OrderIn");
         }
 
         async Task EditOrder(OrderInApi orderInApi)
@@ -139,36 +133,37 @@ namespace MySklad.ViewModel
             var orderedit = await Api.PutAsync<OrderInApi>(orderInApi, "OrderIn");
         }
 
-        public AddOrderInViewModel(OrderInApi orderInApi)
+        public AddOrderOutViewModel(OrderOutApi orderOut)
         {
             GetSuppliers();
             GetProducts();
 
-            if(orderInApi == null)
+            if(orderOut == null)
             {
-                AddOrderVM = new OrderInApi { DateOrderIn = DateTime.Now, Status = "В норме" };
+                AddOrderVM = new OrderOutApi { DateOrderOut = DateTime.Now, Status = "В норме" };
             }
             else
             {
-                AddOrderVM = new OrderInApi
+                AddOrderVM = new OrderOutApi
                 {
-                    Id = orderInApi.Id,
-                    DateOrderIn = orderInApi.DateOrderIn,
-                    Status = orderInApi.Status,
-                    SupplierId = orderInApi.SupplierId
+                    Id = orderOut.Id,
+                    DateOrderOut = orderOut.DateOrderOut,
+                    Status = orderOut.Status,
+                    ShopId = orderOut.ShopId,
+                    SupplierId = orderOut.SupplierId
                 };
 
-                if (orderInApi.Products != null)
+                if(orderOut.Products != null)
                 {
-                    SelectedOrderProducts = orderInApi.Products;
+                    SelectedOrderProducts = orderOut.Products;
                 }
             }
-            
+
             GetOrders(AddOrderVM);
 
             AddProduct = new CustomCommand(() =>
             {
-                if (SelectedProduct == null)
+                if(SelectedProduct == null)
                 {
                     MessageBox.Show("Выберите продукцию!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
@@ -187,67 +182,10 @@ namespace MySklad.ViewModel
                 }
             });
 
-
-
             SaveOrder = new CustomCommand(() =>
             {
-                
                 AddOrderVM.Products = SelectedOrderProducts;
-                SelectedOrderProduct.CountProducts = NewCross;
-                if (AddOrderVM.Id == 0)
-                {
-                    AddOrderVM.SupplierId = SelectedSupplier.Id;
-                    //AddOrderVM.CrossProductOrderApi = new CrossProductOrderApi
-                    //{
-                    //    ProductId = SelectedProduct.Id,
-                    //    OrderInId = AddOrderVM.Id,
-                    //    CountInOrder = SelectedProduct.CountProducts
-                    //};
-
-                    PostOrder(AddOrderVM);
-                }
-                else
-                {
-                    AddOrderVM.SupplierId = SelectedSupplier.Id;
-                    //AddOrderVM.CrossProductOrderApi = new CrossProductOrderApi
-                    //{
-                    //    ProductId = SelectedProduct.Id,
-                    //    OrderInId = AddOrderVM.Id,
-                    //    CountInOrder = SelectedProduct.CountProducts
-                    //};
-                    EditOrder(AddOrderVM);
-                }
-
-                if (AddOrderVM.Products != null)
-                {
-                    SelectedOrderProduct.CountProducts = NewCross;
-                    //AddOrderVM.CrossProductOrderApi.CountInOrder = SelectedOrderProduct.CountProducts;
-                    EditProduction(SelectedOrderProduct);
-                    MessageBox.Show("Записано");
-                }
-
-                foreach (Window window in Application.Current.Windows)
-                {
-                    if (window.DataContext == this)
-                    {
-                        CloseWindow(window);
-                    }
-                }
-                SignalChanged("OrderIns");
-            });
-            EditProductCount = new CustomCommand(() =>
-            {
-                if(SelectedOrderProduct == null)
-                {
-                    MessageBox.Show("Выберите продукцию");
-                    return;
-                }
-                else
-                {
-                    EditProductCount prod = new EditProductCount(SelectedOrderProduct);                
-                    prod.ShowDialog();
-                    EditProduction(SelectedOrderProduct);
-                }
+                //SelectedOrderProduct
             });
         }
     }
