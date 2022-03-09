@@ -205,13 +205,20 @@ namespace MySklad.ViewModel
             });
 
             SaveOrder = new CustomCommand(() =>
-            {
+            {              
                 AddOrderVM.Products = SelectedOrderProducts;
                 SelectedOrderProduct.CountProductsOut = Cross;
                 if(AddOrderVM.Id == 0)
                 {
+                   
                     AddOrderVM.SupplierId = SelectedSupplier.Id;
                     AddOrderVM.ShopId = SelectedShop.Id;
+                    //AddOrderVM.CrossProductOrderApi = new CrossProductOrderApi
+                    //{
+                    //    ProductId = SelectedProduct.Id,
+                    //    OrderInId = AddOrderVM.Id,
+                    //    CountInOrder = SelectedProduct.CountProducts
+                    //};
                     PostOrder(AddOrderVM);
                 }
                 else
@@ -252,7 +259,7 @@ namespace MySklad.ViewModel
                 }
                 else
                 {
-                    EditProductCount prod = new EditProductCount(SelectedOrderProduct);
+                    EditProductCountOut prod = new EditProductCountOut(SelectedOrderProduct);
                     prod.ShowDialog();
                     EditProduction(SelectedOrderProduct);
                 }
