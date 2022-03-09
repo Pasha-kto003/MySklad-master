@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ModelApi;
+using MySklad.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +24,13 @@ namespace MySklad.View
         public AddOrderOutView()
         {
             InitializeComponent();
+            DataContext = new AddOrderOutViewModel(null);
+        }
+
+        public AddOrderOutView(OrderOutApi orderOutApi)
+        {
+            InitializeComponent();
+            DataContext = new AddOrderOutViewModel(orderOutApi);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

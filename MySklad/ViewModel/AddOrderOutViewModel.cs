@@ -1,5 +1,6 @@
 ﻿using ModelApi;
 using MySklad.Core;
+using MySklad.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace MySklad.ViewModel
     public class AddOrderOutViewModel : BaseViewModel
     {
         public OrderOutApi AddOrderVM { get; set; }
-        public int NewCross { get; set; }
+        public int Cross { get; set; }
         private ProductApi selectedOrderProduct { get; set; }
 
         public ProductApi SelectedOrderProduct
@@ -80,6 +81,20 @@ namespace MySklad.ViewModel
             }
         }
 
+        private List<ShopApi> shops { get; set; }
+        public List<ShopApi> Shops
+        {
+            get => shops;
+            set
+            {
+                shops = value;
+                SignalChanged();
+            }
+        }
+
+        private ShopApi selectedShop { get; set; }
+        public ShopApi SelectedShop { get; set; }
+
         public CustomCommand SaveOrder { get; set; }
         public CustomCommand AddProduct { get; set; }
         public CustomCommand EditProduct { get; set; }
@@ -109,6 +124,12 @@ namespace MySklad.ViewModel
             var prod = Api.PutAsync<ProductApi>(productApi, "Product");
         }
 
+        async Task GetShops()
+        {
+            var shops = await Api.GetListAsync<List<ShopApi>>("Shop");
+            Shops = (List<ShopApi>)shops;
+        }
+
         async Task GetOrders(OrderOutApi orderOutApi)
         {
             Suppliers = await Api.GetListAsync<List<SupplierApi>>("Supplier");
@@ -123,20 +144,21 @@ namespace MySklad.ViewModel
             }
         }
 
-        async Task PostOrder(OrderInApi orderInApi)
+        async Task PostOrder(OrderOutApi orderOut)
         {
-            var order = await Api.PostAsync<OrderInApi>(orderInApi, "OrderIn");
+            var order = await Api.PostAsync<OrderOutApi>(orderOut, "OrderOut");
         }
 
-        async Task EditOrder(OrderInApi orderInApi)
+        async Task EditOrder(OrderOutApi orderOut)
         {
-            var orderedit = await Api.PutAsync<OrderInApi>(orderInApi, "OrderIn");
+            var orderedit = await Api.PutAsync<OrderOutApi>(orderOut, "OrderOut");
         }
 
         public AddOrderOutViewModel(OrderOutApi orderOut)
         {
             GetSuppliers();
             GetProducts();
+            GetShops();
 
             if(orderOut == null)
             {
@@ -175,7 +197,7 @@ namespace MySklad.ViewModel
                 else
                 {
                     SelectedOrderProduct = SelectedProduct;
-                    SelectedOrderProduct.CountProducts = NewCross;
+                    SelectedOrderProduct.CountProductsOut = Cross;
                     EditProduction(SelectedOrderProduct);
                     SelectedOrderProducts.Add(SelectedProduct);
                     SignalChanged("SelectedOrderProducts");
@@ -185,7 +207,55 @@ namespace MySklad.ViewModel
             SaveOrder = new CustomCommand(() =>
             {
                 AddOrderVM.Products = SelectedOrderProducts;
-                //SelectedOrderProduct
+                SelectedOrderProduct.CountProductsOut = Cross;
+                if(AddOrderVM.Id == 0)
+                {
+                    AddOrderVM.SupplierId = SelectedSupplier.Id;
+                    AddOrderVM.ShopId = SelectedShop.Id;
+                    PostOrder(AddOrderVM);
+                }
+                else
+                {
+                    AddOrderVM.SupplierId = SelectedSupplier.Id;
+                    AddOrderVM.ShopId = SelectedShop.Id;
+                    EditOrder(AddOrderVM);
+                }
+
+                if(AddOrderVM.Products != null)
+                {
+                    SelectedOrderProduct.CountProductsOut = Cross;
+                    EditProduction(SelectedOrderProduct);
+                    MessageBox.Show("Записано");
+                }
+
+                if (SelectedOrderProduct.CountProductsOut > SelectedOrderProduct.CountProducts)
+                {
+                    MessageBox.Show("Ошибка, нельзя увезти товаров больше чем его привезли");
+                    return;
+                }
+
+                foreach (Window window in Application.Current.Windows)
+                {
+                    if (window.DataContext == this)
+                    {
+                        CloseWindow(window);
+                    }
+                }
+                SignalChanged("OrderOuts");
+            });
+            EditProductCount = new CustomCommand(() =>
+            {
+                if (SelectedOrderProduct == null)
+                {
+                    MessageBox.Show("Выберите продукцию");
+                    return;
+                }
+                else
+                {
+                    EditProductCount prod = new EditProductCount(SelectedOrderProduct);
+                    prod.ShowDialog();
+                    EditProduction(SelectedOrderProduct);
+                }
             });
         }
     }

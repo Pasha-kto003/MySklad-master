@@ -1,5 +1,6 @@
 ﻿using ModelApi;
 using MySklad.Core;
+using MySklad.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,15 +55,27 @@ namespace MySklad.ViewModel
             }
         }
 
+        private List<ShopApi> shops { get; set; }
+        public List<ShopApi> Shops 
+        {
+            get => shops;
+            set
+            {
+                shops = value;
+                SignalChanged();
+            }
+        }
+
         private async Task GetOrders()
         {
             Products = await Api.GetListAsync<List<ProductApi>>("Product");
             Suppliers = await Api.GetListAsync<List<SupplierApi>>("Supplier");
             Orders = await Api.GetListAsync<List<OrderOutApi>>("OrderOut");
+            Shops = await Api.GetListAsync<List<ShopApi>>("Shop");
             foreach (OrderOutApi order in Orders)
             {
                 order.Supplier = Suppliers.First(s => s.Id == order.SupplierId);
-
+                order.Shop = Shops.First(s => s.Id == order.ShopId);
             }
         }
 
@@ -78,7 +91,17 @@ namespace MySklad.ViewModel
 
             CreateOrderOut = new CustomCommand(() =>
             {
+                AddOrderOutView addOrder = new AddOrderOutView();
+                addOrder.ShowDialog();
+                GetOrders();
+            });
 
+            EditOrderOut = new CustomCommand(() =>
+            {
+                if (SelectedOrderOut == null) return;
+                AddOrderOutView addOrder = new AddOrderOutView(SelectedOrderOut);
+                addOrder.ShowDialog();
+                GetOrders();
             });
         }
     }
