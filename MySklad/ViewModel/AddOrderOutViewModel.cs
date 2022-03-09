@@ -133,14 +133,17 @@ namespace MySklad.ViewModel
         async Task GetOrders(OrderOutApi orderOutApi)
         {
             Suppliers = await Api.GetListAsync<List<SupplierApi>>("Supplier");
+            Shops = await Api.GetListAsync<List<ShopApi>>("Shop");
             Product = await Api.GetListAsync<List<ProductApi>>("Product");
             if (orderOutApi == null)
             {
                 SelectedSupplier = Suppliers.FirstOrDefault();
+                SelectedShop = Shops.FirstOrDefault();
             }
             else
             {
                 SelectedSupplier = Suppliers.FirstOrDefault(s => s.Id == orderOutApi.SupplierId);
+                SelectedShop = Shops.FirstOrDefault(s => s.Id == orderOutApi.ShopId);
             }
         }
 
@@ -205,20 +208,18 @@ namespace MySklad.ViewModel
             });
 
             SaveOrder = new CustomCommand(() =>
-            {              
+            {
                 AddOrderVM.Products = SelectedOrderProducts;
                 SelectedOrderProduct.CountProductsOut = Cross;
-                if(AddOrderVM.Id == 0)
+                if (SelectedOrderProduct.CountProductsOut > SelectedOrderProduct.CountProducts)
                 {
-                   
+                    MessageBox.Show("Ошибка, нельзя увезти товаров больше чем его привезли");
+                    return;
+                }
+                if (AddOrderVM.Id == 0)
+                {
                     AddOrderVM.SupplierId = SelectedSupplier.Id;
                     AddOrderVM.ShopId = SelectedShop.Id;
-                    //AddOrderVM.CrossProductOrderApi = new CrossProductOrderApi
-                    //{
-                    //    ProductId = SelectedProduct.Id,
-                    //    OrderInId = AddOrderVM.Id,
-                    //    CountInOrder = SelectedProduct.CountProducts
-                    //};
                     PostOrder(AddOrderVM);
                 }
                 else
@@ -233,12 +234,6 @@ namespace MySklad.ViewModel
                     SelectedOrderProduct.CountProductsOut = Cross;
                     EditProduction(SelectedOrderProduct);
                     MessageBox.Show("Записано");
-                }
-
-                if (SelectedOrderProduct.CountProductsOut > SelectedOrderProduct.CountProducts)
-                {
-                    MessageBox.Show("Ошибка, нельзя увезти товаров больше чем его привезли");
-                    return;
                 }
 
                 foreach (Window window in Application.Current.Windows)

@@ -87,6 +87,7 @@ namespace MySklad.ViewModel
             Products = new List<ProductApi>();
             Suppliers = new List<SupplierApi>();
             Orders = new List<OrderOutApi>();
+            Shops = new List<ShopApi>();
             GetOrders();
 
             CreateOrderOut = new CustomCommand(() =>

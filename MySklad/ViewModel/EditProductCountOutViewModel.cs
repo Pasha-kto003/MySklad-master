@@ -19,10 +19,7 @@ namespace MySklad.ViewModel
             var count = await Api.PutAsync<ProductApi>(productApi, "Product");
         }
 
-        public async Task EditCross(OrderOutApi orderOutApi)
-        {
-            var order = await Api.PutAsync<OrderOutApi>(orderOutApi, "OrderOut");
-        }
+       
 
         public void CloseWindow(object obj)
         {
@@ -51,7 +48,7 @@ namespace MySklad.ViewModel
                 productApi.CountProductsOut = CountProductsOut;
                 crossProductOrderApi.CountOutOrder = productApi.CountProductsOut;
                 EditCount(productApi);
-                EditCross(orderOutApi);
+                
                 foreach (Window window in Application.Current.Windows)
                 {
                     if (window.DataContext == this)
