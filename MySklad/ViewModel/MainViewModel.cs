@@ -75,6 +75,11 @@ namespace MySklad.ViewModel
             {
                 CurrentView = new CompanyView();
             });
+
+            OpenRack = new CustomCommand(() =>
+            {
+                CurrentView = new RackView();
+            });
         }
     }
 }
