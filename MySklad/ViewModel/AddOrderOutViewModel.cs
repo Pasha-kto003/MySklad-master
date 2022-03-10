@@ -208,12 +208,17 @@ namespace MySklad.ViewModel
                     SelectedOrderProduct.CountProductsOut = Cross;
                     EditProduction(SelectedOrderProduct);
                     SelectedOrderProduct.CrossProductOrderApi = CrossProductOrders.FirstOrDefault(s => s.ProductId == SelectedOrderProduct.Id);
-                    if (SelectedOrderProduct.CountProductsOut > SelectedOrderProduct.CrossProductOrderApi.CountInOrder || SelectedOrderProduct.CountProductsOut > SelectedOrderProduct.CountInStock)
+                    if (SelectedOrderProduct.Status == "Удален")
+                    {
+                        MessageBox.Show("Ошибка, этот продукт находится в реестре удалений");
+                        SelectedOrderProducts.Remove(SelectedOrderProduct);
+                    }
+                    else if (SelectedOrderProduct.CountProductsOut > SelectedOrderProduct.CrossProductOrderApi.CountInOrder || SelectedOrderProduct.CountProductsOut > SelectedOrderProduct.CountInStock)
                     {
                         MessageBox.Show("Ошибка, нельзя увезти товаров больше чем его привезли");
                         SelectedOrderProducts.Remove(SelectedOrderProduct);
                         return;
-                    }
+                    }                   
                     SelectedOrderProducts.Add(SelectedProduct);
                     SignalChanged("SelectedOrderProducts");
                 }
