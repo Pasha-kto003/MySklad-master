@@ -203,7 +203,6 @@ namespace MySklad.ViewModel
                     //    OrderInId = AddOrderVM.Id,
                     //    CountInOrder = SelectedProduct.CountProducts
                     //};
-
                     PostOrder(AddOrderVM);
                 }
                 else
@@ -222,6 +221,7 @@ namespace MySklad.ViewModel
                 {
                     SelectedOrderProduct.CountProducts = NewCross;
                     //AddOrderVM.CrossProductOrderApi.CountInOrder = SelectedOrderProduct.CountProducts;
+                    EditOrder(AddOrderVM);
                     EditProduction(SelectedOrderProduct);
                     MessageBox.Show("Записано");
                 }

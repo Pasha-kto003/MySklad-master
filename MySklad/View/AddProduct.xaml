@@ -45,7 +45,7 @@
                 <Label Content="Тип продукции:" Foreground="White"/>
                 <ComboBox IsEditable="True" ItemsSource="{Binding ProductTypes}" DisplayMemberPath="Title" SelectedItem="{Binding SelectedProductType}"/>
             </StackPanel>
-            <StackPanel Width="auto" Grid.Column="1" Margin="10 0 0 0">
+            <StackPanel Width="233" Grid.Column="1" Margin="10 0 0 0">
                 <Label Width="Auto" Content="Единица измерения материала" Foreground="White"/>
                 <ComboBox IsEditable="True" ItemsSource="{Binding Units}" DisplayMemberPath="Title" SelectedItem="{Binding SelectedUnit}"/>
             </StackPanel>

@@ -33,6 +33,9 @@ namespace MySklad.ViewModel
             }
         }
 
+        public List<CrossProductOrderApi> CrossProductOrders { get; set; }
+        public List<CrossOrderOutApi> CrossOrderOuts { get; set; }
+
         private List<ProductApi> products { get; set; }
         public List<ProductApi> Products
         {
@@ -113,17 +116,18 @@ namespace MySklad.ViewModel
         {
             ProductTypes = await Api.GetListAsync<List<ProductTypeApi>>("ProductType");
             Units = await Api.GetListAsync<List<UnitApi>>("Unit");
-            
-                if (productApi == null)
-                {
+            CrossProductOrders = await Api.GetListAsync<List<CrossProductOrderApi>>("CrossIn");
+            CrossOrderOuts = await Api.GetListAsync<List<CrossOrderOutApi>>("CrossOut");
+            if (productApi == null)
+            {
                     SelectedUnit = Units.FirstOrDefault();
                     SelectedProductType = ProductTypes.FirstOrDefault();
-                }
-                else
-                {
+            }
+              else
+              {
                     SelectedUnit = Units.FirstOrDefault(s => s.Id == productApi.UnitId);
                     SelectedProductType = ProductTypes.FirstOrDefault(s => s.Id == productApi.ProductTypeId);
-                }
+              }
         }
 
         public AddProductViewModel(ProductApi productApi)
@@ -150,7 +154,9 @@ namespace MySklad.ViewModel
                     BestBeforeDateStart = productApi.BestBeforeDateStart,
                     BestBeforeDateEnd = productApi.BestBeforeDateEnd,
                     ProductTypeId = productApi.ProductTypeId,
-                    UnitId = productApi.UnitId
+                    UnitId = productApi.UnitId,
+                    CountProducts = productApi.CountProducts,
+                    CountProductsOut = productApi.CountProductsOut
                 };
             }
             GetProducts(AddProductVM);
@@ -163,12 +169,30 @@ namespace MySklad.ViewModel
                 {
                     AddProductVM.UnitId = SelectedUnit.Id;
                     AddProductVM.ProductTypeId = SelectedProductType.Id;
+                    //AddProductVM.CountInStock = (int)(AddProductVM.CountProducts.Value - AddProductVM.CountProductsOut);
+                    AddProductVM.CrossProductOrderApi = CrossProductOrders.FirstOrDefault(s => s.ProductId == AddProductVM.Id);
+                    AddProductVM.CrossOrderOutApi = CrossOrderOuts.FirstOrDefault(s => s.ProductId == AddProductVM.Id);
+                    //AddProductVM.CountInStock = (int)(AddProductVM.CrossProductOrderApi.CountInOrder - AddProductVM.CrossOrderOutApi.CountOutOrder);
                     PostProduct(AddProductVM);
                 }
                 else
                 {
                     AddProductVM.UnitId = SelectedUnit.Id;
                     AddProductVM.ProductTypeId = SelectedProductType.Id;
+                    //AddProductVM.CountInStock = (int)(AddProductVM.CountProducts.Value - AddProductVM.CountProductsOut);
+                    //int? somecount = 0;
+                    AddProductVM.CrossProductOrderApi = CrossProductOrders.FirstOrDefault(s => s.ProductId == AddProductVM.Id);
+                    AddProductVM.CrossOrderOutApi = CrossOrderOuts.FirstOrDefault(s => s.ProductId == AddProductVM.Id);
+
+                    foreach (CrossProductOrderApi cross in CrossProductOrders.Where(s=> s.ProductId == AddProductVM.Id))
+                    {
+                        AddProductVM.CrossProductOrderApi.CountInOrder += cross.CountInOrder;                       
+                    }
+                    foreach (CrossOrderOutApi crossOrder in CrossOrderOuts.Where(s => s.ProductId == AddProductVM.Id))
+                    {
+                        AddProductVM.CrossOrderOutApi.CountOutOrder += crossOrder.CountOutOrder;
+                    }
+                    AddProductVM.CountInStock = (int)(AddProductVM.CrossProductOrderApi.CountInOrder.Value - AddProductVM.CrossOrderOutApi.CountOutOrder.Value);
                     EditProduct(AddProductVM);
                 }
 

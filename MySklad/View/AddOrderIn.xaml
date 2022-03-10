@@ -48,20 +48,7 @@
                 </DataGrid.ContextMenu>
             </DataGrid>
         </StackPanel>
-        <StackPanel Grid.Column="2" Grid.Row="2" Orientation="Vertical" Width="auto">
-            <Label Content="Продукция заказа" Foreground="White"/>
-            <DataGrid ItemsSource="{Binding SelectedCrossProducts}" SelectedItem="{Binding SelectedCrossProduct}" MinHeight="30" AutoGenerateColumns="False" Width="300">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Продукция" Binding="{Binding Product.Title}"/>
-                    <DataGridTextColumn Header="Количество привезенной продукции" Binding="{Binding CountInOrder}"/>
-                </DataGrid.Columns>
-                <DataGrid.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Command="{Binding EditProductCount}" Header="Изменить привезенное количество"/>
-                    </ContextMenu>
-                </DataGrid.ContextMenu>
-            </DataGrid>
-        </StackPanel>
+        
         <StackPanel Grid.Row="0" Grid.Column="3" Orientation="Vertical" Width="250">
             <Label Content="Продукты для добавления в заказ" Foreground="White"/>
             <ComboBox ItemsSource="{Binding Product}" SelectedItem="{Binding SelectedProduct}" DisplayMemberPath="Title" MinHeight="30"/>

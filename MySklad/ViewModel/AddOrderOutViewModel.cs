@@ -214,9 +214,10 @@ namespace MySklad.ViewModel
                 if (SelectedOrderProduct.CountProductsOut > SelectedOrderProduct.CountProducts)
                 {
                     MessageBox.Show("Ошибка, нельзя увезти товаров больше чем его привезли");
+                    SelectedOrderProducts.Remove(SelectedOrderProduct);
                     return;
                 }
-                if (AddOrderVM.Id == 0)
+                else if (AddOrderVM.Id == 0)
                 {
                     AddOrderVM.SupplierId = SelectedSupplier.Id;
                     AddOrderVM.ShopId = SelectedShop.Id;
@@ -232,6 +233,7 @@ namespace MySklad.ViewModel
                 if(AddOrderVM.Products != null)
                 {
                     SelectedOrderProduct.CountProductsOut = Cross;
+                    EditOrder(AddOrderVM);
                     EditProduction(SelectedOrderProduct);
                     MessageBox.Show("Записано");
                 }
