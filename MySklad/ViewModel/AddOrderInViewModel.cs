@@ -119,6 +119,7 @@ namespace MySklad.ViewModel
         {
             Suppliers = await Api.GetListAsync<List<SupplierApi>>("Supplier");
             Product = await Api.GetListAsync<List<ProductApi>>("Product");
+            
             if(orderInApi == null)
             {
                 SelectedSupplier = Suppliers.FirstOrDefault();
@@ -128,6 +129,9 @@ namespace MySklad.ViewModel
                 SelectedSupplier = Suppliers.FirstOrDefault(s => s.Id == orderInApi.SupplierId);
             }
         }
+
+        public List<CrossProductOrderApi> CrossProductOrders { get; set; }
+        public List<CrossOrderOutApi> CrossOrderOuts { get; set; }
 
         async Task PostOrder(OrderInApi orderInApi)
         {

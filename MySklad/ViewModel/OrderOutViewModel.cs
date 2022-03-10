@@ -88,7 +88,7 @@ namespace MySklad.ViewModel
             Suppliers = new List<SupplierApi>();
             Orders = new List<OrderOutApi>();
             Shops = new List<ShopApi>();
-            GetOrders();
+            
 
             CreateOrderOut = new CustomCommand(() =>
             {
@@ -104,6 +104,7 @@ namespace MySklad.ViewModel
                 addOrder.ShowDialog();
                 GetOrders();
             });
+            GetOrders();
         }
     }
 }
