@@ -9,30 +9,39 @@ using System.Windows;
 
 namespace MySklad.ViewModel
 {
-    public class AddOrderViewModel : BaseViewModel
+    public class EditRackViewModel : BaseViewModel
     {
         public RackApi AddRackVM { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
 
-        private ProductApi selectedRackProduct { get; set; }
-        public ProductApi SelectedRackProduct
+        private List<PersonalApi> personals { get; set; }
+        public List<PersonalApi> Personals
         {
-            get => selectedRackProduct;
+            get => personals;
             set
             {
-                selectedRackProduct = value;
+                personals = value;
                 SignalChanged();
             }
         }
 
-        private List<ProductApi> selectedRackProducts { get; set; }
-        public List<ProductApi> SelectedRackProducts 
+        private PersonalApi selectedPersonal { get; set; }
+        public PersonalApi SelectedPersonal
         {
-            get => selectedRackProducts;
+            get => selectedPersonal;
             set
             {
-                selectedRackProducts = value;
+                selectedPersonal = value;
+                SignalChanged();
+            }
+        }
+
+        private List<ProductApi> product { get; set; }
+        public List<ProductApi> Product 
+        {
+            get => product;
+            set
+            {
+                product = value;
                 SignalChanged();
             }
         }
@@ -48,36 +57,24 @@ namespace MySklad.ViewModel
             }
         }
 
-        private List<ProductApi> product { get; set; }
-        public List<ProductApi> Product
+        private List<ProductApi> selectedRackProducts = new List<ProductApi>();
+        public List<ProductApi> SelectedRackProducts
         {
-            get => product;
+            get => selectedRackProducts;
             set
             {
-                product = value;
+                selectedRackProducts = value;
                 SignalChanged();
             }
         }
 
-        private List<PersonalApi> personals { get; set; }
-        public List<PersonalApi> Personals
+        private ProductApi selectedRackProduct { get; set; }
+        public ProductApi SelectedRackProduct
         {
-            get => personals;
+            get => selectedRackProduct;
             set
             {
-                personals = value;
-                SignalChanged();
-            }
-        }
-
-        private PersonalApi personal { get; set; }
-
-        public PersonalApi SelectedPersonal 
-        {
-            get => personal;
-            set
-            {
-                personal = value;
+                selectedRackProduct = value;
                 SignalChanged();
             }
         }
@@ -93,28 +90,23 @@ namespace MySklad.ViewModel
             window.Close();
         }
 
-        async Task GetCrosses()
-        {
-            var cross = await Api.GetListAsync<List<CrossProductRackApi>>("CrossRack");
-        }
-
         async Task GetProducts()
         {
             var products = await Api.GetListAsync<List<ProductApi>>("Product");
             Product = (List<ProductApi>)products;
         }
 
-
-        async Task EditProduction(ProductApi productApi)
+        async Task GetPersonals()
         {
-            var prod = Api.PutAsync<ProductApi>(productApi, "Product");
+            var personals = await Api.GetListAsync<List<PersonalApi>>("Personal");
+            Personals = (List<PersonalApi>)personals;
         }
 
-        async Task GetRacs(RackApi rackApi)
+        async Task GetRacks(RackApi rackApi)
         {
-            Product = await Api.GetListAsync<List<ProductApi>>("Product");
             Personals = await Api.GetListAsync<List<PersonalApi>>("Personal");
-
+            Product = await Api.GetListAsync<List<ProductApi>>("Product");
+            CrossProductRacks = await Api.GetListAsync<List<CrossProductRackApi>>("CrossRack");
             if(rackApi == null)
             {
                 SelectedPersonal = Personals.FirstOrDefault();
@@ -134,53 +126,62 @@ namespace MySklad.ViewModel
 
         async Task EditRack(RackApi rackApi)
         {
-            var rack = await Api.PutAsync<RackApi>(rackApi, "Rack");
+            var editRack = await Api.PutAsync<RackApi>(rackApi, "Rack");
         }
 
-        public AddOrderViewModel(RackApi rackApi)
+        int products = 0;
+
+        public EditRackViewModel(RackApi rackApi)
         {
+            GetPersonals();
             GetProducts();
-            GetCrosses();
-            
-            if(rackApi == null)
+            if (rackApi == null)
             {
-                AddRackVM = new RackApi { Name = "A1" };
+                AddRackVM = new RackApi { Name = "A1", Capacity = 500, PlacementDate = DateTime.Now };
             }
             else
             {
                 AddRackVM = new RackApi
                 {
                     Id = rackApi.Id,
-                    Capacity = rackApi.Capacity,
+                    PlacementDate = rackApi.PlacementDate,
+                    ChangedDate = rackApi.ChangedDate,
+                    DeletionDate = rackApi.DeletionDate,
                     Name = rackApi.Name,
-                    PersonalId = rackApi.PersonalId,
-                    RemainingPlaces = rackApi.RemainingPlaces
+                    Capacity = rackApi.Capacity,
+                    RemainingPlaces = rackApi.RemainingPlaces,
+                    PersonalId = rackApi.PersonalId
                 };
-
-                if(rackApi.Products != null)
+                if (rackApi.Products != null)
                 {
                     SelectedRackProducts = rackApi.Products;
                 }
-            }
+            }    
 
-            GetRacs(AddRackVM);
+            GetRacks(AddRackVM);
 
             AddProduct = new CustomCommand(() =>
             {
-                if (SelectedProduct == null)
+                if(SelectedProduct == null)
                 {
                     MessageBox.Show("Выберите продукцию!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
                 else if (SelectedRackProducts.Contains(SelectedProduct))
                 {
-                    MessageBox.Show("Данная продукция уже есть в заказе!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("Данная продукция уже есть на стеллаже!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
                 }
                 else
                 {
                     SelectedRackProduct = SelectedProduct;
-                    EditProduction(SelectedRackProduct);
                     SelectedRackProducts.Add(SelectedProduct);
+                    CrossProductRacks.Add(new CrossProductRackApi
+                    {
+                        ProductId = SelectedProduct.Id,
+                        RackId = AddRackVM.Id
+                    });
+                    AddRackVM.ChangedDate = DateTime.Now;
                     SignalChanged("SelectedRackProducts");
                 }
             });
@@ -188,26 +189,27 @@ namespace MySklad.ViewModel
             SaveRack = new CustomCommand(() =>
             {
                 AddRackVM.Products = SelectedRackProducts;
-                AddRackVM.CrossProductRacks.PlacementDate = StartDate;
                 if(AddRackVM.Id == 0)
                 {
                     AddRackVM.PersonalId = SelectedPersonal.Id;
+                    AddRackVM.CrossProductRacks = CrossProductRacks.FirstOrDefault(s => s.RackId == AddRackVM.Id);
                     PostRack(AddRackVM);
                 }
                 else
                 {
                     AddRackVM.PersonalId = SelectedPersonal.Id;
+                    AddRackVM.CrossProductRacks = CrossProductRacks.FirstOrDefault(s => s.RackId == AddRackVM.Id);
+                    //foreach(CrossProductRackApi cross in CrossProductRacks.Where(s=> s.RackId == AddRackVM.Id))
+                    //{
+                    //    AddRackVM.RemainingPlaces = AddRackVM.Capacity - cross.
+                    //}
+                    foreach (ProductApi productApi in SelectedRackProducts.Where(s => s.Id == AddRackVM.CrossProductRacks.ProductId))
+                    {
+                        SelectedProduct.CountInStock += productApi.CountInStock;
+                    }
+                    AddRackVM.RemainingPlaces = AddRackVM.Capacity - SelectedProduct.CountInStock;
                     EditRack(AddRackVM);
                 }
-
-                if(AddRackVM.Products != null)
-                {
-                    AddRackVM.CrossProductRacks.PlacementDate = StartDate;
-                    EditRack(AddRackVM);
-                    EditProduction(SelectedRackProduct);
-                    MessageBox.Show("Записано");
-                }
-
                 foreach (Window window in Application.Current.Windows)
                 {
                     if (window.DataContext == this)
@@ -215,7 +217,7 @@ namespace MySklad.ViewModel
                         CloseWindow(window);
                     }
                 }
-                SignalChanged("OrderIns");
+                SignalChanged("Racks");
             });
         }
     }

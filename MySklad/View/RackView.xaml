@@ -65,16 +65,33 @@
                                 </Label>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Вместительность"/>
-                                <Label Content="{Binding Capacity}"/>
+                                <Label Content="Дата создания стеллажа:"/>
+                                <Label Content="{Binding PlacementDate}">
+                                </Label>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Осталось свободных мест на стеллаже:"/>
-                                <Label Content="{Binding RemainingPlaces}"/>
+                                <Label Content="Дата последнего изменения стеллажа:"/>
+                                <Label Content="{Binding ChangedDate}">
+                                </Label>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Сотрудник, следящий за стеллажом:"/>
+                                <Label Content="Дата удаления стеллажа:"/>
+                                <Label Content="{Binding DeletionDate}">
+                                </Label>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Персонал обслуживающий стеллаж:"/>
                                 <Label Content="{Binding Personal.FirstName}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Вместительность стеллажа:"/>
+                                <Label Content="{Binding Capacity}">
+                                </Label>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Свободных мест:"/>
+                                <Label Content="{Binding RemainingPlaces}">
+                                </Label>
                             </StackPanel>
                         </StackPanel>
                     </Grid>

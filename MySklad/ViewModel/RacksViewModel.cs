@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MySklad.ViewModel
 {
-    public class RackViewModel : BaseViewModel
+    public class RacksViewModel : BaseViewModel
     {
         private List<RackApi> racks { get; set; }
         public List<RackApi> Racks 
@@ -21,6 +21,7 @@ namespace MySklad.ViewModel
                 SignalChanged();
             }
         }
+
         private RackApi selectedRack { get; set; }
         public RackApi SelectedRack
         {
@@ -32,19 +33,8 @@ namespace MySklad.ViewModel
             }
         }
 
-        private List<ProductApi> products { get; set; }
-        public List<ProductApi> Products
-        {
-            get => products;
-            set
-            {
-                products = value;
-                SignalChanged();
-            }
-        }
-
         private List<PersonalApi> personals { get; set; }
-        public List<PersonalApi> Personals
+        public List<PersonalApi> Personals 
         {
             get => personals;
             set
@@ -54,43 +44,37 @@ namespace MySklad.ViewModel
             }
         }
 
-        public CrossProductRackApi CrossProductRack { get; set; }
-
-        public CustomCommand CreateRack { get; set; }
-        public CustomCommand EditRack { get; set; }
-
         private async Task GetRacks()
         {
-            Products = await Api.GetListAsync<List<ProductApi>>("Product");
-            Racks = await Api.GetListAsync<List<RackApi>>("Rack");
             Personals = await Api.GetListAsync<List<PersonalApi>>("Personal");
-
-            foreach (RackApi rackApi in Racks)
+            Racks = await Api.GetListAsync<List<RackApi>>("Rack");
+            foreach(RackApi rackApi in Racks)
             {
                 rackApi.Personal = Personals.First(s => s.Id == rackApi.PersonalId);
             }
         }
 
-        public RackViewModel()
+        public CustomCommand EditRack { get; set; }
+        public CustomCommand CreateRack { get; set; }
+
+        public RacksViewModel()
         {
-            //GetRacks();
-            Products = new List<ProductApi>();
-            Personals = new List<PersonalApi>();
             Racks = new List<RackApi>();
+            Personals = new List<PersonalApi>();
             GetRacks();
 
             CreateRack = new CustomCommand(() =>
             {
-                AddRack addRack = new AddRack();
-                addRack.ShowDialog();
+                EditRackView editRack = new EditRackView();
+                editRack.ShowDialog();
                 GetRacks();
             });
 
             EditRack = new CustomCommand(() =>
             {
                 if (SelectedRack == null) return;
-                AddRack addRack = new AddRack();
-                addRack.ShowDialog();
+                EditRackView editRack = new EditRackView(SelectedRack);
+                editRack.ShowDialog();
                 GetRacks();
             });
         }

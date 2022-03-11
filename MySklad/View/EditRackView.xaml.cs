@@ -17,20 +17,20 @@ using System.Windows.Shapes;
 namespace MySklad.View
 {
     /// <summary>
-    /// Логика взаимодействия для AddRack.xaml
+    /// Логика взаимодействия для EditRackView.xaml
     /// </summary>
-    public partial class AddRack : Window
+    public partial class EditRackView : Window
     {
-        public AddRack()
+        public EditRackView()
         {
             InitializeComponent();
-            DataContext = new AddOrderViewModel(null);
+            DataContext = new EditRackViewModel(null);
         }
 
-        public AddRack(RackApi rackApi)
+        public EditRackView(RackApi rackApi)
         {
             InitializeComponent();
-            DataContext = new AddOrderViewModel(rackApi);
+            DataContext = new EditRackViewModel(rackApi);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

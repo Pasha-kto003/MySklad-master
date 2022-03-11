@@ -24,7 +24,7 @@ namespace MySklad.View
         public RackView()
         {
             InitializeComponent();
-            DataContext = new RackViewModel();
+            DataContext = new RacksViewModel();
         }
     }
 }
