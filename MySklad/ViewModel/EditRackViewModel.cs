@@ -176,11 +176,11 @@ namespace MySklad.ViewModel
                 {
                     SelectedRackProduct = SelectedProduct;
                     SelectedRackProducts.Add(SelectedProduct);
-                    CrossProductRacks.Add(new CrossProductRackApi
+                    AddRackVM.CrossProductRacks = new CrossProductRackApi
                     {
                         ProductId = SelectedProduct.Id,
                         RackId = AddRackVM.Id
-                    });
+                    };
                     AddRackVM.ChangedDate = DateTime.Now;
                     SignalChanged("SelectedRackProducts");
                 }
@@ -188,6 +188,7 @@ namespace MySklad.ViewModel
 
             SaveRack = new CustomCommand(() =>
             {
+                AddRackVM.CrossProductRacks = CrossProductRacks.FirstOrDefault(s => s.RackId == AddRackVM.Id);
                 AddRackVM.Products = SelectedRackProducts;
                 if(AddRackVM.Id == 0)
                 {
@@ -203,9 +204,10 @@ namespace MySklad.ViewModel
                     //{
                     //    AddRackVM.RemainingPlaces = AddRackVM.Capacity - cross.
                     //}
-                    foreach (ProductApi productApi in SelectedRackProducts.Where(s => s.Id == AddRackVM.CrossProductRacks.ProductId))
+                    foreach (CrossProductRackApi productApi in CrossProductRacks.Where(s => s.RackId == AddRackVM.Id))
                     {
-                        SelectedProduct.CountInStock += productApi.CountInStock;
+                        productApi.Product = SelectedProduct;
+                        productApi.Product.CountInStock++;
                     }
                     AddRackVM.RemainingPlaces = AddRackVM.Capacity - SelectedProduct.CountInStock;
                     EditRack(AddRackVM);
