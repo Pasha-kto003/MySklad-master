@@ -175,12 +175,13 @@ namespace MySklad.ViewModel
                 else
                 {
                     SelectedRackProduct = SelectedProduct;
-                    SelectedRackProducts.Add(SelectedProduct);
                     AddRackVM.CrossProductRacks = new CrossProductRackApi
                     {
                         ProductId = SelectedProduct.Id,
                         RackId = AddRackVM.Id
                     };
+                    SelectedRackProducts.Add(SelectedProduct);
+                    
                     AddRackVM.ChangedDate = DateTime.Now;
                     SignalChanged("SelectedRackProducts");
                 }
