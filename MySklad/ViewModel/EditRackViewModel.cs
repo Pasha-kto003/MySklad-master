@@ -83,6 +83,7 @@ namespace MySklad.ViewModel
         public CustomCommand AddProduct { get; set; }
         public CustomCommand EditProduct { get; set; }
         public CustomCommand RemoveProduct { get; set; }
+        public CustomCommand CountProduct { get; set; }
 
         public void CloseWindow(object obj)
         {
@@ -175,16 +176,21 @@ namespace MySklad.ViewModel
                 else
                 {
                     SelectedRackProduct = SelectedProduct;
-                    AddRackVM.CrossProductRacks = new CrossProductRackApi
-                    {
-                        ProductId = SelectedProduct.Id,
-                        RackId = AddRackVM.Id
-                    };
                     SelectedRackProducts.Add(SelectedProduct);
-                    
                     AddRackVM.ChangedDate = DateTime.Now;
+                    AddRackVM.Products = SelectedRackProducts;
                     SignalChanged("SelectedRackProducts");
                 }
+            });
+
+            CountProduct = new CustomCommand(() =>
+            {
+                foreach (CrossProductRackApi productApi in CrossProductRacks.Where(s => s.RackId == AddRackVM.Id))
+                {
+                    productApi.Product = SelectedProduct;
+                    productApi.Product.CountInStock++;
+                }
+                AddRackVM.RemainingPlaces = AddRackVM.Capacity - SelectedProduct.CountInStock;
             });
 
             SaveRack = new CustomCommand(() =>
@@ -205,12 +211,12 @@ namespace MySklad.ViewModel
                     //{
                     //    AddRackVM.RemainingPlaces = AddRackVM.Capacity - cross.
                     //}
-                    foreach (CrossProductRackApi productApi in CrossProductRacks.Where(s => s.RackId == AddRackVM.Id))
-                    {
-                        productApi.Product = SelectedProduct;
-                        productApi.Product.CountInStock++;
-                    }
-                    AddRackVM.RemainingPlaces = AddRackVM.Capacity - SelectedProduct.CountInStock;
+                    //foreach (CrossProductRackApi productApi in CrossProductRacks.Where(s => s.RackId == AddRackVM.Id))
+                    //{
+                    //    productApi.Product = SelectedProduct;
+                    //    productApi.Product.CountInStock++;
+                    //}
+                    //AddRackVM.RemainingPlaces = AddRackVM.Capacity - SelectedProduct.CountInStock;
                     EditRack(AddRackVM);
                 }
                 foreach (Window window in Application.Current.Windows)

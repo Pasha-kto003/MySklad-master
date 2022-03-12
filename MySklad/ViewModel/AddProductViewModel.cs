@@ -179,20 +179,19 @@ namespace MySklad.ViewModel
                 {
                     AddProductVM.UnitId = SelectedUnit.Id;
                     AddProductVM.ProductTypeId = SelectedProductType.Id;
-                    //AddProductVM.CountInStock = (int)(AddProductVM.CountProducts.Value - AddProductVM.CountProductsOut);
-                    //int? somecount = 0;
+                    
                     AddProductVM.CrossProductOrderApi = CrossProductOrders.FirstOrDefault(s => s.ProductId == AddProductVM.Id);
                     AddProductVM.CrossOrderOutApi = CrossOrderOuts.FirstOrDefault(s => s.ProductId == AddProductVM.Id);
 
-                    foreach (CrossProductOrderApi cross in CrossProductOrders.Where(s=> s.ProductId == AddProductVM.Id))
+                    foreach (CrossProductOrderApi cross in CrossProductOrders.Where(s => s.ProductId == AddProductVM.Id))
                     {
-                        AddProductVM.CrossProductOrderApi.CountInOrder += cross.CountInOrder;                       
+                        AddProductVM.CrossProductOrderApi.CountInOrder += cross.CountInOrder;
                     }
                     foreach (CrossOrderOutApi crossOrder in CrossOrderOuts.Where(s => s.ProductId == AddProductVM.Id))
                     {
                         AddProductVM.CrossOrderOutApi.CountOutOrder += crossOrder.CountOutOrder;
                     }
-                    AddProductVM.CountInStock = (int)(AddProductVM.CrossProductOrderApi.CountInOrder.Value - AddProductVM.CrossOrderOutApi.CountOutOrder.Value);
+                    AddProductVM.CountInStock = (int)((AddProductVM.CrossProductOrderApi.CountInOrder - AddProductVM.CrossOrderOutApi.CountOutOrder) / 2);
                     EditProduct(AddProductVM);
                 }
 
