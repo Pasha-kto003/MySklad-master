@@ -216,7 +216,6 @@ namespace MySklad.ViewModel
                     else if (SelectedOrderProduct.CountProductsOut > SelectedOrderProduct.CrossProductOrderApi.CountInOrder)
                     {
                         MessageBox.Show("Ошибка, нельзя увезти товаров больше чем его привезли");
-                        SelectedOrderProducts.Remove(SelectedOrderProduct);
                         return;
                     }                   
                     SelectedOrderProducts.Add(SelectedProduct);

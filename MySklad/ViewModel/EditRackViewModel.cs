@@ -177,8 +177,9 @@ namespace MySklad.ViewModel
                 {
                     SelectedRackProduct = SelectedProduct;
                     SelectedRackProducts.Add(SelectedProduct);
+                    AddRackVM.Products.Add(SelectedProduct);
                     AddRackVM.ChangedDate = DateTime.Now;
-                    AddRackVM.Products = SelectedRackProducts;
+                    //AddRackVM.Products = SelectedRackProducts;
                     SignalChanged("SelectedRackProducts");
                 }
             });
