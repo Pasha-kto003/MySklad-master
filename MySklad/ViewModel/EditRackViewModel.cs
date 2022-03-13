@@ -158,7 +158,7 @@ namespace MySklad.ViewModel
                 {
                     SelectedRackProducts = rackApi.Products;
                 }
-            }
+            }    
 
             GetRacks(AddRackVM);
 
@@ -183,15 +183,15 @@ namespace MySklad.ViewModel
                 }
             });
 
-            CountProduct = new CustomCommand(() =>
-            {
-                foreach (CrossProductRackApi productApi in CrossProductRacks.Where(s => s.RackId == AddRackVM.Id))
-                {
-                    productApi.Product = SelectedProduct;
-                    productApi.Product.CountInStock++;
-                }
-                AddRackVM.RemainingPlaces = AddRackVM.Capacity - SelectedProduct.CountInStock;
-            });
+            //CountProduct = new CustomCommand(() =>
+            //{
+            //    foreach (CrossProductRackApi productApi in CrossProductRacks.Where(s => s.RackId == AddRackVM.Id))
+            //    {
+            //        productApi.Product = SelectedProduct;
+            //        productApi.Product.CountInStock++;
+            //    }
+            //    AddRackVM.RemainingPlaces = AddRackVM.Capacity - SelectedProduct.CountInStock;
+            //});
 
             SaveRack = new CustomCommand(() =>
             {
@@ -201,12 +201,31 @@ namespace MySklad.ViewModel
                 {
                     AddRackVM.PersonalId = SelectedPersonal.Id;
                     AddRackVM.CrossProductRacks = CrossProductRacks.FirstOrDefault(s => s.RackId == AddRackVM.Id);
+                    foreach (CrossProductRackApi productApi in CrossProductRacks.Where(s => s.RackId == AddRackVM.Id))
+                    {
+                        productApi.Product = SelectedRackProduct;
+                        productApi.Product.CountInStock += SelectedRackProduct.CountInStock;
+                        AddRackVM.RemainingPlaces = AddRackVM.Capacity - SelectedProduct.CountInStock;
+                    }
                     PostRack(AddRackVM);
                 }
                 else
                 {
                     AddRackVM.PersonalId = SelectedPersonal.Id;
                     AddRackVM.CrossProductRacks = CrossProductRacks.FirstOrDefault(s => s.RackId == AddRackVM.Id);
+                    
+                    //foreach (CrossProductRackApi productApi in CrossProductRacks.Where(s => s.RackId == AddRackVM.Id))
+                    //{
+                    //    productApi.Product = SelectedRackProduct;
+                    //    productApi.Product.CountInStock += SelectedRackProduct.CountInStock;
+                    //    AddRackVM.RemainingPlaces = AddRackVM.Capacity - SelectedProduct.CountInStock;
+                    //}
+
+                    foreach(ProductApi product in SelectedRackProducts)
+                    {
+                        SelectedRackProduct.CountInStock += product.CountInStock;
+                    }
+                    AddRackVM.RemainingPlaces = AddRackVM.Capacity - SelectedRackProduct.CountInStock / 2;
                     EditRack(AddRackVM);
                 }
                 foreach (Window window in Application.Current.Windows)
