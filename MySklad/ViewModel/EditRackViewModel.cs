@@ -139,6 +139,7 @@ namespace MySklad.ViewModel
             if (rackApi == null)
             {
                 AddRackVM = new RackApi { Name = "A1", Capacity = 500, PlacementDate = DateTime.Now };
+                AddRackVM.Products = SelectedRackProducts;
             }
             else
             {
@@ -177,7 +178,7 @@ namespace MySklad.ViewModel
                 {
                     SelectedRackProduct = SelectedProduct;
                     SelectedRackProducts.Add(SelectedProduct);
-                    AddRackVM.Products.Add(SelectedProduct);
+                    //AddRackVM.Products.Add(SelectedProduct);
                     AddRackVM.ChangedDate = DateTime.Now;
                     //AddRackVM.Products = SelectedRackProducts;
                     SignalChanged("SelectedRackProducts");
