@@ -207,14 +207,20 @@ namespace MySklad.ViewModel
             {
                 AddRackVM.CrossProductRacks = CrossProductRacks.FirstOrDefault(s => s.RackId == AddRackVM.Id);
                 AddRackVM.Products = SelectedRackProducts;
+                //SelectedRackProduct.CountInStock = 0;
                 if (AddRackVM.Id == 0)
                 {
                     AddRackVM.PersonalId = SelectedPersonal.Id;
                     AddRackVM.CrossProductRacks = CrossProductRacks.FirstOrDefault(s => s.RackId == AddRackVM.Id);
+                    //SelectedRackProduct.CountInStock = 0;
                     foreach (ProductApi product in SelectedRackProducts)
                     {
+                        //SelectedRackProduct.CountInStock = 0;
                         SelectedRackProduct.CountInStock += product.CountInStock;
+                        //SelectedRackProduct.CountInStock = 0;
                     }
+                    //SelectedRackProduct.CountInStock = 0;
+                    
                     AddRackVM.RemainingPlaces = AddRackVM.Capacity - SelectedRackProduct.CountInStock / 2;
                     if (AddRackVM.RemainingPlaces < 0)
                     {
@@ -237,19 +243,21 @@ namespace MySklad.ViewModel
                 {
                     AddRackVM.PersonalId = SelectedPersonal.Id;
                     AddRackVM.CrossProductRacks = CrossProductRacks.FirstOrDefault(s => s.RackId == AddRackVM.Id);
-                    
+
                     //foreach (CrossProductRackApi productApi in CrossProductRacks.Where(s => s.RackId == AddRackVM.Id))
                     //{
                     //    productApi.Product = SelectedRackProduct;
                     //    productApi.Product.CountInStock += SelectedRackProduct.CountInStock;
                     //    AddRackVM.RemainingPlaces = AddRackVM.Capacity - SelectedProduct.CountInStock;
                     //}
-
-                    foreach(ProductApi product in SelectedRackProducts)
+                    //SelectedRackProduct.CountInStock = 0;
+                    foreach (ProductApi product in SelectedRackProducts)
                     {
+                        //SelectedRackProduct.CountInStock = 0;
                         SelectedRackProduct.CountInStock += product.CountInStock;
+                        SelectedRackProduct.CountInStock = 0;
                     }
-                    AddRackVM.RemainingPlaces = AddRackVM.Capacity - SelectedRackProduct.CountInStock / 2;
+                    AddRackVM.RemainingPlaces = AddRackVM.Capacity - SelectedRackProduct.CountInStock;
                     if (AddRackVM.RemainingPlaces < 0)
                     {
                         MessageBoxResult result = MessageBox.Show("Не хватает мест для данного товара, его следует удалить!", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning);
