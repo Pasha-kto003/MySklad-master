@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MySklad"
         mc:Ignorable="d"
         Background="Transparent"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="500" Width="800">
     <Border Background="#325f63" CornerRadius="20">
         <Grid>
         <!--<DataGrid ItemsSource="{Binding Units}" SelectedItem="{Binding SelectedUnit}" AutoGenerateColumns="False">
@@ -39,6 +39,7 @@
                 <RadioButton Style="{StaticResource MenuButtonTheme}" Margin="0 0 0 5" Content="Магазины" Command="{Binding OpenShop}" Foreground="White"/>
                 <RadioButton Style="{StaticResource MenuButtonTheme}" Margin="0 0 0 5" Content="Компании" Command="{Binding OpenCompany}" Foreground="White"/>
                 <RadioButton Style="{StaticResource MenuButtonTheme}" Margin="0 0 0 5" Content="Прочее" Command="{Binding OpenCatalog}" Foreground="White"/>
+                <RadioButton Style="{StaticResource MenuButtonTheme}" Margin="0 0 0 5" Content="Отчеты" Command="{Binding OpenReport}" Foreground="White"/>
             </StackPanel>
 
         <Button Grid.Column="1" Grid.Row="0" 

@@ -1,0 +1,76 @@
+﻿<Page x:Class="MySklad.View.ReportView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MySklad.View"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ReportView">
+
+    <Grid Background="#325f63">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="70"/>
+                <RowDefinition/>
+                <RowDefinition Height="60"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
+                <DatePicker SelectedDate="{Binding SelectedAfterDate}" Width="200" VerticalAlignment="Center"/>
+                <DatePicker SelectedDate="{Binding SelectedBeforeDate}" Width="200" VerticalAlignment="Center"/>
+            </StackPanel>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Vertical">
+                    <TextBlock Text="За выбранный период было приходных: " Foreground="White" Margin="10"/>
+                    <TextBlock Text="За выбранный период было расходных: " Foreground="White" Margin="10"/>
+                    <TextBlock Text="За выбранный период остаток продукции составил: " Foreground="White" Margin="10"/>
+                    <TextBlock Text="Пришло продукции за данный период: " Foreground="White" Margin="10"/>
+                    <TextBlock Text="Продукции ушло за этот период: " Foreground="White" Margin="10"/>
+                    <TextBlock Text="Наличие стеллажей: " Foreground="White" Margin="10"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Right" Width="100">
+                    <TextBox Text="{Binding OrderInCount, UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="True" Width="70" Margin="5"/>
+                    <TextBox Text="{Binding OrderOutCount, UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="True" Width="70" Margin="5"/>
+                    <TextBox Text="{Binding ProductCount, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Width="70" Margin="5"/>
+                    <TextBox Text="{Binding ProductInOrderIn, UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="True" Width="70" Margin="5"/>
+                    <TextBox Text="{Binding ProductInOrderOut, UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="True" Width="70" Margin="5"/>
+                    <TextBox Text="{Binding RackCount, UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="True" Width="70" Margin="5"/>
+                </StackPanel>
+            </Grid>
+            <Button Content="Показать отчет" Command="{Binding CountAll}" Style="{DynamicResource ButtonTheme}" Width="150" Height="30" Grid.Row="2"/>
+        </Grid>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="70"/>
+                <RowDefinition/>
+                <RowDefinition Height="60"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                <DatePicker SelectedDate="{Binding SelectedDateStartPeriod}" Width="190" Margin="10" VerticalAlignment="Center"/>
+                <DatePicker SelectedDate="{Binding SelectedDateEndPeriod}" Width="190" VerticalAlignment="Center"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1">
+                <TextBlock Text="Сформировать отчет по выбранному критерию" Foreground="White"/>
+                <ComboBox ItemsSource="{Binding Types}" SelectedItem="{Binding SelectedType}" Height="30" Width="250" HorizontalAlignment="Left" Margin="0,5,0,0"/>
+                <ListView ItemsSource="{Binding OrdersIn}" SelectedItem="{Binding SelectedOrderIn}" Height="150" MaxHeight="150" Margin="0,10,0,0">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Дата накладной" DisplayMemberBinding="{Binding DateOrderIn}"/>
+                            <GridViewColumn Header="Поставщик товара" DisplayMemberBinding="{Binding Supplier.Title}"/>
+                            <GridViewColumn Header="Статус накладной" DisplayMemberBinding="{Binding Status}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </StackPanel>
+            <Button Grid.Row="2" Content="Сформировать отчет" Command="{Binding EditReport}" Style="{DynamicResource ButtonTheme}" Width="150" Height="30"/>
+        </Grid>
+    </Grid>
+</Page>

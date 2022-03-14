@@ -174,6 +174,16 @@ namespace MySklad.ViewModel
                     MessageBox.Show("Данная продукция уже есть на стеллаже!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
+                else if(SelectedProduct.Status == "Удален")
+                {
+                    MessageBoxResult result = MessageBox.Show("Этот товар находится в реестре удалений, его невозможно поместить на стеллаж!", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    if(result == MessageBoxResult.Yes)
+                    {
+                        SelectedRackProducts.Remove(SelectedRackProduct);
+                        CrossProductRacks.Remove(AddRackVM.CrossProductRacks);
+                        MessageBox.Show("Удаление завершено");
+                    }
+                }
                 else
                 {
                     SelectedRackProduct = SelectedProduct;
@@ -240,7 +250,21 @@ namespace MySklad.ViewModel
                         SelectedRackProduct.CountInStock += product.CountInStock;
                     }
                     AddRackVM.RemainingPlaces = AddRackVM.Capacity - SelectedRackProduct.CountInStock / 2;
-                    EditRack(AddRackVM);
+                    if (AddRackVM.RemainingPlaces < 0)
+                    {
+                        MessageBoxResult result = MessageBox.Show("Не хватает мест для данного товара, его следует удалить!", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            SelectedRackProducts.Remove(SelectedRackProduct);
+                            CrossProductRacks.Remove(AddRackVM.CrossProductRacks);
+                            MessageBox.Show("Удаление завершено");
+                        }
+                    }
+                    else
+                    {
+                        EditRack(AddRackVM);
+                        MessageBox.Show($"Вы только что изменили стелаж :{AddRackVM.Name}");
+                    }
                 }
                 foreach (Window window in Application.Current.Windows)
                 {

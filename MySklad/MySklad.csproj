@@ -29,6 +29,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FreeSpire.XLS" Version="12.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="ModelApi">
       <HintPath>..\..\WebSkladTest1\ModelApi\bin\Debug\net5.0\ModelApi.dll</HintPath>
     </Reference>

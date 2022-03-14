@@ -58,7 +58,7 @@
         <StackPanel Grid.Row="1" Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Width="100" Content="Добавить" Margin="0 70 0 0" Height="30" VerticalAlignment="Bottom" Command="{Binding AddProduct}" Style="{StaticResource ButtonTheme}"/>
             <Button Width="100" Content="Убрать" Margin="10 70 0 0" Height="30" VerticalAlignment="Bottom" Command="{Binding RemoveProduct}" Style="{StaticResource ButtonTheme}"/>
-            <Button Width="100" Content="Подсчитать" Margin="10 70 0 0" Height="30" VerticalAlignment="Bottom" Command="{Binding CountProduct}" Style="{StaticResource ButtonTheme}"/>
+            <!--<Button Width="100" Content="Подсчитать" Margin="10 70 0 0" Height="30" VerticalAlignment="Bottom" Command="{Binding CountProduct}" Style="{StaticResource ButtonTheme}"/>-->
         </StackPanel>
         <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal">
             <Button Content="Отмена" Click="Button_Click" Style="{StaticResource ButtonTheme}" HorizontalAlignment="Left" Width="150"/>
