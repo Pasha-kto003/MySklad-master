@@ -86,6 +86,8 @@ namespace MySklad.ViewModel
             }
         }
 
+
+
         public CustomCommand SaveOrder { get; set; }
         public CustomCommand AddProduct { get; set; }
         public CustomCommand EditProduct { get; set; }

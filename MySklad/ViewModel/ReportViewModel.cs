@@ -11,13 +11,13 @@ namespace MySklad.ViewModel
     public class ReportViewModel : BaseViewModel
     {
         private string selectedType { get; set; }
-        public string SelectedType 
-        { 
+        public string SelectedType
+        {
             get => selectedType;
-            set 
-            { 
-                selectedType = value; 
-            } 
+            set
+            {
+                selectedType = value;
+            }
         }
         public List<string> Types { get; set; }
 
@@ -101,7 +101,16 @@ namespace MySklad.ViewModel
             }
         }
 
-
+        private List<SupplierApi> suppliers { get; set; }
+        public List<SupplierApi> Suppliers
+        {
+            get => suppliers;
+            set
+            {
+                suppliers = value;
+                SignalChanged();
+            }
+        }
 
         public CustomCommand CountAll { get; set; }
         public CustomCommand EditReport { get; set; }
@@ -110,12 +119,18 @@ namespace MySklad.ViewModel
         {
             var product = await Api.GetListAsync<List<ProductApi>>("Product");
             Products = (List<ProductApi>)product;
-            
+
         }
         async Task GetOrderIn()
         {
-            var order = await Api.GetListAsync<List<OrderInApi>>("OrderIn");
-            OrdersIn = (List<OrderInApi>)order;
+            //var order = await Api.GetListAsync<List<OrderInApi>>("OrderIn");
+            OrdersIn = await Api.GetListAsync<List<OrderInApi>>("OrderIn");
+            Suppliers = await Api.GetListAsync<List<SupplierApi>>("Supplier");
+            foreach(OrderInApi orderIn in OrdersIn)
+            {
+                orderIn.Supplier = Suppliers.First(s => s.Id == orderIn.SupplierId);
+            }
+            //OrdersIn = (List<OrderInApi>)order;
         }
         async Task GetCrossIn()
         {
@@ -137,6 +152,11 @@ namespace MySklad.ViewModel
             var rack = await Api.GetListAsync<List<RackApi>>("Rack");
             Racks = (List<RackApi>)rack;
         }
+        //async Task GetSuppliers()
+        //{
+        //    var suppliers = await Api.GetListAsync<List<SupplierApi>>("Supplier");
+        //}
+
         public ReportViewModel()
         {
             GetProducts();
@@ -145,8 +165,6 @@ namespace MySklad.ViewModel
             GetRacks();
             GetCrossIn();
             GetCrossOut();
-
-            
 
             Types = new List<string>
             {
