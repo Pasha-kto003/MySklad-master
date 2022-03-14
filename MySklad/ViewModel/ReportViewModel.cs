@@ -170,12 +170,13 @@ namespace MySklad.ViewModel
                 {
                     ProductCount += productApi.CountInStock;
                 }
-                //ProductInOrderIn = CrossProductOrders.Where(s => s.CountInOrder == s.CountInOrder).Sum();
-                foreach(CrossProductOrderApi cross in CrossProductOrders.FindAll(s => s.ProductId == s.ProductId))
+                //ProductInOrderIn = CrossProductOrders.FindAll(s => s.ProductId == s.ProductId).Count();
+                foreach (CrossProductOrderApi cross in CrossProductOrders.Where(s => s.ProductId != 0))
                 {
-                    ProductInOrderIn += cross.CountInOrder; 
+                    ProductInOrderIn += cross.CountInOrder;
                 }
-                foreach(CrossOrderOutApi cross in CrossProductOrdersOut.FindAll(s => s.ProductId == s.ProductId))
+
+                foreach (CrossOrderOutApi cross in CrossProductOrdersOut.FindAll(s => s.ProductId == s.ProductId))
                 {
                     ProductInOrderOut += cross.CountOutOrder;
                 }
