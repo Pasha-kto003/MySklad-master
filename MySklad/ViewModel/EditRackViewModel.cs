@@ -195,19 +195,33 @@ namespace MySklad.ViewModel
 
             SaveRack = new CustomCommand(() =>
             {
-                //AddRackVM.CrossProductRacks = CrossProductRacks.FirstOrDefault(s => s.RackId == AddRackVM.Id);
+                AddRackVM.CrossProductRacks = CrossProductRacks.FirstOrDefault(s => s.RackId == AddRackVM.Id);
                 AddRackVM.Products = SelectedRackProducts;
-                if(AddRackVM.Id == 0)
+                if (AddRackVM.Id == 0)
                 {
                     AddRackVM.PersonalId = SelectedPersonal.Id;
                     AddRackVM.CrossProductRacks = CrossProductRacks.FirstOrDefault(s => s.RackId == AddRackVM.Id);
-                    foreach (CrossProductRackApi productApi in CrossProductRacks.Where(s => s.RackId == AddRackVM.Id))
+                    foreach (ProductApi product in SelectedRackProducts)
                     {
-                        productApi.Product = SelectedRackProduct;
-                        productApi.Product.CountInStock += SelectedRackProduct.CountInStock;
-                        AddRackVM.RemainingPlaces = AddRackVM.Capacity - SelectedProduct.CountInStock;
+                        SelectedRackProduct.CountInStock += product.CountInStock;
                     }
-                    PostRack(AddRackVM);
+                    AddRackVM.RemainingPlaces = AddRackVM.Capacity - SelectedRackProduct.CountInStock / 2;
+                    if (AddRackVM.RemainingPlaces < 0)
+                    {
+                        MessageBoxResult result = MessageBox.Show("Не хватает мест для данного товара, его следует удалить!", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            SelectedRackProducts.Remove(SelectedRackProduct);
+                            CrossProductRacks.Remove(AddRackVM.CrossProductRacks);
+                            MessageBox.Show("Удаление завершено");
+                        }
+                    }
+                    else
+                    {
+                        PostRack(AddRackVM);
+                        MessageBox.Show("Добавлен новый стеллаж");
+                    }
+                    
                 }
                 else
                 {
