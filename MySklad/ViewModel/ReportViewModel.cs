@@ -302,10 +302,11 @@ namespace MySklad.ViewModel
             GetOrderIn();
             GetCompany();
             sheet.Range["B1"].Value = "Наименование поставщика";
-            sheet.Range["C1"].Value = "Почта";
-            sheet.Range["D1"].Value = "Телефон";
-            sheet.Range["E1"].Value = "Рейтинг";
-            sheet.Range["B4"].Value = "Наименование компании";
+            sheet.Range["C1"].Value = "Заказ";
+            sheet.Range["D1"].Value = "Почта";
+            sheet.Range["E1"].Value = "Телефон";
+            sheet.Range["F1"].Value = "Рейтинг";
+            sheet.Range["G4"].Value = "Наименование компании";
 
             List<OrderInApi> OrderBySupplier = OrdersIn.FindAll(s => s.Id == s.Id).Where
                 (
@@ -317,9 +318,10 @@ namespace MySklad.ViewModel
             {
                 sheet.Range[$"A{index}"].NumberValue = count++;
                 sheet.Range[$"B{index}"].Value = supp.Supplier.Title;
-                sheet.Range[$"C{index}"].Value = supp.Supplier.Email;
-                sheet.Range[$"D{index}"].Value = supp.Supplier.Phone;
-                sheet.Range[$"E{index}"].Value = supp.Supplier.Company.NameOfCompany;
+                sheet.Range[$"C{index}"].Value = supp.Id.ToString();
+                sheet.Range[$"D{index}"].Value = supp.Supplier.Email;
+                sheet.Range[$"E{index}"].Value = supp.Supplier.Phone;
+                sheet.Range[$"F{index}"].Value = supp.Supplier.CompanyId.ToString();
                 index++;
             }
             sheet.Range[$"B1:E2"].BorderInside(LineStyleType.Thin);
@@ -327,7 +329,7 @@ namespace MySklad.ViewModel
             sheet.Range[$"A4:G{index - 1}"].BorderInside(LineStyleType.Thin);
             sheet.Range[$"A4:G{index - 1}"].BorderAround(LineStyleType.Medium);
             sheet.AllocatedRange.AutoFitColumns();
-            workBook.SaveToFile("testdoc.xls");
+            workBook.SaveToFile("testsupp.xls");
             Process p = new Process();
             p.StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "/testsupp.xls")
             {
