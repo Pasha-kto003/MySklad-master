@@ -183,19 +183,18 @@ namespace MySklad.ViewModel
                     
                     AddProductVM.CrossProductOrderApi = CrossProductOrders.FirstOrDefault(s => s.ProductId == AddProductVM.Id);
                     AddProductVM.CrossOrderOutApi = CrossOrderOuts.FirstOrDefault(s => s.ProductId == AddProductVM.Id);
-                    //AddProductVM.CountInStock = 0;
                     //AddProductVM.CrossProductOrderApi.CountInOrder = 0;
                     //AddProductVM.CrossOrderOutApi.CountOutOrder = 0;
                     foreach (CrossProductOrderApi cross in CrossProductOrders.Where(s => s.ProductId == AddProductVM.Id))
                     {
-                        //AddProductVM.CrossProductOrderApi.CountInOrder = 0;
                         AddProductVM.CrossProductOrderApi.CountInOrder += cross.CountInOrder;
                     }
+                    //SignalChanged("AddProductVM.CrossProductOrderApi");
                     foreach (CrossOrderOutApi crossOrder in CrossOrderOuts.Where(s => s.ProductId == AddProductVM.Id))
                     {
-                        //AddProductVM.CrossOrderOutApi.CountOutOrder = 0;
                         AddProductVM.CrossOrderOutApi.CountOutOrder += crossOrder.CountOutOrder;
                     }
+                    //SignalChanged("AddProductVM.CrossOrderOutApi");
                     AddProductVM.CountInStock = (int)((AddProductVM.CrossProductOrderApi.CountInOrder - AddProductVM.CrossOrderOutApi.CountOutOrder) / 2);
                     EditProduct(AddProductVM);
                 }

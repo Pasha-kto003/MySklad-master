@@ -208,6 +208,10 @@ namespace MySklad.ViewModel
                     SelectedOrderProduct.CountProductsOut = Cross;
                     EditProduction(SelectedOrderProduct);
                     SelectedOrderProduct.CrossProductOrderApi = CrossProductOrders.FirstOrDefault(s => s.ProductId == SelectedOrderProduct.Id);
+                    foreach (CrossProductOrderApi cross in CrossProductOrders.Where(s => s.ProductId == SelectedProduct.Id))
+                    {
+                        SelectedOrderProduct.CrossProductOrderApi.CountInOrder += cross.CountInOrder;
+                    }
                     if (SelectedOrderProduct.Status == "Удален")
                     {
                         MessageBox.Show("Ошибка, этот продукт находится в реестре удалений");

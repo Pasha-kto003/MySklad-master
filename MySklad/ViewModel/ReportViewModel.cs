@@ -28,8 +28,8 @@ namespace MySklad.ViewModel
 
         public int OrderInCount { get; set; }
         public int OrderOutCount { get; set; }
-        public int? ProductInOrderIn { get; set; }
-        public int? ProductInOrderOut { get; set; }
+        public int ProductInOrderIn { get; set; }
+        public int ProductInOrderOut { get; set; }
         public int RackCount { get; set; }
         public int ProductCount { get; set; }
 
@@ -176,32 +176,34 @@ namespace MySklad.ViewModel
             {
                 OrderInCount = OrdersIn.FindAll(s => s.Id == s.Id).Where
                 (
-                    s => s.DateOrderIn >= SelectedAfterDate && s.DateOrderIn <= SelectedBeforeDate
+                    s => s.DateOrderIn <= SelectedAfterDate && s.DateOrderIn >= SelectedBeforeDate
                 ).Count();
-                
 
                 OrderOutCount = OrdersOut.FindAll(s => s.Id == s.Id).Where
                 (
                     s=> s.DateOrderOut >= SelectedAfterDate && s.DateOrderOut <= SelectedBeforeDate
                 ).Count();
-                foreach(ProductApi productApi in Products)
-                {
-                    ProductCount += productApi.CountInStock;
-                }
+                //foreach(ProductApi productApi in Products)
+                //{
+                //    ProductCount += productApi.CountInStock;
+                //}
                 //ProductInOrderIn = CrossProductOrders.FindAll(s => s.ProductId == s.ProductId).Count();
                 foreach (CrossProductOrderApi cross in CrossProductOrders.Where(s => s.ProductId != 0))
                 {
-                    ProductInOrderIn += cross.CountInOrder;
+                    ProductInOrderIn += (int)cross.CountInOrder / 2;
+                }
+                foreach (CrossOrderOutApi cross in CrossProductOrdersOut.FindAll(s => s.ProductId != 0))
+                {
+                    ProductInOrderOut += (int)cross.CountOutOrder / 2;
                 }
 
-                foreach (CrossOrderOutApi cross in CrossProductOrdersOut.FindAll(s => s.ProductId == s.ProductId))
-                {
-                    ProductInOrderOut += cross.CountOutOrder;
-                }
+                ProductCount = ProductInOrderIn - ProductInOrderOut;
+
                 RackCount = Racks.FindAll(s => s.Id == s.Id).Where
                 (
                     s=> s.PlacementDate >= SelectedAfterDate && s.PlacementDate <= SelectedBeforeDate
                 ).Count();
+
                 SignalChanged(nameof(OrderInCount));
                 SignalChanged(nameof(OrderOutCount));
                 SignalChanged(nameof(ProductCount));
