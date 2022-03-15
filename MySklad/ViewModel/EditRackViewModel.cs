@@ -212,11 +212,13 @@ namespace MySklad.ViewModel
                     AddRackVM.PersonalId = SelectedPersonal.Id;
                     AddRackVM.CrossProductRacks = CrossProductRacks.FirstOrDefault(s => s.RackId == AddRackVM.Id);
                     SelectedRackProduct.CountInStock = 0;
+                    //SelectedRackProducts = new List<ProductApi>();
                     foreach (ProductApi product in SelectedRackProducts)
                     {
                         SelectedRackProduct.CountInStock += product.CountInStock;
                     }
                     SignalChanged("SelectedRackProduct");
+                    SignalChanged("SelectedRackProducts");
                     AddRackVM.RemainingPlaces = AddRackVM.Capacity - SelectedRackProduct.CountInStock/* / 2*/;
                     if (AddRackVM.RemainingPlaces < 0)
                     {

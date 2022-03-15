@@ -1,7 +1,9 @@
 ﻿using ModelApi;
 using MySklad.Core;
+using Spire.Xls;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -112,6 +114,19 @@ namespace MySklad.ViewModel
             }
         }
 
+        private SupplierApi selectedSupplier { get; set; }
+
+        private OrderInApi selectedOrderIn { get; set; }
+        public OrderInApi SelectedOrderIn
+        {
+            get => selectedOrderIn;
+            set
+            {
+                selectedOrderIn = value;
+                SignalChanged();
+            }
+        }
+
         public CustomCommand CountAll { get; set; }
         public CustomCommand EditReport { get; set; }
 
@@ -146,6 +161,10 @@ namespace MySklad.ViewModel
         {
             var orders = await Api.GetListAsync<List<OrderOutApi>>("OrderOut");
             OrdersOut = (List<OrderOutApi>)orders;
+        }
+        async Task GetCompany()
+        {
+            var company = await Api.GetListAsync<List<CompanyApi>>("Company");
         }
         async Task GetRacks()
         {
@@ -183,18 +202,14 @@ namespace MySklad.ViewModel
                 (
                     s=> s.DateOrderOut >= SelectedAfterDate && s.DateOrderOut <= SelectedBeforeDate
                 ).Count();
-                //foreach(ProductApi productApi in Products)
-                //{
-                //    ProductCount += productApi.CountInStock;
-                //}
-                //ProductInOrderIn = CrossProductOrders.FindAll(s => s.ProductId == s.ProductId).Count();
+                
                 foreach (CrossProductOrderApi cross in CrossProductOrders.Where(s => s.ProductId != 0))
                 {
-                    ProductInOrderIn += (int)cross.CountInOrder / 2;
+                    ProductInOrderIn += (int)cross.CountInOrder;
                 }
                 foreach (CrossOrderOutApi cross in CrossProductOrdersOut.FindAll(s => s.ProductId != 0))
                 {
-                    ProductInOrderOut += (int)cross.CountOutOrder / 2;
+                    ProductInOrderOut += (int)cross.CountOutOrder;
                 }
 
                 ProductCount = ProductInOrderIn - ProductInOrderOut;
@@ -211,6 +226,116 @@ namespace MySklad.ViewModel
                 SignalChanged(nameof(ProductInOrderOut));
                 SignalChanged(nameof(RackCount));
             });
+
+            EditReport = new CustomCommand(() =>
+            {
+                switch (SelectedType)
+                {
+                    case "Период":
+                        ConvertReportToXLSByPeriod(SelectedDateStartPeriod, SelectedDateEndPeriod);
+                        break;
+                    case "Поставщик":
+                        ConvertReportToXLSBySupplier(SelectedOrderIn);
+                        break;
+                }
+            });
+        }
+
+        public void ConvertReportToXLSByPeriod(DateTime firstDate, DateTime lastDate)
+        {
+            GetProducts();
+            GetOrderIn();
+            GetCompany();
+            var workBook = new Workbook();
+            var sheet = workBook.Worksheets[0];
+            sheet.Range["A1"].Value = $"С ";
+            sheet.Range["B1"].Value = $" { firstDate.Date.ToShortDateString()}";
+            sheet.Range["D1"].Value = $"{lastDate.Date.ToShortDateString()}";
+            sheet.Range["C1"].Value = $"По ";
+
+            sheet.Range["B4"].Value = "Дата накладной";
+            sheet.Range["F4"].Value = "Поставщик выполнивший заказ";
+            sheet.Range["C4"].Value = "Статус накалдной";
+            sheet.Range["G4"].Value = "Товары";
+
+            int index = 5;
+            int count = 1;
+            
+
+            List<OrderInApi> OrderByPeriod = OrdersIn.FindAll(s => s.Id == s.Id).Where
+                (
+                    s => s.DateOrderIn >= firstDate && s.DateOrderIn <= lastDate &&
+                    s.SupplierId == s.Supplier.Id
+                ).ToList();
+
+            foreach(var order in OrderByPeriod)
+            {
+                DateTime date = (DateTime)order.DateOrderIn;
+                sheet.Range[$"A{index}"].NumberValue = count++;
+                sheet.Range[$"B{index}"].Value = date.ToShortDateString();
+                sheet.Range[$"C{index}"].Value = order.Status;
+                sheet.Range[$"F{index}"].Value = order.Supplier.Title;
+                sheet.Range[$"G5:AC5"].Value = order.Products.ToString();
+
+                index++;
+            }
+            sheet.Range[$"A1:D1"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A1:D1"].BorderAround(LineStyleType.Medium);
+            sheet.Range[$"A4:L{index - 1}"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A4:L{index - 1}"].BorderAround(LineStyleType.Medium);
+            sheet.AllocatedRange.AutoFitColumns();
+            workBook.SaveToFile("test.xls");
+
+            Process p = new Process();
+            p.StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "/" + "test.xls")
+            {
+                UseShellExecute = true
+            };
+            p.Start();
+        }
+
+        public void ConvertReportToXLSBySupplier(OrderInApi orderIn)
+        {
+            var workBook = new Workbook();
+            var sheet = workBook.Worksheets[0];
+            GetProducts();
+            GetOrderIn();
+            GetCompany();
+            sheet.Range["B1"].Value = "Наименование поставщика";
+            sheet.Range["C1"].Value = "Почта";
+            sheet.Range["D1"].Value = "Телефон";
+            sheet.Range["E1"].Value = "Рейтинг";
+            sheet.Range["B4"].Value = "Наименование компании";
+
+            List<OrderInApi> OrderBySupplier = OrdersIn.FindAll(s => s.Id == s.Id).Where
+                (
+                    s => s.Supplier == orderIn.Supplier && s.SupplierId == s.Supplier.Id
+                ).ToList();
+            int index = 5;
+            int count = 1;
+            foreach (var supp in OrderBySupplier)
+            {
+                sheet.Range[$"A{index}"].NumberValue = count++;
+                sheet.Range[$"B{index}"].Value = supp.Supplier.Title;
+                sheet.Range[$"C{index}"].Value = supp.Supplier.Email;
+                sheet.Range[$"D{index}"].Value = supp.Supplier.Phone;
+                sheet.Range[$"E{index}"].Value = supp.Supplier.Company.NameOfCompany;
+                index++;
+            }
+            sheet.Range[$"B1:E2"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"B1:E2"].BorderAround(LineStyleType.Medium);
+            sheet.Range[$"A4:G{index - 1}"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A4:G{index - 1}"].BorderAround(LineStyleType.Medium);
+            sheet.AllocatedRange.AutoFitColumns();
+            workBook.SaveToFile("testdoc.xls");
+            Process p = new Process();
+            p.StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "/testsupp.xls")
+            {
+                UseShellExecute = true
+            };
+            p.Start();
         }
     }
+
+    
 }
