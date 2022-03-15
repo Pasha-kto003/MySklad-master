@@ -21,12 +21,27 @@ namespace MySklad.ViewModel
                 selectedType = value;
             }
         }
+
+        private string selectedTypeOut { get; set; }
+        public string SelectedTypeOut
+        {
+            get => selectedTypeOut;
+            set
+            {
+                selectedTypeOut = value;
+                SignalChanged();
+            }
+        }
+
         public List<string> Types { get; set; }
+        public List<string> TypesOut { get; set; }
 
         public DateTime SelectedAfterDate { get; set; }
         public DateTime SelectedBeforeDate { get; set; }
         public DateTime SelectedDateStartPeriod { get; set; }
         public DateTime SelectedDateEndPeriod { get; set; }
+        public DateTime SelectedDateStartOut { get; set; }
+        public DateTime SelectedDateEndOut { get; set; }
 
         public int OrderInCount { get; set; }
         public int OrderOutCount { get; set; }
@@ -114,6 +129,17 @@ namespace MySklad.ViewModel
             }
         }
 
+        private List<ShopApi> shops { get; set; }
+        public List<ShopApi> Shops
+        {
+            get => shops;
+            set
+            {
+                shops = value;
+                SignalChanged();
+            }
+        }
+
         private SupplierApi selectedSupplier { get; set; }
 
         private OrderInApi selectedOrderIn { get; set; }
@@ -127,8 +153,20 @@ namespace MySklad.ViewModel
             }
         }
 
+        private OrderOutApi selectedOrderOut { get; set; }
+        public OrderOutApi SelectedOrderOut
+        {
+            get => selectedOrderOut;
+            set
+            {
+                selectedOrderOut = value;
+                SignalChanged();
+            }
+        }
+
         public CustomCommand CountAll { get; set; }
         public CustomCommand EditReport { get; set; }
+        public CustomCommand EditReportOut { get; set; }
 
         async Task GetProducts()
         {
@@ -147,6 +185,19 @@ namespace MySklad.ViewModel
             }
             //OrdersIn = (List<OrderInApi>)order;
         }
+
+        async Task GetOrderOut()
+        {
+            OrdersOut = await Api.GetListAsync<List<OrderOutApi>>("OrderOut");
+            Suppliers = await Api.GetListAsync<List<SupplierApi>>("Supplier");
+            Shops = await Api.GetListAsync<List<ShopApi>>("Shop");
+            foreach (OrderOutApi orderOut in OrdersOut)
+            {
+                orderOut.Supplier = Suppliers.First(s => s.Id == orderOut.SupplierId);
+                orderOut.Shop = Shops.First(s => s.Id == orderOut.ShopId);
+            }
+        }
+
         async Task GetCrossIn()
         {
             var cross = await Api.GetListAsync<List<CrossProductOrderApi>>("CrossIn");
@@ -157,11 +208,11 @@ namespace MySklad.ViewModel
             var crosses = await Api.GetListAsync<List<CrossOrderOutApi>>("CrossOut");
             CrossProductOrdersOut = (List<CrossOrderOutApi>)crosses;
         }
-        async Task GetOrderOut()
-        {
-            var orders = await Api.GetListAsync<List<OrderOutApi>>("OrderOut");
-            OrdersOut = (List<OrderOutApi>)orders;
-        }
+        //async Task GetOrderOut()
+        //{
+        //    var orders = await Api.GetListAsync<List<OrderOutApi>>("OrderOut");
+        //    OrdersOut = (List<OrderOutApi>)orders;
+        //}
         async Task GetCompany()
         {
             var company = await Api.GetListAsync<List<CompanyApi>>("Company");
@@ -184,9 +235,17 @@ namespace MySklad.ViewModel
             GetRacks();
             GetCrossIn();
             GetCrossOut();
+            GetCompany();
 
             Types = new List<string>
             {
+                "Поставщик",
+                "Период"
+            };
+
+            TypesOut = new List<string>
+            {
+                "Магазин",
                 "Поставщик",
                 "Период"
             };
@@ -238,6 +297,11 @@ namespace MySklad.ViewModel
                         ConvertReportToXLSBySupplier(SelectedOrderIn);
                         break;
                 }
+            });
+
+            EditReportOut = new CustomCommand(() =>
+            {
+
             });
         }
 
@@ -336,6 +400,11 @@ namespace MySklad.ViewModel
                 UseShellExecute = true
             };
             p.Start();
+        }
+
+        public void ConvertReportOutToXLSByPeriod(DateTime firstDate, DateTime lastDate)
+        {
+
         }
     }
 

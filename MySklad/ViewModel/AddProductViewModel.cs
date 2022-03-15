@@ -180,7 +180,6 @@ namespace MySklad.ViewModel
                 {
                     AddProductVM.UnitId = SelectedUnit.Id;
                     AddProductVM.ProductTypeId = SelectedProductType.Id;
-                    
                     AddProductVM.CrossProductOrderApi = CrossProductOrders.FirstOrDefault(s => s.ProductId == AddProductVM.Id);
                     AddProductVM.CrossOrderOutApi = CrossOrderOuts.FirstOrDefault(s => s.ProductId == AddProductVM.Id);
                     //AddProductVM.CrossProductOrderApi.CountInOrder = 0;
