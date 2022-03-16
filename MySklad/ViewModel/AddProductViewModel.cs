@@ -194,7 +194,15 @@ namespace MySklad.ViewModel
                         AddProductVM.CrossOrderOutApi.CountOutOrder += crossOrder.CountOutOrder;
                     }
                     //SignalChanged("AddProductVM.CrossOrderOutApi");
-                    AddProductVM.CountInStock = (int)((AddProductVM.CrossProductOrderApi.CountInOrder - AddProductVM.CrossOrderOutApi.CountOutOrder) / 2);
+                    
+                    if(AddProductVM.CountInStock != 0)
+                    {
+                        AddProductVM.CountInStock = (int)(AddProductVM.CrossProductOrderApi.CountInOrder - AddProductVM.CrossOrderOutApi.CountOutOrder);
+                    }
+                    else
+                    {
+                        AddProductVM.CountInStock = (int)((AddProductVM.CrossProductOrderApi.CountInOrder - AddProductVM.CrossOrderOutApi.CountOutOrder) / 2);
+                    }
                     EditProduct(AddProductVM);
                 }
 
