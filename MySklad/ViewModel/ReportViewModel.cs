@@ -140,6 +140,17 @@ namespace MySklad.ViewModel
             }
         }
 
+        private List<CompanyApi> companies { get; set; }
+        public List<CompanyApi> Companies
+        {
+            get => companies;
+            set
+            {
+                companies = value;
+                SignalChanged();
+            }
+        }
+
         private SupplierApi selectedSupplier { get; set; }
 
         private OrderInApi selectedOrderIn { get; set; }
@@ -179,7 +190,7 @@ namespace MySklad.ViewModel
             //var order = await Api.GetListAsync<List<OrderInApi>>("OrderIn");
             OrdersIn = await Api.GetListAsync<List<OrderInApi>>("OrderIn");
             Suppliers = await Api.GetListAsync<List<SupplierApi>>("Supplier");
-            foreach(OrderInApi orderIn in OrdersIn)
+            foreach (OrderInApi orderIn in OrdersIn)
             {
                 orderIn.Supplier = Suppliers.First(s => s.Id == orderIn.SupplierId);
             }
@@ -191,10 +202,12 @@ namespace MySklad.ViewModel
             OrdersOut = await Api.GetListAsync<List<OrderOutApi>>("OrderOut");
             Suppliers = await Api.GetListAsync<List<SupplierApi>>("Supplier");
             Shops = await Api.GetListAsync<List<ShopApi>>("Shop");
+            Companies = await Api.GetListAsync<List<CompanyApi>>("Company");
             foreach (OrderOutApi orderOut in OrdersOut)
             {
                 orderOut.Supplier = Suppliers.First(s => s.Id == orderOut.SupplierId);
                 orderOut.Shop = Shops.First(s => s.Id == orderOut.ShopId);
+                orderOut.Supplier.Company = Companies.First(s => s.Id == orderOut.Supplier.CompanyId);
             }
         }
 
@@ -259,9 +272,9 @@ namespace MySklad.ViewModel
 
                 OrderOutCount = OrdersOut.FindAll(s => s.Id == s.Id).Where
                 (
-                    s=> s.DateOrderOut >= SelectedAfterDate && s.DateOrderOut <= SelectedBeforeDate
+                    s => s.DateOrderOut >= SelectedAfterDate && s.DateOrderOut <= SelectedBeforeDate
                 ).Count();
-                
+
                 foreach (CrossProductOrderApi cross in CrossProductOrders.Where(s => s.ProductId != 0))
                 {
                     ProductInOrderIn += (int)cross.CountInOrder;
@@ -275,7 +288,7 @@ namespace MySklad.ViewModel
 
                 RackCount = Racks.FindAll(s => s.Id == s.Id).Where
                 (
-                    s=> s.PlacementDate >= SelectedAfterDate && s.PlacementDate <= SelectedBeforeDate
+                    s => s.PlacementDate >= SelectedAfterDate && s.PlacementDate <= SelectedBeforeDate
                 ).Count();
 
                 SignalChanged(nameof(OrderInCount));
@@ -301,7 +314,18 @@ namespace MySklad.ViewModel
 
             EditReportOut = new CustomCommand(() =>
             {
-
+                switch (SelectedTypeOut)
+                {
+                    case "Период":
+                        ConvertReportOutToXLSByPeriod(SelectedDateStartOut, SelectedDateEndOut);
+                        break;
+                    case "Поставщик":
+                        ConvertReportOutToXLSBySupplier(SelectedOrderOut);
+                        break;
+                    case "Магазин":
+                        ConvertReportOutToXLSByShop(SelectedOrderOut);
+                        break;
+                }
             });
         }
 
@@ -324,7 +348,7 @@ namespace MySklad.ViewModel
 
             int index = 5;
             int count = 1;
-            
+
 
             List<OrderInApi> OrderByPeriod = OrdersIn.FindAll(s => s.Id == s.Id).Where
                 (
@@ -332,7 +356,7 @@ namespace MySklad.ViewModel
                     s.SupplierId == s.Supplier.Id
                 ).ToList();
 
-            foreach(var order in OrderByPeriod)
+            foreach (var order in OrderByPeriod)
             {
                 DateTime date = (DateTime)order.DateOrderIn;
                 sheet.Range[$"A{index}"].NumberValue = count++;
@@ -404,9 +428,146 @@ namespace MySklad.ViewModel
 
         public void ConvertReportOutToXLSByPeriod(DateTime firstDate, DateTime lastDate)
         {
+            GetProducts();
+            GetOrderOut();
 
+            var workBook = new Workbook();
+            var sheet = workBook.Worksheets[0];
+            sheet.Range["A1"].Value = $"С ";
+            sheet.Range["B1"].Value = $" { firstDate.Date.ToShortDateString()}";
+            sheet.Range["D1"].Value = $"{lastDate.Date.ToShortDateString()}";
+            sheet.Range["C1"].Value = $"По ";
+
+            sheet.Range["B4"].Value = "Дата расходной";
+            sheet.Range["D4"].Value = "Поставщик выполнивший заказ";
+            sheet.Range["C4"].Value = "Статус расходной";
+            sheet.Range["E4"].Value = "Точка доставки";
+            sheet.Range["F4"].Value = "Товары";
+
+            int index = 5;
+            int count = 1;
+
+            List<OrderOutApi> OrderOutByPeriod = OrdersOut.FindAll(s => s.Id == s.Id).Where
+                (
+                    s => s.DateOrderOut >= firstDate && s.DateOrderOut <= lastDate &&
+                    s.SupplierId == s.Supplier.Id && s.ShopId == s.Shop.Id
+                ).ToList();
+
+            foreach (var order in OrderOutByPeriod)
+            {
+                DateTime date = (DateTime)order.DateOrderOut;
+                sheet.Range[$"A{index}"].NumberValue = count++;
+                sheet.Range[$"B{index}"].Value = date.ToShortDateString();
+                sheet.Range[$"C{index}"].Value = order.Status;
+                sheet.Range[$"D{index}"].Value = order.Supplier.Title;
+                sheet.Range[$"E{index}"].Value = order.Shop.Name;
+                sheet.Range[$"F5:AC5"].Value = order.Products.ToString();
+
+                index++;
+            }
+            sheet.Range[$"A1:D1"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A1:D1"].BorderAround(LineStyleType.Medium);
+            sheet.Range[$"A4:L{index - 1}"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A4:L{index - 1}"].BorderAround(LineStyleType.Medium);
+            sheet.AllocatedRange.AutoFitColumns();
+
+            workBook.SaveToFile("testOrderOut.xls");
+
+            Process p = new Process();
+            p.StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "/" + "testOrderOut.xls")
+            {
+                UseShellExecute = true
+            };
+            p.Start();
         }
-    }
 
-    
+        public void ConvertReportOutToXLSBySupplier(OrderOutApi orderOut)
+        {
+            var workBook = new Workbook();
+            var sheet = workBook.Worksheets[0];
+            GetProducts();
+            GetOrderOut();
+            sheet.Range["B1"].Value = "Наименование поставщика";
+            sheet.Range["C1"].Value = "Заказ";
+            sheet.Range["D1"].Value = "Почта";
+            sheet.Range["E1"].Value = "Телефон";
+            sheet.Range["F1"].Value = "Рейтинг";
+            sheet.Range["G4"].Value = "Наименование компании";
+
+            List<OrderInApi> OrderOutByPeriod = OrdersIn.FindAll(s => s.Id == s.Id).Where
+                (
+                    s => s.Supplier == orderOut.Supplier && s.SupplierId == s.Supplier.Id
+                ).ToList();
+            int index = 5;
+            int count = 1;
+
+            foreach (var supp in OrderOutByPeriod)
+            {
+                sheet.Range[$"A{index}"].NumberValue = count++;
+                sheet.Range[$"B{index}"].Value = supp.Supplier.Title;
+                sheet.Range[$"C{index}"].Value = supp.Id.ToString();
+                sheet.Range[$"D{index}"].Value = supp.Supplier.Email;
+                sheet.Range[$"E{index}"].Value = supp.Supplier.Phone;
+                sheet.Range[$"F{index}"].Value = supp.Supplier.Rating.ToString();
+                sheet.Range[$"G{index}"].Value = supp.Supplier.Company.NameOfCompany;
+                index++;
+            }
+            sheet.Range[$"B1:E2"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"B1:E2"].BorderAround(LineStyleType.Medium);
+            sheet.Range[$"A4:G{index - 1}"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A4:G{index - 1}"].BorderAround(LineStyleType.Medium);
+            sheet.AllocatedRange.AutoFitColumns();
+            workBook.SaveToFile("testOrderOutSupp.xls");
+            Process p = new Process();
+            p.StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "/testOrderOutSupp.xls")
+            {
+                UseShellExecute = true
+            };
+            p.Start();
+        }
+
+        public void ConvertReportOutToXLSByShop(OrderOutApi orderOutApi)
+        {
+            var workBook = new Workbook();
+            var sheet = workBook.Worksheets[0];
+            GetProducts();
+            GetOrderOut();
+            sheet.Range["B1"].Value = "Наименование магазина";
+            sheet.Range["C1"].Value = "Заказ";
+            sheet.Range["D1"].Value = "Почта";
+            sheet.Range["E1"].Value = "Телефон";
+
+            List<OrderOutApi> OrderOutByPeriod = OrdersOut.FindAll(s => s.Id == s.Id).Where
+                (
+                    s => s.Supplier == orderOutApi.Supplier && s.SupplierId == s.Supplier.Id &&
+                    s.Shop == orderOutApi.Shop && s.ShopId == s.Shop.Id
+                ).ToList();
+            int index = 5;
+            int count = 1;
+
+            foreach (var supp in OrderOutByPeriod)
+            {
+                sheet.Range[$"A{index}"].NumberValue = count++;
+                sheet.Range[$"B{index}"].Value = supp.Shop.Name;
+                sheet.Range[$"C{index}"].Value = supp.Id.ToString();
+                sheet.Range[$"D{index}"].Value = supp.Shop.Email;
+                sheet.Range[$"E{index}"].Value = supp.Shop.Phone;
+                index++;
+            }
+            sheet.Range[$"B1:E2"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"B1:E2"].BorderAround(LineStyleType.Medium);
+            sheet.Range[$"A4:G{index - 1}"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A4:G{index - 1}"].BorderAround(LineStyleType.Medium);
+            sheet.AllocatedRange.AutoFitColumns();
+            workBook.SaveToFile("testOrderOutShop.xls");
+            Process p = new Process();
+            p.StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "/testOrderOutShop.xls")
+            {
+                UseShellExecute = true
+            };
+            p.Start();
+        }
+
+
+    }
 }

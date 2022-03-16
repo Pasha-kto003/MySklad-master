@@ -60,6 +60,7 @@
                 <DataGridTextColumn Header="Ед. измерения" Binding="{Binding Unit.Title}"/>
                 <DataGridTextColumn Header="Тип продукции" Binding="{Binding ProductType.Title}"/>
                 <DataGridTextColumn Header="Статус" Binding="{Binding Status}"/>
+                
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
                 <ContextMenu>
