@@ -137,5 +137,33 @@
                 <Button Grid.Row="2" Content="Сформировать отчет" Command="{Binding EditReportProduct}" Style="{DynamicResource ButtonTheme}" Width="150" Height="30"/>
             </Grid>
         </TabItem>
+        <TabItem Header="Отчет по удаленной продукции">
+            <Grid Background="#325f63">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <DatePicker SelectedDate="{Binding SelectedDateStartWriteOff}" Width="190" Margin="10" VerticalAlignment="Center"/>
+                    <DatePicker SelectedDate="{Binding SelectedDateEndWriteOff}" Width="190" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Grid.Row="1">
+                    <TextBlock Text="Сформировать отчет по выбранному критерию" Foreground="White" HorizontalAlignment="Center"/>
+                    <ComboBox ItemsSource="{Binding TypesWriteOff}" SelectedItem="{Binding SelectedTypeWriteOff}" Height="30" Width="250" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                    <ListView Width="700" ItemsSource="{Binding WriteOffRegisters}" SelectedItem="{Binding SelectedWriteOffRegister}" Height="250" Margin="0,10,0,0" Background="White">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Название" DisplayMemberBinding="{Binding Title}"/>
+                                <GridViewColumn Header="Причина удаления" DisplayMemberBinding="{Binding ReasonDelete}"/>
+                                <GridViewColumn Header="Время удаления" DisplayMemberBinding="{Binding DeletedAt}"/>
+                                <GridViewColumn Header="Удаленный продукт" DisplayMemberBinding="{Binding Product.Title}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </StackPanel>
+                <Button Grid.Row="2" Content="Сформировать отчет" Command="{Binding EditReportWriteOff}" Style="{DynamicResource ButtonTheme}" Width="150" Height="30"/>
+            </Grid>
+        </TabItem>
     </TabControl>
 </Page>

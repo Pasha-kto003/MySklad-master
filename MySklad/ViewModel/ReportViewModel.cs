@@ -44,9 +44,21 @@ namespace MySklad.ViewModel
             }
         }
 
+        private string selectedTypeWriteOff { get; set; }
+        public string SelectedTypeWriteOff
+        {
+            get => selectedTypeWriteOff;
+            set
+            {
+                selectedTypeWriteOff = value;
+                SignalChanged();
+            }
+        }
+
         public List<string> Types { get; set; }
         public List<string> TypesOut { get; set; }
         public List<string> TypesProduct { get; set; }
+        public List<string> TypesWriteOff { get; set; }
 
         public DateTime SelectedAfterDate { get; set; }
         public DateTime SelectedBeforeDate { get; set; }
@@ -56,6 +68,8 @@ namespace MySklad.ViewModel
         public DateTime SelectedDateEndOut { get; set; }
         public DateTime SelectedDateStartProduct { get; set; }
         public DateTime SelectedDateEndProduct { get; set; }
+        public DateTime SelectedDateStartWriteOff { get; set; }
+        public DateTime SelectedDateEndWriteOff { get; set; }
 
         public int OrderInCount { get; set; }
         public int OrderOutCount { get; set; }
@@ -223,10 +237,22 @@ namespace MySklad.ViewModel
             }
         }
 
+        private WriteOffRegisterApi selectedWriteOffRegister { get; set; }
+        public WriteOffRegisterApi SelectedWriteOffRegister
+        {
+            get => selectedWriteOffRegister;
+            set
+            {
+                selectedWriteOffRegister = value;
+                SignalChanged();
+            }
+        }
+
         public CustomCommand CountAll { get; set; }
         public CustomCommand EditReport { get; set; }
         public CustomCommand EditReportOut { get; set; }
         public CustomCommand EditReportProduct { get; set; }
+        public CustomCommand EditReportWriteOff { get; set; }
 
         async Task GetProducts()
         {
@@ -339,6 +365,12 @@ namespace MySklad.ViewModel
                 "Период"
             };
 
+            TypesWriteOff = new List<string>
+            {
+                "Период",
+                "Продукт"
+            };
+
             CountAll = new CustomCommand(() =>
             {
                 OrderInCount = OrdersIn.FindAll(s => s.Id == s.Id).Where
@@ -421,6 +453,19 @@ namespace MySklad.ViewModel
                 {
                     case "Период":
                         ConvertProductToXLSByPeriod(SelectedDateStartProduct, SelectedDateEndProduct);
+                        break;
+                }
+            });
+
+            EditReportWriteOff = new CustomCommand(() =>
+            {
+                switch (SelectedTypeWriteOff)
+                {
+                    case "Период":
+                        ConvertWriteOffToXLSByPeriod(SelectedDateStartWriteOff, SelectedDateEndWriteOff);
+                        break;
+                    case "Продукт":
+                        ConvertWriteOffToXLSByProduct(SelectedWriteOffRegister);
                         break;
                 }
             });
@@ -725,6 +770,100 @@ namespace MySklad.ViewModel
             p.Start();
         }
 
+        public void ConvertWriteOffToXLSByPeriod(DateTime firstDate, DateTime lastDate)
+        {
+            GetProducts();
+            GetWriteOffRegisters();
 
+            var workBook = new Workbook();
+            var sheet = workBook.Worksheets[0];
+            sheet.Range["A1"].Value = $"С ";
+            sheet.Range["B1"].Value = $" { firstDate.Date.ToShortDateString()}";
+            sheet.Range["D1"].Value = $"{lastDate.Date.ToShortDateString()}";
+            sheet.Range["C1"].Value = $"По ";
+
+            sheet.Range["B4"].Value = "Название";
+            sheet.Range["C4"].Value = "Причина удаления";
+            sheet.Range["D4"].Value = "Дата удаления";
+            sheet.Range["E4"].Value = "Продукция";
+
+            int index = 5;
+            int count = 1;
+
+            List<WriteOffRegisterApi> WriteOffRegisterByPeriod = WriteOffRegisters.FindAll(s => s.Id == s.Id).Where
+                (
+                    s => s.DeletedAt >= firstDate && s.DeletedAt <= lastDate &&
+                    s.ProductId == s.ProductId
+                ).ToList();
+
+            foreach(var writeOffRegister in WriteOffRegisterByPeriod)
+            {
+                DateTime date = (DateTime)writeOffRegister.DeletedAt;
+                sheet.Range[$"A{index}"].NumberValue = count++;
+                sheet.Range[$"B{index}"].Value = writeOffRegister.Title;
+                sheet.Range[$"C{index}"].Value = writeOffRegister.ReasonDelete;
+                sheet.Range[$"D{index}"].Value = date.ToShortDateString();
+                sheet.Range[$"E{index}"].Value = writeOffRegister.Product.Title;
+
+                index++;
+            }
+
+            sheet.Range[$"A1:D1"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A1:D1"].BorderAround(LineStyleType.Medium);
+            sheet.Range[$"A4:L{index - 1}"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A4:L{index - 1}"].BorderAround(LineStyleType.Medium);
+            sheet.AllocatedRange.AutoFitColumns();
+            workBook.SaveToFile("testWriteOffRegister.xls");
+
+            Process p = new Process();
+            p.StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "/" + "testWriteOffRegister.xls")
+            {
+                UseShellExecute = true
+            };
+            p.Start();
+        }
+
+        public void ConvertWriteOffToXLSByProduct(WriteOffRegisterApi writeOffRegister)
+        {
+            var workBook = new Workbook();
+            var sheet = workBook.Worksheets[0];
+            GetWriteOffRegisters();
+            sheet.Range["B1"].Value = "Наименование товара";
+            sheet.Range["C1"].Value = "Название удаления";
+            sheet.Range["D1"].Value = "Дата удаления";
+            sheet.Range["E1"].Value = "Причина удаления";
+
+            List<WriteOffRegisterApi> WriteOffRegisterByProduct = WriteOffRegisters.FindAll(s => s.Id == s.Id).Where
+                (
+                    s => s.Product == writeOffRegister.Product && s.ProductId == s.Product.Id
+                ).ToList();
+
+            int index = 5;
+            int count = 1;
+
+            foreach(var product in WriteOffRegisterByProduct)
+            {
+                DateTime date = (DateTime)product.DeletedAt;
+                sheet.Range[$"A{index}"].NumberValue = count++;
+                sheet.Range[$"B{index}"].Value = product.Product.Title;
+                sheet.Range[$"C{index}"].Value = product.Title;
+                sheet.Range[$"D{index}"].Value = date.ToShortDateString();
+                sheet.Range[$"E{index}"].Value = product.ReasonDelete;
+
+                index++;
+            }
+            sheet.Range[$"B1:E2"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"B1:E2"].BorderAround(LineStyleType.Medium);
+            sheet.Range[$"A4:G{index - 1}"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A4:G{index - 1}"].BorderAround(LineStyleType.Medium);
+            sheet.AllocatedRange.AutoFitColumns();
+            workBook.SaveToFile("testWriteOffProduct.xls");
+            Process p = new Process();
+            p.StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "/testWriteOffProduct.xls")
+            {
+                UseShellExecute = true
+            };
+            p.Start();
+        }
     }
 }
