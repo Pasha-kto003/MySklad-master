@@ -233,6 +233,7 @@ namespace MySklad.ViewModel
             });
             SignalChanged("Products");
             Search();
+            //GetProducts();
             InitPagination();
             Pagination();
         }
