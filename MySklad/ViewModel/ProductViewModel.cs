@@ -184,8 +184,6 @@ namespace MySklad.ViewModel
             SearchType.AddRange(new string[] { "Название", "Описание" });
             selectedSearchType = SearchType.First();
 
-
-
             BackPage = new CustomCommand(() => {
                 if (searchResult == null)
                     return;
@@ -236,7 +234,8 @@ namespace MySklad.ViewModel
             SignalChanged("Products");
             Search();
             //GetProducts();
-            GetsearchResult();
+            InitPagination();
+            Pagination();
         }
 
         private void InitPagination()
@@ -310,13 +309,6 @@ namespace MySklad.ViewModel
             InitPagination();
             Pagination();
             SignalChanged("Products");
-        }
-
-        private async Task GetsearchResult()
-        {
-            //searchResult = await Api.GetListAsync<List<PersonalApi>>("Personal");
-            InitPagination();
-            Pagination();
         }
     }
 }
