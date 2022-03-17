@@ -233,7 +233,6 @@ namespace MySklad.ViewModel
             });
             SignalChanged("Products");
             Search();
-            //GetProducts();
             InitPagination();
             Pagination();
         }
@@ -254,7 +253,7 @@ namespace MySklad.ViewModel
             else
             {
                 Products = searchResult.Skip(rowsOnPage * paginationPageIndex).Take(rowsOnPage).ToList();
-                SignalChanged("Personals");
+                SignalChanged("Products");
                 int.TryParse(SelectedViewCountRows, out rows);
                 CountPages = (searchResult.Count() - 1) / rows;
                 Pages = $"{paginationPageIndex + 1} из {CountPages + 1}";

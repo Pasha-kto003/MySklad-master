@@ -257,7 +257,7 @@ namespace MySklad.ViewModel
             else
             {
                 Suppliers = searchResult.Skip(rowsOnPage * paginationPageIndex).Take(rowsOnPage).ToList();
-                SignalChanged("Personals");
+                SignalChanged("Suppliers");
                 int.TryParse(SelectedViewCountRows, out rows);
                 CountPages = (searchResult.Count() - 1) / rows;
                 Pages = $"{paginationPageIndex + 1} из {CountPages + 1}";
