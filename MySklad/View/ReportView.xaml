@@ -33,6 +33,7 @@
                             <TextBlock Text="За выбранный период было приходных: " Foreground="White" Margin="10"/>
                             <TextBlock Text="За выбранный период было расходных: " Foreground="White" Margin="10"/>
                             <TextBlock Text="За выбранный период остаток продукции составил: " Foreground="White" Margin="10"/>
+                            <TextBlock Text="Количество товаров пришедших в негодность: " Foreground="White" Margin="10"/>
                             <TextBlock Text="Пришло продукции за данный период: " Foreground="White" Margin="10"/>
                             <TextBlock Text="Продукции ушло за этот период: " Foreground="White" Margin="10"/>
                             <TextBlock Text="Наличие стеллажей: " Foreground="White" Margin="10"/>
@@ -41,6 +42,7 @@
                             <TextBox Text="{Binding OrderInCount, UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="True" Width="70" Margin="5"/>
                             <TextBox Text="{Binding OrderOutCount, UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="True" Width="70" Margin="5"/>
                             <TextBox Text="{Binding ProductCount, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Width="70" Margin="5"/>
+                            <TextBox Text="{Binding ProductDeleteCount, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Width="70" Margin="5"/>
                             <TextBox Text="{Binding ProductInOrderIn, UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="True" Width="70" Margin="5"/>
                             <TextBox Text="{Binding ProductInOrderOut, UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="True" Width="70" Margin="5"/>
                             <TextBox Text="{Binding RackCount, UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="True" Width="70" Margin="5"/>
@@ -101,6 +103,38 @@
                     </ListView>
                 </StackPanel>
                 <Button Grid.Row="2" Content="Сформировать отчет" Command="{Binding EditReportOut}" Style="{DynamicResource ButtonTheme}" Width="150" Height="30"/>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Отчет о продукции">
+            <Grid Background="#325f63">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <DatePicker SelectedDate="{Binding SelectedDateStartProduct}" Width="190" Margin="10" VerticalAlignment="Center"/>
+                    <DatePicker SelectedDate="{Binding SelectedDateEndProduct}" Width="190" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Grid.Row="1">
+                    <TextBlock Text="Сформировать отчет по выбранному критерию" Foreground="White" HorizontalAlignment="Center"/>
+                    <ComboBox ItemsSource="{Binding TypesProduct}" SelectedItem="{Binding SelectedTypeProduct}" Height="30" Width="250" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                    <ListView Width="700" ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct}" Height="250" Margin="0,10,0,0" Background="White">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Наименование продукции" DisplayMemberBinding="{Binding Title}"/>
+                                <GridViewColumn Header="Описание продукции" DisplayMemberBinding="{Binding Description}"/>
+                                <GridViewColumn Header="Остаток на складе" DisplayMemberBinding="{Binding CountInStock}"/>
+                                <GridViewColumn Header="Начало срока годности" DisplayMemberBinding="{Binding BestBeforeDateStart}"/>
+                                <GridViewColumn Header="Конец срока годности" DisplayMemberBinding="{Binding BestBeforeDateEnd}"/>
+                                <GridViewColumn Header="Единица измерения" DisplayMemberBinding="{Binding Unit.Title}"/>
+                                <GridViewColumn Header="Тип продукции" DisplayMemberBinding="{Binding ProductType.Title}"/>
+                                <GridViewColumn Header="Статус продукции" DisplayMemberBinding="{Binding Status}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </StackPanel>
+                <Button Grid.Row="2" Content="Сформировать отчет" Command="{Binding EditReportProduct}" Style="{DynamicResource ButtonTheme}" Width="150" Height="30"/>
             </Grid>
         </TabItem>
     </TabControl>
