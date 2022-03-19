@@ -30,7 +30,7 @@
                 <Label Content="Дата старта работы:" Foreground="White"/>
                 <DatePicker SelectedDate="{Binding RegistrationDate, StringFormat = '{}{0:dd.MM.yyyy}'}"/>
                 <Label Content="Номер телефона:" Foreground="White"/>
-                <TextBox Text="{Binding Phone}" Foreground="White"/>
+                <TextBox Text="{Binding Phone}"/>
             </StackPanel>
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" Grid.Row="1" >

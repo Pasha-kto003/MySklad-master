@@ -252,7 +252,7 @@ namespace MySklad.ViewModel
                     {
                         //SelectedRackProduct.CountInStock = 0;
                         SelectedRackProduct.CountInStock += product.CountInStock;
-                        SelectedRackProduct.CountInStock = 0;
+                        //SelectedRackProduct.CountInStock = 0;
                     }
                     AddRackVM.RemainingPlaces = AddRackVM.Capacity - SelectedRackProduct.CountInStock;
                     if (AddRackVM.RemainingPlaces < 0)

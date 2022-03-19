@@ -13,7 +13,7 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" DataContext="{Binding AddShopVM}" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
             <Label Content="Наименование" Margin="0 0 0 5" Width="150" HorizontalContentAlignment="Center" Foreground="White"/>
-            <TextBox Text="{Binding Name}" Margin="0 5 0 0"/>
+            <TextBox Text="{Binding Name}" Margin="0 5 0 0" Width="250"/>
             <Label Content="Телефон" Margin="0 0 0 5" Width="150" HorizontalContentAlignment="Center" Foreground="White"/>
             <TextBox Text="{Binding Phone}" Margin="0 5 0 0"/>
             <Label Content="Email" Margin="0 0 0 5" Width="150" HorizontalContentAlignment="Center" Foreground="White"/>
@@ -24,8 +24,8 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Content="Сохранить" Command="{Binding SaveShop}" Style="{StaticResource ButtonTheme}" Width="250"/>
-            <Button Content="Отмена" Click="Button_Click_1" Width="250" Grid.Column="1" Style="{StaticResource ButtonTheme}"/>
+            <Button Content="Сохранить" Command="{Binding SaveShop}" Height="30" Style="{StaticResource ButtonTheme}" Width="250"/>
+            <Button Content="Отмена" Click="Button_Click_1" Width="250" Height="30" Grid.Column="1" Style="{StaticResource ButtonTheme}"/>
         </Grid>
     </Grid>
 </Window>

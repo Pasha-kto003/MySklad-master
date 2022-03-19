@@ -58,13 +58,17 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel  Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Left">
                             <StackPanel Orientation="Horizontal">
+                                <Label Content="Название магазина: "/>
                                 <Label Content="{Binding Name}">
                                 </Label>
-                                <Label Content="{Binding Phone}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="Email:"/>
                                 <Label Content="{Binding Email}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Телефон магазина"/>
+                                <Label Content="{Binding Phone}"/>
                             </StackPanel>
                         </StackPanel>
                     </Grid>
