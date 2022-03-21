@@ -164,7 +164,8 @@ namespace MySklad.ViewModel
 
             AddProduct = new CustomCommand(() =>
             {
-                if(SelectedProduct == null)
+                SelectedProduct.CrossProductRack = CrossProductRacks.FirstOrDefault(s => s.ProductId == SelectedProduct.Id);
+                if (SelectedProduct == null)
                 {
                     MessageBox.Show("Выберите продукцию!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
@@ -184,6 +185,11 @@ namespace MySklad.ViewModel
                         MessageBox.Show("Удаление завершено");
                     }
                 }
+                
+                else if(SelectedProduct.CrossProductRack != null)
+                {
+                    MessageBox.Show("Ошибка, данная продукция уже расположена на стеллаже");
+                }
                 else
                 {
                     SelectedRackProduct = SelectedProduct;
@@ -192,16 +198,6 @@ namespace MySklad.ViewModel
                     SignalChanged("SelectedRackProducts");
                 }
             });
-
-            //CountProduct = new CustomCommand(() =>
-            //{
-            //    foreach (CrossProductRackApi productApi in CrossProductRacks.Where(s => s.RackId == AddRackVM.Id))
-            //    {
-            //        productApi.Product = SelectedProduct;
-            //        productApi.Product.CountInStock++;
-            //    }
-            //    AddRackVM.RemainingPlaces = AddRackVM.Capacity - SelectedProduct.CountInStock;
-            //});
 
             SaveRack = new CustomCommand(() =>
             {
@@ -261,7 +257,7 @@ namespace MySklad.ViewModel
                         if (result == MessageBoxResult.Yes)
                         {
                             SelectedRackProducts.Remove(SelectedRackProduct);
-                            CrossProductRacks.Remove(AddRackVM.CrossProductRacks);
+                            //CrossProductRacks.Remove(AddRackVM.CrossProductRacks);
                             MessageBox.Show("Удаление завершено");
                         }
                     }
