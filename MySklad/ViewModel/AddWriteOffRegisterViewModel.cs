@@ -154,7 +154,17 @@ namespace MySklad.ViewModel
             {
                 if(AddRegisterVM.Id == 0)
                 {
-                    AddRegisterVM.ProductId = SelectedProduct.Id;
+                    if (SelectedProduct == null)
+                    {
+                        MessageBox.Show("Выберите продукцию перед сохранением");
+                        return;
+                    }
+                    if (SelectedProduct.Status == "Удален")
+                    {
+                        MessageBox.Show("Данный продукт уже удален!!!");
+                        return;
+                    }
+                    AddRegisterVM.ProductId = SelectedProduct.Id;              
                     PostRegister(AddRegisterVM);
                 }
                 else
@@ -165,10 +175,10 @@ namespace MySklad.ViewModel
 
                 if (AddRegisterVM.ProductId == SelectedProduct.Id)
                 {
-                    SelectedProduct.Status = "Удален";
+                    SelectedProduct.Status = "Удален"; // данную часть можно удалить
                     EditProduct(SelectedProduct);
                     SignalChanged("SelectedProduct");
-                    MessageBox.Show("Выполнен");
+                    MessageBox.Show("Выполнен"); // до этого места
                 }
 
 

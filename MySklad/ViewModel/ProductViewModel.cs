@@ -207,7 +207,6 @@ namespace MySklad.ViewModel
                 if (countPage > paginationPageIndex + 1)
                     paginationPageIndex++;
                 Pagination();
-
             });
 
             CreateProduct = new CustomCommand(() =>
@@ -233,14 +232,13 @@ namespace MySklad.ViewModel
             });
             SignalChanged("Products");
             Search();
-            //GetProducts();
             InitPagination();
             Pagination();
         }
 
         private void InitPagination()
         {
-            SearchCountRows = $"Найдено записей: {searchResult.Count} из {Products.Count()}";
+            SearchCountRows = $"Найдено записей: {searchResult.Count} из {Products.Count}";
             paginationPageIndex = 0;
         }
 
@@ -272,6 +270,7 @@ namespace MySklad.ViewModel
                 product.ProductType = ProductTypes.First(s => s.Id == product.ProductTypeId);
             }
             SignalChanged("Products");
+            InitPagination();
         }
 
         internal void Sort()

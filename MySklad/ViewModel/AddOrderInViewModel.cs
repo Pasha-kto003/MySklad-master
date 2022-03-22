@@ -203,23 +203,11 @@ namespace MySklad.ViewModel
                 if (AddOrderVM.Id == 0)
                 {
                     AddOrderVM.SupplierId = SelectedSupplier.Id;
-                    //AddOrderVM.CrossProductOrderApi = new CrossProductOrderApi
-                    //{
-                    //    ProductId = SelectedProduct.Id,
-                    //    OrderInId = AddOrderVM.Id,
-                    //    CountInOrder = SelectedProduct.CountProducts
-                    //};
                     PostOrder(AddOrderVM);
                 }
                 else
                 {
                     AddOrderVM.SupplierId = SelectedSupplier.Id;
-                    //AddOrderVM.CrossProductOrderApi = new CrossProductOrderApi
-                    //{
-                    //    ProductId = SelectedProduct.Id,
-                    //    OrderInId = AddOrderVM.Id,
-                    //    CountInOrder = SelectedProduct.CountProducts
-                    //};
                     EditOrder(AddOrderVM);
                 }
 
