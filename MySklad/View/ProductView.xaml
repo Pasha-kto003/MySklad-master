@@ -50,7 +50,7 @@
                 <ComboBox IsEditable="True" Width="200" ItemsSource="{Binding OrderType}" SelectedItem="{Binding SelectedOrderType}"/>
             </StackPanel>
         </Grid>
-        <DataGrid Grid.Row="1" ItemsSource="{Binding Products}" AutoGenerateColumns="False" IsReadOnly="True" SelectedItem="{Binding SelectedProduct}">
+        <DataGrid Grid.Row="1"  ItemsSource="{Binding Products}" AutoGenerateColumns="False" IsReadOnly="True" SelectedItem="{Binding SelectedProduct}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Название" Binding="{Binding Title}" Width="Auto"/>
                 <DataGridTextColumn Header="Описание" Binding="{Binding Description}" Width="Auto"/>

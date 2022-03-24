@@ -202,6 +202,10 @@ namespace MySklad.ViewModel
                         {
                             AddProductVM.CountInStock = AddProductVM.CountInStock / 2;
                         }
+                        else if (AddProductVM.CountProductsOut == 0)
+                        {
+                            AddProductVM.CountInStock = AddProductVM.CountInStock / 2;
+                        }
                         else if (AddProductVM.CrossProductOrderApi.CountInOrder == 0)
                         {
                             AddProductVM.CountInStock = AddProductVM.CountInStock / 2;
@@ -209,7 +213,17 @@ namespace MySklad.ViewModel
                     }
                     else
                     {
-                        AddProductVM.CountInStock = (int)((AddProductVM.CrossProductOrderApi.CountInOrder - AddProductVM.CrossOrderOutApi.CountOutOrder) / 2);
+                        if (AddProductVM.CountProducts == 0)
+                        {
+                            AddProductVM.CountInStock = AddProductVM.CountInStock / 2;
+                        }
+                        else if (AddProductVM.CrossOrderOutApi == null)
+                        {
+                            AddProductVM.CountInStock = (int)AddProductVM.CrossProductOrderApi.CountInOrder / 2;
+                        }
+                        else
+                            AddProductVM.CountInStock = (int)((AddProductVM.CrossProductOrderApi.CountInOrder - AddProductVM.CrossOrderOutApi.CountOutOrder) / 2);
+                        
                     }
                     EditProduct(AddProductVM);
                 }

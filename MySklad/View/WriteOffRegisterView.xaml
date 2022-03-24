@@ -35,17 +35,9 @@
                 <Label Grid.Column="1" Content="Критерий поиска:"/>
                 <TextBox Width="200" Grid.Row="1" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
                 <ComboBox IsEditable="True" Width="200" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}"/>
+                <Button Command="{Binding UpdateList}" Content="Обновить" Margin="208,3,-158, 0" Grid.Column="1" Grid.Row="1" Style="{StaticResource ButtonTheme}"/>
             </Grid>
-            <StackPanel Grid.Column="2">
-                <Label Content="Выбор сортирвки"/>
-                <!--<Button Command="{Binding Sortirovka}" Content="Сортировать"/>-->
-                <ComboBox IsEditable="True" Width="200" ItemsSource="{Binding SortType}" SelectedItem="{Binding SelectedSortType}"/>
-            </StackPanel>
-            <StackPanel Grid.Column="3">
-                <Label Content="Сортировка по типу"/>
-                <!--<Button Command="{Binding Sortirovka}" Content="Сортировать"/>-->
-                <ComboBox IsEditable="True" Width="200" ItemsSource="{Binding OrderType}" SelectedItem="{Binding SelectedOrderType}"/>
-            </StackPanel>
+            
         </Grid>
         <ListBox x:Name="list" Grid.Row="1" ItemsSource="{Binding Registers}" SelectedItem="{Binding SelectedRegister}" Background="White" HorizontalContentAlignment="Stretch">
             <ListBox.ItemTemplate>
@@ -85,10 +77,20 @@
                 </ContextMenu>
             </ListBox.ContextMenu>
         </ListBox>
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Content="Добавить реестр" Command="{Binding AddRegister}" Width="250" Style="{StaticResource ButtonTheme}">
-                
-            </Button>
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Label Content="{Binding SearchCountRows}"/>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="&lt;" Width="20" Command="{Binding BackPage}" BorderBrush="Transparent" Style="{StaticResource ButtonTheme}"/>
+                <Label Content="{Binding Pages}"/>
+                <Button Content=">" Width="20" Command="{Binding ForwardPage}" BorderBrush="Transparent" Style="{StaticResource ButtonTheme}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
+                <Label Content="Кол-во записей на странице:" Foreground="White"/>
+                <ComboBox IsEditable="True" Width="200" ItemsSource="{Binding ViewCountRows}" SelectedItem="{Binding SelectedViewCountRows}"/>
+            </StackPanel>
         </StackPanel>
+        <Button Content="Добавить реестр" Command="{Binding AddRegister}" Width="250" Style="{StaticResource ButtonTheme}" Grid.Row="2" Grid.Column="1"  HorizontalAlignment="Right">
+
+        </Button>
     </Grid>
 </Page>

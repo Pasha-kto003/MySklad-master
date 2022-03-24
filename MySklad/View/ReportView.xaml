@@ -47,6 +47,7 @@
                             <TextBox Text="{Binding ProductInOrderOut, UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="True" Width="70" Margin="5"/>
                             <TextBox Text="{Binding RackCount, UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="True" Width="70" Margin="5"/>
                         </StackPanel>
+                        
                     </Grid>
                     <Button Content="Показать отчет" Command="{Binding CountAll}" Style="{DynamicResource ButtonTheme}" Width="150" Height="30" Grid.Row="2"/>
                 </Grid>

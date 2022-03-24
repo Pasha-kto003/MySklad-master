@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MySklad"
         mc:Ignorable="d"
         Background="Transparent"
-        Title="MainWindow" Height="500" Width="800">
+        Title="MainWindow" Height="550" Width="800">
     <Border Background="#325f63" CornerRadius="20">
         <Grid>
         <!--<DataGrid ItemsSource="{Binding Units}" SelectedItem="{Binding SelectedUnit}" AutoGenerateColumns="False">
@@ -27,22 +27,20 @@
             <Border BorderThickness="20">
                 
             </Border>
-        <StackPanel Grid.Row="1" Grid.Column="0">
-
-                <RadioButton Style="{StaticResource MenuButtonTheme}" Margin="0 0 0 5" Content="Продукты" Command="{Binding OpenProduct}" Foreground="White"/>
-                <RadioButton Style="{StaticResource MenuButtonTheme}" Margin="0 0 0 5" Content="Реестр удалений" Command="{Binding OpenDelete}" Foreground="White"/>
-                <RadioButton Style="{StaticResource MenuButtonTheme}" Margin="0 0 0 5" Content="Стелажи" Command="{Binding OpenRack}" Foreground="White"/>
-                <RadioButton Style="{StaticResource MenuButtonTheme}" Margin="0 0 0 5" Content="Поставщики" Command="{Binding OpenSupplier}" Foreground="White"/>
-                <RadioButton Style="{StaticResource MenuButtonTheme}" Margin="0 0 0 5" Content="Приход" Command="{Binding OpenOrderIn}" Foreground="White"/>
-                <RadioButton Style="{StaticResource MenuButtonTheme}" Margin="0 0 0 5" Content="Расход" Command="{Binding OpenOrderOut}" Foreground="White"/>
-                <RadioButton Style="{StaticResource MenuButtonTheme}" Margin="0 0 0 5" Content="Сотрудники" Command="{Binding OpenPersonal}" Foreground="White"/>
-                <RadioButton Style="{StaticResource MenuButtonTheme}" Margin="0 0 0 5" Content="Магазины" Command="{Binding OpenShop}" Foreground="White"/>
-                <RadioButton Style="{StaticResource MenuButtonTheme}" Margin="0 0 0 5" Content="Компании" Command="{Binding OpenCompany}" Foreground="White"/>
-                <RadioButton Style="{StaticResource MenuButtonTheme}" Margin="0 0 0 5" Content="Прочее" Command="{Binding OpenCatalog}" Foreground="White"/>
-                <RadioButton Style="{StaticResource MenuButtonTheme}" Margin="0 0 0 5" Content="Отчеты" Command="{Binding OpenReport}" Foreground="White"/>
+            <StackPanel Grid.Row="1" Grid.Column="0">
+                <RadioButton Style="{StaticResource MenuButtonTheme}" Height="35" Margin="0 0 0 5" Content="Продукты" Command="{Binding OpenProduct}" Foreground="White"/>
+                <RadioButton Style="{StaticResource MenuButtonTheme}" Height="35" Margin="0 0 0 5" Content="Реестр удалений" Command="{Binding OpenDelete}" Foreground="White"/>
+                <RadioButton Style="{StaticResource MenuButtonTheme}" Height="35" Margin="0 0 0 5" Content="Стелажи" Command="{Binding OpenRack}" Foreground="White"/>
+                <RadioButton Style="{StaticResource MenuButtonTheme}" Height="35" Margin="0 0 0 5" Content="Поставщики" Command="{Binding OpenSupplier}" Foreground="White"/>
+                <RadioButton Style="{StaticResource MenuButtonTheme}" Height="35" Margin="0 0 0 5" Content="Приход" Command="{Binding OpenOrderIn}" Foreground="White"/>
+                <RadioButton Style="{StaticResource MenuButtonTheme}" Height="35" Margin="0 0 0 5" Content="Расход" Command="{Binding OpenOrderOut}" Foreground="White"/>
+                <RadioButton Style="{StaticResource MenuButtonTheme}" Height="35" Margin="0 0 0 5" Content="Сотрудники" Command="{Binding OpenPersonal}" Foreground="White"/>
+                <RadioButton Style="{StaticResource MenuButtonTheme}" Height="35" Margin="0 0 0 5" Content="Магазины" Command="{Binding OpenShop}" Foreground="White"/>
+                <RadioButton Style="{StaticResource MenuButtonTheme}" Height="35" Margin="0 0 0 5" Content="Компании" Command="{Binding OpenCompany}" Foreground="White"/>
+                <RadioButton Style="{StaticResource MenuButtonTheme}" Height="35" Margin="0 0 0 5" Content="Прочее" Command="{Binding OpenCatalog}" Foreground="White"/>
+                <RadioButton Style="{StaticResource MenuButtonTheme}" Height="35" Margin="0 0 0 5" Content="Отчеты" Command="{Binding OpenReport}" Foreground="White"/>
             </StackPanel>
-
-        <Button Grid.Column="1" Grid.Row="0" 
+            <Button Grid.Column="1" Grid.Row="0" 
                     Content="X" Style="{StaticResource ButtonTheme}" 
                     FontSize="20" 
                     Foreground="White"

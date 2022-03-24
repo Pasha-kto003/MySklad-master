@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MySklad.View"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="450" d:DesignWidth="850"
       Title="CompanyView">
 
     <Grid Background="#325f63">
@@ -37,14 +37,7 @@
                 <TextBox Width="200" Grid.Row="1" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
                 <ComboBox IsEditable="True" Width="200" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}"/>
             </Grid>
-            <StackPanel Grid.Column="2">
-                <Label Content="Выбор сортирвки"/>
-                <ComboBox IsEditable="True" Width="200" ItemsSource="{Binding SortType}" SelectedItem="{Binding SelectedSortType}"/>
-            </StackPanel>
-            <StackPanel Grid.Column="3">
-                <Label Content="Сортировка по типу"/>
-                <ComboBox IsEditable="True" Width="200" ItemsSource="{Binding OrderType}" SelectedItem="{Binding SelectedOrderType}"/>
-            </StackPanel>
+            
         </Grid>
         <ListBox Grid.Row="1" ItemsSource="{Binding Companies}" SelectedItem="{Binding SelectedCompany}" HorizontalContentAlignment="Stretch" Background="White">
             <ListBox.ItemTemplate>
@@ -58,7 +51,7 @@
                         <Image Source="{Binding Image}" Width="100" Height="100" Grid.Column="0" HorizontalAlignment="Left"/>
                         <StackPanel  Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Left">
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Название компании"/>
+                                <Label Content="Название компании: "/>
                                 <Label Content="{Binding NameOfCompany}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
@@ -66,7 +59,7 @@
                                 <Label Content="{Binding Phone}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Почта :"/>
+                                <Label Content="Почта: "/>
                                 <Label Content="{Binding Email}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" >
