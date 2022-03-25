@@ -81,7 +81,7 @@
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="Персонал обслуживающий стеллаж:"/>
-                                <Label Content="{Binding Personal.FirstName}"/>
+                                <Label Content="{Binding Personal.LastName}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="Вместительность стеллажа:"/>

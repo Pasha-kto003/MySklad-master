@@ -278,6 +278,7 @@ namespace MySklad.ViewModel
 
             if (SelectedOrderType == "По возрастанию")
             {
+                
                 if (SelectedSortType == "Дата")
                     searchResult.Sort((x, y) => x.DateOrderOut.ToString().CompareTo(y.DateOrderOut));
             }

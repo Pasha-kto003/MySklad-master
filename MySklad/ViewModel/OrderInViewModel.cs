@@ -151,20 +151,7 @@ namespace MySklad.ViewModel
             }
         }
 
-        private async Task GetOrders()
-        {
-            Products = await Api.GetListAsync<List<ProductApi>>("Product");
-            Suppliers = await Api.GetListAsync<List<SupplierApi>>("Supplier");
-            Orders = await Api.GetListAsync<List<OrderInApi>>("OrderIn");
-            CrossProductOrder = await Api.GetListAsync<List<CrossProductOrderApi>>("CrossIn");
-            foreach(OrderInApi orderIn in Orders)
-            {
-                orderIn.Supplier = Suppliers.First(s => s.Id == orderIn.SupplierId);
-                orderIn.CrossProductOrders = CrossProductOrder.First(s => s.OrderInId == orderIn.Id);
-            }
-            SignalChanged("Orders");
-            InitPagination();
-        }
+        
 
         public OrderInViewModel()
         {
@@ -256,6 +243,23 @@ namespace MySklad.ViewModel
             }
         }
 
+        private async Task GetOrders()
+        {
+            Products = await Api.GetListAsync<List<ProductApi>>("Product");
+            Suppliers = await Api.GetListAsync<List<SupplierApi>>("Supplier");
+            Orders = await Api.GetListAsync<List<OrderInApi>>("OrderIn");
+            CrossProductOrder = await Api.GetListAsync<List<CrossProductOrderApi>>("CrossIn");
+            foreach (OrderInApi orderIn in Orders)
+            {
+                orderIn.Supplier = Suppliers.First(s => s.Id == orderIn.SupplierId);
+                orderIn.CrossProductOrders = CrossProductOrder.First(s => s.OrderInId == orderIn.Id);
+            }
+            SignalChanged("Orders");
+            SignalChanged("Suppliers");
+
+            InitPagination();
+        }
+
         internal void Sort()
         {
             if (SelectedOrderType == "По умолчанию")
@@ -280,13 +284,16 @@ namespace MySklad.ViewModel
 
         private void Search()
         {
+            foreach (OrderInApi orderIn in Orders)
+            {
+                orderIn.Supplier = Suppliers.First(s => s.Id == orderIn.SupplierId);
+            }
             var search = SearchText.ToLower();
-            if (SelectedSearchType == "Дата")
+            if (SelectedSearchType == "Поставщик")
+                searchResult = Orders.Where(s => s.Supplier.Title.ToString().ToLower().Contains(search)).ToList();
+            else if (SelectedSearchType == "Дата")
                 searchResult = Orders
-                    .Where(c => c.DateOrderIn.ToString().ToLower().Contains(search)).ToList();
-            else if (SelectedSearchType == "Поставщик")
-                searchResult = Orders
-                        .Where(c => c.Supplier.Title.ToLower().Contains(search)).ToList();
+                    .Where(c => c.DateOrderIn.ToString().ToLower().Contains(search)).ToList(); 
             Sort();
             InitPagination();
             Pagination();

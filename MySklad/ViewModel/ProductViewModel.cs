@@ -173,7 +173,7 @@ namespace MySklad.ViewModel
             selectedViewCountRows = ViewCountRows.Last();
 
             SortType = new List<string>();
-            SortType.AddRange(new string[] { "Остаток", "Телефон" });
+            SortType.AddRange(new string[] { "Остаток" });
             selectedSortType = SortType.First();
 
             OrderType = new List<string>();
@@ -181,7 +181,7 @@ namespace MySklad.ViewModel
             selectedOrderType = OrderType.Last();
 
             SearchType = new List<string>();
-            SearchType.AddRange(new string[] { "Название", "Описание" });
+            SearchType.AddRange(new string[] { "Название", "Описание", "Тип" });
             selectedSearchType = SearchType.First();
 
             BackPage = new CustomCommand(() => {
@@ -304,6 +304,11 @@ namespace MySklad.ViewModel
             else if (SelectedSearchType == "Описание")
                 searchResult = Products
                         .Where(c => c.Description.ToLower().Contains(search)).ToList();
+            else if (SelectedSearchType == "Тип")
+            {
+                searchResult = Products
+                        .Where(c => c.ProductType.Title.ToLower().Contains(search)).ToList();
+            }
             Sort();
             InitPagination();
             Pagination();
