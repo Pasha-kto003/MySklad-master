@@ -72,6 +72,16 @@
                                 <Label Content="Статус накладной:"/>
                                 <Label Content="{Binding Status}"/>
                             </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Продукция"/>
+                                <ListBox Background="White" ItemsSource="{Binding Products}" MaxHeight="30" DisplayMemberPath="Title">
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                </ListBox>
+                            </StackPanel>
                         </StackPanel>
                     </Grid>
                 </DataTemplate>
