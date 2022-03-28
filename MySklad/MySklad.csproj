@@ -14,18 +14,30 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Another.png" />
+    <None Remove="CompanyofSupplier.png" />
     <None Remove="company\Amazon-logo-0726.png" />
     <None Remove="company\Screenshot_28.png" />
     <None Remove="company\Screenshot_29.png" />
     <None Remove="company\Screenshot_30.png" />
     <None Remove="company\Screenshot_31.png" />
     <None Remove="company\Screenshot_32.png" />
+    <None Remove="DeletedProduct.png" />
+    <None Remove="free-icon-hotel-supplier-72109.png" />
     <None Remove="materials\Apartment.png" />
     <None Remove="materials\AXs.png" />
     <None Remove="materials\erik1.png" />
     <None Remove="materials\erik3.png" />
     <None Remove="materials\ron2.png" />
     <None Remove="materials\Вини.png" />
+    <None Remove="nakladnya.png" />
+    <None Remove="Otchet.png" />
+    <None Remove="package.png" />
+    <None Remove="package2.png" />
+    <None Remove="PersonalInSklad.png" />
+    <None Remove="Shop.png" />
+    <None Remove="Stellaj.png" />
+    <None Remove="Supplier.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,18 +51,51 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Another.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="CompanyofSupplier.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="company\Amazon-logo-0726.png" />
     <Resource Include="company\Screenshot_28.png" />
     <Resource Include="company\Screenshot_29.png" />
     <Resource Include="company\Screenshot_30.png" />
     <Resource Include="company\Screenshot_31.png" />
     <Resource Include="company\Screenshot_32.png" />
+    <Resource Include="DeletedProduct.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="free-icon-hotel-supplier-72109.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="materials\Apartment.png" />
     <Resource Include="materials\AXs.png" />
     <Resource Include="materials\erik1.png" />
     <Resource Include="materials\erik3.png" />
     <Resource Include="materials\ron2.png" />
     <Resource Include="materials\Вини.png" />
+    <Resource Include="nakladnya.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Otchet.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="package.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="package2.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="PersonalInSklad.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Shop.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Stellaj.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

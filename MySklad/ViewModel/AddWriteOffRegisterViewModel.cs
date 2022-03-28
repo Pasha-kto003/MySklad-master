@@ -119,8 +119,6 @@ namespace MySklad.ViewModel
 
         public CustomCommand SaveRegister { get; set; }
 
-
-
         public AddWriteOffRegisterViewModel(WriteOffRegisterApi writeOffRegister)
         {
             WriteOffRegisters = new List<WriteOffRegisterApi>();
@@ -147,8 +145,6 @@ namespace MySklad.ViewModel
             }
 
             GetRegister(AddRegisterVM);
-
-            
 
             SaveRegister = new CustomCommand(() =>
             {

@@ -26,13 +26,17 @@
         <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
         
         <Style BasedOn="{StaticResource {x:Type ToggleButton}}"
-           TargetType="{x:Type RadioButton}" x:Key="MenuButtonTheme">
+           TargetType="{x:Type RadioButton}" x:Key="MenuButtonTheme1">
             <Style.Setters>
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="RadioButton">
                             <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{TemplateBinding Background}">
-                                <TextBlock Text="{TemplateBinding Property=Content}" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                <WrapPanel>
+                                    <Image Source="package.png"  Width="35" Height="35" Margin="0,0,5,0" />
+                                    <TextBlock Text="{TemplateBinding Property=Content}" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                </WrapPanel>
+                                
                             </Grid>
                         </ControlTemplate>
                     </Setter.Value>
@@ -44,6 +48,324 @@
                 
             </Style.Setters>
             
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True" >
+                    <Setter Property="Background" Value="#5aa5ad"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style BasedOn="{StaticResource {x:Type ToggleButton}}"
+           TargetType="{x:Type RadioButton}" x:Key="MenuButtonTheme2">
+            <Style.Setters>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="RadioButton">
+                            <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{TemplateBinding Background}">
+                                <WrapPanel>
+                                    <Image Source="package2.png"  Width="35" Height="35" Margin="0,0,5,0" />
+                                    <TextBlock Text="{TemplateBinding Property=Content}" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                </WrapPanel>
+
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="5"/>
+
+            </Style.Setters>
+
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True" >
+                    <Setter Property="Background" Value="#5aa5ad"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style BasedOn="{StaticResource {x:Type ToggleButton}}"
+           TargetType="{x:Type RadioButton}" x:Key="MenuButtonTheme3">
+            <Style.Setters>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="RadioButton">
+                            <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{TemplateBinding Background}">
+                                <WrapPanel>
+                                    <Image Source="nakladnya.png"  Width="35" Height="35" Margin="0,0,5,0" />
+                                    <TextBlock Text="{TemplateBinding Property=Content}" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                </WrapPanel>
+
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="5"/>
+
+            </Style.Setters>
+
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True" >
+                    <Setter Property="Background" Value="#5aa5ad"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style BasedOn="{StaticResource {x:Type ToggleButton}}"
+           TargetType="{x:Type RadioButton}" x:Key="MenuButtonTheme4">
+            <Style.Setters>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="RadioButton">
+                            <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{TemplateBinding Background}">
+                                <WrapPanel>
+                                    <Image Source="free-icon-hotel-supplier-72109.png"  Width="35" Height="35" Margin="0,0,5,0" />
+                                    <TextBlock Text="{TemplateBinding Property=Content}" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                </WrapPanel>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="5"/>
+
+            </Style.Setters>
+
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True" >
+                    <Setter Property="Background" Value="#5aa5ad"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style BasedOn="{StaticResource {x:Type ToggleButton}}"
+           TargetType="{x:Type RadioButton}" x:Key="MenuButtonTheme5">
+            <Style.Setters>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="RadioButton">
+                            <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{TemplateBinding Background}">
+                                <WrapPanel>
+                                    <Image Source="Stellaj.png"  Width="35" Height="35" Margin="0,0,5,0" />
+                                    <TextBlock Text="{TemplateBinding Property=Content}" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                </WrapPanel>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="5"/>
+
+            </Style.Setters>
+
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True" >
+                    <Setter Property="Background" Value="#5aa5ad"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style BasedOn="{StaticResource {x:Type ToggleButton}}"
+           TargetType="{x:Type RadioButton}" x:Key="MenuButtonTheme6">
+            <Style.Setters>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="RadioButton">
+                            <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{TemplateBinding Background}">
+                                <WrapPanel>
+                                    <Image Source="DeletedProduct.png"  Width="35" Height="35" Margin="0,0,5,0" />
+                                    <TextBlock Text="{TemplateBinding Property=Content}" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                </WrapPanel>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="5"/>
+
+            </Style.Setters>
+
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True" >
+                    <Setter Property="Background" Value="#5aa5ad"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style BasedOn="{StaticResource {x:Type ToggleButton}}"
+           TargetType="{x:Type RadioButton}" x:Key="MenuButtonTheme7">
+            <Style.Setters>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="RadioButton">
+                            <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{TemplateBinding Background}">
+                                <WrapPanel>
+                                    <Image Source="PersonalInSklad.png"  Width="35" Height="35" Margin="0,0,5,0" />
+                                    <TextBlock Text="{TemplateBinding Property=Content}" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                </WrapPanel>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="5"/>
+
+            </Style.Setters>
+
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True" >
+                    <Setter Property="Background" Value="#5aa5ad"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style BasedOn="{StaticResource {x:Type ToggleButton}}"
+           TargetType="{x:Type RadioButton}" x:Key="MenuButtonTheme8">
+            <Style.Setters>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="RadioButton">
+                            <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{TemplateBinding Background}">
+                                <WrapPanel>
+                                    <Image Source="Shop.png"  Width="35" Height="35" Margin="0,0,5,0" />
+                                    <TextBlock Text="{TemplateBinding Property=Content}" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                </WrapPanel>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="5"/>
+
+            </Style.Setters>
+
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True" >
+                    <Setter Property="Background" Value="#5aa5ad"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style BasedOn="{StaticResource {x:Type ToggleButton}}"
+           TargetType="{x:Type RadioButton}" x:Key="MenuButtonTheme9">
+            <Style.Setters>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="RadioButton">
+                            <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{TemplateBinding Background}">
+                                <WrapPanel>
+                                    <Image Source="CompanyofSupplier.png"  Width="35" Height="35" Margin="0,0,5,0" />
+                                    <TextBlock Text="{TemplateBinding Property=Content}" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                </WrapPanel>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="5"/>
+
+            </Style.Setters>
+
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True" >
+                    <Setter Property="Background" Value="#5aa5ad"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style BasedOn="{StaticResource {x:Type ToggleButton}}"
+           TargetType="{x:Type RadioButton}" x:Key="MenuButtonTheme10">
+            <Style.Setters>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="RadioButton">
+                            <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{TemplateBinding Background}">
+                                <WrapPanel>
+                                    <Image Source="Another.png"  Width="35" Height="35" Margin="0,0,5,0" />
+                                    <TextBlock Text="{TemplateBinding Property=Content}" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                </WrapPanel>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="5"/>
+
+            </Style.Setters>
+
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True" >
+                    <Setter Property="Background" Value="#5aa5ad"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <Style BasedOn="{StaticResource {x:Type ToggleButton}}"
+           TargetType="{x:Type RadioButton}" x:Key="MenuButtonTheme11">
+            <Style.Setters>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="RadioButton">
+                            <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{TemplateBinding Background}">
+                                <WrapPanel>
+                                    <Image Source="Otchet.png"  Width="35" Height="35" Margin="0,0,5,0" />
+                                    <TextBlock Text="{TemplateBinding Property=Content}" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                </WrapPanel>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="5"/>
+
+            </Style.Setters>
+
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True" >
+                    <Setter Property="Background" Value="#5aa5ad"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style BasedOn="{StaticResource {x:Type ToggleButton}}"
+           TargetType="{x:Type RadioButton}" x:Key="MenuButtonTheme">
+            <Style.Setters>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="RadioButton">
+                            <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{TemplateBinding Background}">
+                                <TextBlock Text="{TemplateBinding Property=Content}" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="5"/>
+
+            </Style.Setters>
+
             <Style.Triggers>
                 <Trigger Property="IsChecked" Value="True" >
                     <Setter Property="Background" Value="#5aa5ad"/>
