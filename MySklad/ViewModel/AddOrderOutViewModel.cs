@@ -217,7 +217,7 @@ namespace MySklad.ViewModel
                         MessageBox.Show("Ошибка, этот продукт находится в реестре удалений");
                         SelectedOrderProducts.Remove(SelectedOrderProduct);
                     }
-                    else if (SelectedOrderProduct.CountProductsOut > SelectedOrderProduct.CrossProductOrderApi.CountInOrder)
+                    else if (SelectedOrderProduct.CountProductsOut > SelectedOrderProduct.CrossProductOrderApi.CountInOrder / 2 || SelectedOrderProduct.CountProductsOut > SelectedOrderProduct.CountInStock)
                     {
                         MessageBox.Show("Ошибка, нельзя увезти товаров больше чем его привезли");
                         return;

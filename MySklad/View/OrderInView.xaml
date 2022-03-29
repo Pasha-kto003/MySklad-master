@@ -48,9 +48,6 @@
                 <!--<Button Command="{Binding Sortirovka}" Content="Сортировать"/>-->
                 <ComboBox IsEditable="True" Width="200" ItemsSource="{Binding OrderType}" SelectedItem="{Binding SelectedOrderType}"/>
             </StackPanel>
-            <StackPanel Grid.Column="4">
-                <Button Content="Обновить" Command="{Binding UpdateList}"/>
-            </StackPanel>
         </Grid>
         <ListBox Grid.Row="1" ItemsSource="{Binding Orders}" SelectedItem="{Binding SelectedOrderIn}" Background="White">
             <ListBox.ItemTemplate>
