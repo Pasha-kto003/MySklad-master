@@ -136,6 +136,7 @@ namespace MySklad.ViewModel
         {
             GetPersonals();
             GetProducts();
+
             if (rackApi == null)
             {
                 AddRackVM = new RackApi { Name = "A1", Capacity = 500, PlacementDate = DateTime.Now };
@@ -246,11 +247,9 @@ namespace MySklad.ViewModel
                     //SelectedRackProduct.CountInStock = 0;
                     foreach (ProductApi product in SelectedRackProducts)
                     {
-                        //SelectedRackProduct.CountInStock = 0;
                         SelectedRackProduct.CountInStock += product.CountInStock;
-                        //SelectedRackProduct.CountInStock = 0;
                     }
-                    AddRackVM.RemainingPlaces = AddRackVM.Capacity - SelectedRackProduct.CountInStock;
+                    AddRackVM.RemainingPlaces = AddRackVM.Capacity - SelectedRackProduct.CountInStock / 2;
                     if (AddRackVM.RemainingPlaces < 0)
                     {
                         MessageBoxResult result = MessageBox.Show("Не хватает мест для данного товара, его следует удалить!", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning);
