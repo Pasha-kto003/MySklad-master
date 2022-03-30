@@ -175,6 +175,7 @@ namespace MySklad.ViewModel
                     AddProductVM.CrossOrderOutApi = CrossOrderOuts.FirstOrDefault(s => s.ProductId == AddProductVM.Id);
                     //AddProductVM.CountInStock = (int)(AddProductVM.CrossProductOrderApi.CountInOrder - AddProductVM.CrossOrderOutApi.CountOutOrder);
                     PostProduct(AddProductVM);
+                    MessageBox.Show($"Продукт {AddProductVM.Title} создан");
                 }
                 else
                 {
@@ -197,7 +198,12 @@ namespace MySklad.ViewModel
                     
                     if(AddProductVM.CountInStock != 0)
                     {
-                        AddProductVM.CountInStock = (int)(AddProductVM.CrossProductOrderApi.CountInOrder - AddProductVM.CrossOrderOutApi.CountOutOrder);
+                        if(AddProductVM.CrossOrderOutApi == null)
+                        {
+                            EditProduct(AddProductVM);
+                        }
+                        else
+                            AddProductVM.CountInStock = (int)(AddProductVM.CrossProductOrderApi.CountInOrder - AddProductVM.CrossOrderOutApi.CountOutOrder);
                     }
                     else
                     {
@@ -214,6 +220,7 @@ namespace MySklad.ViewModel
                         
                     }
                     EditProduct(AddProductVM);
+                    MessageBox.Show($"Продукт: {AddProductVM.Title} изменен");
                 }
 
                 if (AddProductVM.BestBeforeDateEnd < AddProductVM.BestBeforeDateStart)

@@ -78,6 +78,7 @@ namespace MySklad.ViewModel
         public int RackCount { get; set; }
         public int ProductCount { get; set; }
         public int ProductDeleteCount { get; set; }
+        public int PersonalCount { get; set; }
 
         public ProductApi AddProductVM { get; set; }
 
@@ -99,6 +100,17 @@ namespace MySklad.ViewModel
             set
             {
                 ordersOut = value;
+                SignalChanged();
+            }
+        }
+
+        private List<PersonalApi> personals { get; set; }
+        public List<PersonalApi> Personals
+        {
+            get => personals;
+            set
+            {
+                personals = value;
                 SignalChanged();
             }
         }
@@ -304,6 +316,12 @@ namespace MySklad.ViewModel
             CrossProductOrdersOut = (List<CrossOrderOutApi>)crosses;
         }
 
+        async Task GetPersonals()
+        {
+            var personals = await Api.GetListAsync<List<PersonalApi>>("Personal");
+            Personals = (List<PersonalApi>)personals;
+        }
+
         //async Task GetOrderOut()
         //{
         //    var orders = await Api.GetListAsync<List<OrderOutApi>>("OrderOut");
@@ -346,6 +364,7 @@ namespace MySklad.ViewModel
             GetCrossOut();
             GetCompany();
             GetWriteOffRegisters();
+            GetPersonals();
 
             Types = new List<string>
             {
@@ -385,14 +404,22 @@ namespace MySklad.ViewModel
 
                 foreach (CrossProductOrderApi cross in CrossProductOrders.Where(s => s.ProductId != 0))
                 {
-                    ProductInOrderIn += (int)cross.CountInOrder;
+                    if(cross.CountInOrder != null)
+                    {
+                        ProductInOrderIn += (int)cross.CountInOrder / 2;
+                    }
                 }
                 foreach (CrossOrderOutApi cross in CrossProductOrdersOut.FindAll(s => s.ProductId != 0))
                 {
-                    ProductInOrderOut += (int)cross.CountOutOrder;
+                    ProductInOrderOut += (int)cross.CountOutOrder / 2;
                 }
 
                 ProductCount = ProductInOrderIn - ProductInOrderOut;
+
+                PersonalCount = Personals.FindAll(s => s.Id == s.Id).Where
+                (
+                    s=> s.DateStartWork >= SelectedAfterDate && s.DateEndWork <= SelectedBeforeDate
+                ).Count();
 
                 RackCount = Racks.FindAll(s => s.Id == s.Id).Where
                 (
@@ -416,6 +443,7 @@ namespace MySklad.ViewModel
                 SignalChanged(nameof(ProductInOrderIn));
                 SignalChanged(nameof(ProductInOrderOut));
                 SignalChanged(nameof(RackCount));
+                SignalChanged(nameof(PersonalCount));
             });
 
             EditReport = new CustomCommand(() =>

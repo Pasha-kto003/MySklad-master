@@ -30,13 +30,15 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0" Orientation="Vertical">
-                            <TextBlock Text="За выбранный период было приходных: " Foreground="White" Margin="10"/>
-                            <TextBlock Text="За выбранный период было расходных: " Foreground="White" Margin="10"/>
-                            <TextBlock Text="За выбранный период остаток продукции составил: " Foreground="White" Margin="10"/>
-                            <TextBlock Text="Количество товаров пришедших в негодность: " Foreground="White" Margin="10"/>
-                            <TextBlock Text="Пришло продукции за данный период: " Foreground="White" Margin="10"/>
-                            <TextBlock Text="Продукции ушло за этот период: " Foreground="White" Margin="10"/>
-                            <TextBlock Text="Наличие стеллажей: " Foreground="White" Margin="10"/>
+                            <TextBlock Text="За выбранный период было приходных: " Height="24" Foreground="White" Margin="5"/>
+                            <TextBlock Text="За выбранный период было расходных: " Height="24" Foreground="White" Margin="5"/>
+                            <TextBlock Text="За выбранный период остаток продукции составил: " Height="24" Foreground="White" Margin="5"/>
+                            <TextBlock Text="Количество товаров пришедших в негодность: " Height="24" Foreground="White" Margin="5"/>
+                            <TextBlock Text="Пришло продукции за данный период: " Foreground="White" Height="24" Margin="5"/>
+                            <TextBlock Text="Продукции ушло за этот период: " Foreground="White" Height="24" Margin="5"/>
+                            <TextBlock Text="Наличие стеллажей: " Foreground="White" Height="24" Margin="5"/>
+                            <TextBlock Text="Количество сотрудников: " Foreground="White" Height="24" Margin="5"/>
+
                         </StackPanel>
                         <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Right" Width="100">
                             <TextBox Text="{Binding OrderInCount, UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="True" Width="70" Margin="5"/>
@@ -46,6 +48,7 @@
                             <TextBox Text="{Binding ProductInOrderIn, UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="True" Width="70" Margin="5"/>
                             <TextBox Text="{Binding ProductInOrderOut, UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="True" Width="70" Margin="5"/>
                             <TextBox Text="{Binding RackCount, UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="True" Width="70" Margin="5"/>
+                            <TextBox Text="{Binding PersonalCount, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Width="70" Margin="5"/>
                         </StackPanel>
                         
                     </Grid>

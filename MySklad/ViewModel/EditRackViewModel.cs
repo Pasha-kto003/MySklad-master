@@ -155,6 +155,7 @@ namespace MySklad.ViewModel
                     PersonalId = rackApi.PersonalId
                 };
 
+
                 if (rackApi.Products != null)
                 {
                     SelectedRackProducts = rackApi.Products;
@@ -186,16 +187,19 @@ namespace MySklad.ViewModel
                         MessageBox.Show("Удаление завершено");
                     }
                 }
-                
-                else if(SelectedProduct.CrossProductRack != null)
+
+                else if (SelectedProduct.CrossProductRack != null)
                 {
                     MessageBox.Show("Ошибка, данная продукция уже расположена на стеллаже");
                 }
                 else
                 {
+                    AddRackVM.Products = SelectedRackProducts;
                     SelectedRackProduct = SelectedProduct;
-                    SelectedRackProducts.Add(SelectedProduct);
                     AddRackVM.ChangedDate = DateTime.Now;
+                    SelectedRackProducts.Add(SelectedProduct);
+                    AddRackVM.Products.Add(SelectedProduct);
+                    EditRack(AddRackVM);
                     SignalChanged("SelectedRackProducts");
                 }
             });
@@ -237,7 +241,6 @@ namespace MySklad.ViewModel
                 {
                     AddRackVM.PersonalId = SelectedPersonal.Id;
                     AddRackVM.CrossProductRacks = CrossProductRacks.FirstOrDefault(s => s.RackId == AddRackVM.Id);
-
                     //foreach (CrossProductRackApi productApi in CrossProductRacks.Where(s => s.RackId == AddRackVM.Id))
                     //{
                     //    productApi.Product = SelectedRackProduct;
@@ -263,7 +266,7 @@ namespace MySklad.ViewModel
                     else
                     {
                         EditRack(AddRackVM);
-                        MessageBox.Show($"Вы только что изменили стелаж :{AddRackVM.Name}");
+                        MessageBox.Show($"Вы только что изменили стелаж : {AddRackVM.Name}");
                     }
                 }
                 foreach (Window window in Application.Current.Windows)
