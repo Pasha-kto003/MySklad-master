@@ -79,6 +79,7 @@ namespace MySklad.ViewModel
         public int ProductCount { get; set; }
         public int ProductDeleteCount { get; set; }
         public int PersonalCount { get; set; }
+        public int PersonalSick { get; set; }
 
         public ProductApi AddProductVM { get; set; }
 
@@ -203,6 +204,17 @@ namespace MySklad.ViewModel
             }
         }
 
+        private List<StatusApi> statuses { get; set; }
+        public List<StatusApi> Statuses
+        {
+            get => statuses;
+            set
+            {
+                statuses = value;
+                SignalChanged();
+            }
+        }
+
         private List<ProductTypeApi> productTypes { get; set; }
         public List<ProductTypeApi> ProductTypes
         {
@@ -318,8 +330,18 @@ namespace MySklad.ViewModel
 
         async Task GetPersonals()
         {
-            var personals = await Api.GetListAsync<List<PersonalApi>>("Personal");
-            Personals = (List<PersonalApi>)personals;
+            Personals = await Api.GetListAsync<List<PersonalApi>>("Personal");
+            Statuses = await Api.GetListAsync<List<StatusApi>>("Status");
+            foreach(PersonalApi personal in Personals)
+            {
+                personal.Status = Statuses.First(s => s.Id == personal.StatusId);
+            }
+        }
+
+        async Task GetStatuses()
+        {
+            var statuses = await Api.GetListAsync<List<StatusApi>>("Status");
+            Statuses = (List<StatusApi>)statuses;
         }
 
         //async Task GetOrderOut()
@@ -365,6 +387,7 @@ namespace MySklad.ViewModel
             GetCompany();
             GetWriteOffRegisters();
             GetPersonals();
+            GetStatuses();
 
             Types = new List<string>
             {
@@ -421,6 +444,12 @@ namespace MySklad.ViewModel
                     s=> s.DateStartWork >= SelectedAfterDate && s.DateEndWork <= SelectedBeforeDate
                 ).Count();
 
+
+                PersonalSick = Personals.FindAll(s => s.Id == s.Id).Where
+                (
+                    s=> s.Status.Title == "Болеет"
+                ).Count();
+
                 RackCount = Racks.FindAll(s => s.Id == s.Id).Where
                 (
                     s => s.PlacementDate >= SelectedAfterDate && s.PlacementDate <= SelectedBeforeDate
@@ -444,6 +473,7 @@ namespace MySklad.ViewModel
                 SignalChanged(nameof(ProductInOrderOut));
                 SignalChanged(nameof(RackCount));
                 SignalChanged(nameof(PersonalCount));
+                SignalChanged(nameof(PersonalSick));
             });
 
             EditReport = new CustomCommand(() =>

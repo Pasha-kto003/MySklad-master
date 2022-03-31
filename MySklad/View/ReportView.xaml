@@ -38,6 +38,7 @@
                             <TextBlock Text="Продукции ушло за этот период: " Foreground="White" Height="24" Margin="5"/>
                             <TextBlock Text="Наличие стеллажей: " Foreground="White" Height="24" Margin="5"/>
                             <TextBlock Text="Количество сотрудников: " Foreground="White" Height="24" Margin="5"/>
+                            <TextBlock Text="Болеют из них: " Foreground="White" Height="24" Margin="5"/>
 
                         </StackPanel>
                         <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Right" Width="100">
@@ -49,6 +50,8 @@
                             <TextBox Text="{Binding ProductInOrderOut, UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="True" Width="70" Margin="5"/>
                             <TextBox Text="{Binding RackCount, UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="True" Width="70" Margin="5"/>
                             <TextBox Text="{Binding PersonalCount, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Width="70" Margin="5"/>
+                            <TextBox Text="{Binding PersonalSick, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Width="70" Margin="5"/>
+
                         </StackPanel>
                         
                     </Grid>
