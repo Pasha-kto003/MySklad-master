@@ -78,8 +78,12 @@ namespace MySklad.ViewModel
         public int RackCount { get; set; }
         public int ProductCount { get; set; }
         public int ProductDeleteCount { get; set; }
-        public int PersonalCount { get; set; }
-        public int PersonalSick { get; set; }
+        public double PersonalCount { get; set; }
+        public double PersonalSick { get; set; }
+        public double PersonalSickCount { get; set; }
+        public string PersonalSickProcent { get; set; }
+        public double MidleCountValue { get; set; }
+        public double MidleCountValueOut { get; set; }
 
         public ProductApi AddProductVM { get; set; }
 
@@ -272,6 +276,17 @@ namespace MySklad.ViewModel
             }
         }
 
+        private string maxValueCount;
+        public string MaxValueCount
+        {
+            get => maxValueCount;
+            set
+            {
+                maxValueCount = value;
+                SignalChanged();
+            }
+        }
+
         public CustomCommand CountAll { get; set; }
         public CustomCommand EditReport { get; set; }
         public CustomCommand EditReportOut { get; set; }
@@ -431,13 +446,24 @@ namespace MySklad.ViewModel
                     {
                         ProductInOrderIn += (int)cross.CountInOrder / 2;
                     }
+
+                    MidleCountValue = ProductInOrderIn / CrossProductOrders.Count;
+                    SignalChanged(nameof(MidleCountValue));
                 }
                 foreach (CrossOrderOutApi cross in CrossProductOrdersOut.FindAll(s => s.ProductId != 0))
                 {
                     ProductInOrderOut += (int)cross.CountOutOrder / 2;
+
+                    MidleCountValueOut = ProductInOrderOut / CrossProductOrdersOut.Count;
+                    SignalChanged(nameof(MidleCountValueOut));
                 }
 
                 ProductCount = ProductInOrderIn - ProductInOrderOut;
+
+                Products.Sort((x, y) => x.CountInStock.CompareTo(y.CountInStock));
+                MaxValueCount = Products.Last().Title.ToString();
+                SignalChanged(MaxValueCount);
+
 
                 PersonalCount = Personals.FindAll(s => s.Id == s.Id).Where
                 (
@@ -449,6 +475,14 @@ namespace MySklad.ViewModel
                 (
                     s=> s.Status.Title == "Болеет"
                 ).Count();
+
+                PersonalSickCount = PersonalSick * 100 / PersonalCount;
+
+                PersonalSickCount = Math.Round(PersonalSickCount, 2);
+
+                PersonalSickProcent = $"{PersonalSickCount} %";
+
+               
 
                 RackCount = Racks.FindAll(s => s.Id == s.Id).Where
                 (
@@ -474,6 +508,8 @@ namespace MySklad.ViewModel
                 SignalChanged(nameof(RackCount));
                 SignalChanged(nameof(PersonalCount));
                 SignalChanged(nameof(PersonalSick));
+                SignalChanged(nameof(PersonalSickCount));
+                SignalChanged(nameof(PersonalSickProcent));
             });
 
             EditReport = new CustomCommand(() =>
