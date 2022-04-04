@@ -293,7 +293,7 @@ namespace MySklad.ViewModel
             var search = SearchText.ToLower();
             if (SelectedSearchType == "Дата")
                 searchResult = Orders
-                    .Where(c => c.DateOrderOut.ToString().ToLower().Contains(search)).ToList();
+                    .Where(c => c.DateOrderOut.ToShortDateString().ToLower().Contains(search)).ToList();
             else if (SelectedSearchType == "Поставщик")
                 searchResult = Orders
                         .Where(c => c.Supplier.Title.ToLower().Contains(search)).ToList();

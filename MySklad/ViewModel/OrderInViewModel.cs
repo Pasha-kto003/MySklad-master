@@ -293,7 +293,7 @@ namespace MySklad.ViewModel
                 searchResult = Orders.Where(s => s.Supplier.Title.ToString().ToLower().Contains(search)).ToList();
             else if (SelectedSearchType == "Дата")
                 searchResult = Orders
-                    .Where(c => c.DateOrderIn.ToString().ToLower().Contains(search)).ToList(); 
+                    .Where(c => c.DateOrderIn.ToShortDateString().ToLower().Contains(search)).ToList(); 
             Sort();
             InitPagination();
             Pagination();

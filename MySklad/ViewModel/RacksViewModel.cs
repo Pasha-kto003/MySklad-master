@@ -272,7 +272,7 @@ namespace MySklad.ViewModel
             var search = SearchText.ToLower();
             if (SelectedSearchType == "Дата последнего изменения")
                 searchResult = Racks
-                    .Where(c => c.ChangedDate.ToString().ToLower().Contains(search)).ToList();
+                    .Where(c => c.ChangedDate.ToShortDateString().ToLower().Contains(search)).ToList();
             else if (SelectedSearchType == "Сотрудник")
                 searchResult = Racks
                         .Where(c => c.Personal.LastName.ToLower().Contains(search)).ToList();
