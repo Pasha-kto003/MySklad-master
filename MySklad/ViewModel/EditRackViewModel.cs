@@ -194,12 +194,9 @@ namespace MySklad.ViewModel
                 }
                 else
                 {
-                    AddRackVM.Products = SelectedRackProducts;
                     SelectedRackProduct = SelectedProduct;
                     AddRackVM.ChangedDate = DateTime.Now;
                     SelectedRackProducts.Add(SelectedProduct);
-                    AddRackVM.Products.Add(SelectedProduct);
-                    EditRack(AddRackVM);
                     SignalChanged("SelectedRackProducts");
                 }
             });
@@ -222,7 +219,7 @@ namespace MySklad.ViewModel
                     AddRackVM.RemainingPlaces = AddRackVM.Capacity - SelectedRackProduct.CountInStock / 2;
                     if (AddRackVM.RemainingPlaces < 0)
                     {
-                        MessageBoxResult result = MessageBox.Show("Не хватает мест для данного товара, его следует удалить!", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                        MessageBoxResult result = MessageBox.Show($"Не хватает мест для данного товара, его следует удалить! Количество данного товара : {SelectedProduct.CountInStock / 2}", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                         if (result == MessageBoxResult.Yes)
                         {
                             SelectedRackProducts.Remove(SelectedRackProduct);
