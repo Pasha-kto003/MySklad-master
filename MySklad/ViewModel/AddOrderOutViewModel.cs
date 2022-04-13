@@ -217,13 +217,22 @@ namespace MySklad.ViewModel
                         MessageBox.Show("Ошибка, этот продукт находится в реестре удалений");
                         SelectedOrderProducts.Remove(SelectedOrderProduct);
                     }
-                    else if (SelectedOrderProduct.CountProductsOut > SelectedOrderProduct.CrossProductOrderApi.CountInOrder / 2 || SelectedOrderProduct.CountProductsOut > SelectedOrderProduct.CountInStock)
+                    else if (SelectedOrderProduct.CountProductsOut > SelectedOrderProduct.CrossProductOrderApi.CountInOrder / 2 && SelectedOrderProduct.CountProductsOut > SelectedOrderProduct.CountInStock)
                     {
-                        MessageBox.Show("Ошибка, нельзя увезти товаров больше чем его привезли");
-                        return;
+                        MessageBoxResult message = MessageBox.Show("Невозможно увезти такое количество данной продукции", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Error);
+                        if(message == MessageBoxResult.Yes)
+                        {
+                            Cross = 0;
+                            SelectedOrderProduct.CountProductsOut = 0;
+                            SelectedOrderProducts.Remove(SelectedOrderProduct);
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        SelectedOrderProducts.Add(SelectedProduct);
+                        SignalChanged("SelectedOrderProducts");
                     }                   
-                    SelectedOrderProducts.Add(SelectedProduct);
-                    SignalChanged("SelectedOrderProducts");
                 }
             });
 
