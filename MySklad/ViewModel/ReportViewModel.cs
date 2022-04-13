@@ -1,6 +1,8 @@
 ﻿using ModelApi;
 using MySklad.Core;
 using Spire.Xls;
+using Spire.Xls.Charts;
+using Spire.Xls.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -828,8 +830,7 @@ namespace MySklad.ViewModel
 
             List<ProductApi> ProductByPeriod = Products.FindAll(s => s.Id == s.Id).Where
                 (
-                    s => s.BestBeforeDateStart >= firstDate && s.BestBeforeDateStart <= lastDate &&
-                    s.ProductTypeId == s.ProductType.Id && s.UnitId == s.Unit.Id
+                    s => s.BestBeforeDateStart >= firstDate && s.BestBeforeDateStart <= lastDate
                 ).ToList();
 
             foreach(var product in ProductByPeriod)
@@ -854,6 +855,39 @@ namespace MySklad.ViewModel
             sheet.Range[$"A4:L{index - 1}"].BorderInside(LineStyleType.Thin);
             sheet.Range[$"A4:L{index - 1}"].BorderAround(LineStyleType.Medium);
             sheet.AllocatedRange.AutoFitColumns();
+
+            Chart chart = sheet.Charts.Add(ExcelChartType.PieExploded);
+            chart.SeriesDataFromRange = false;
+
+            chart.LeftColumn = 1;
+            chart.TopRow = 12;
+            chart.RightColumn = 8;
+            chart.BottomRow = 26;
+
+            chart.Width = 400;
+            chart.Height = 400;
+
+            chart.ChartArea.Border.Weight = ChartLineWeightType.Medium;
+            chart.ChartArea.Border.Color = System.Drawing.Color.SandyBrown;
+
+            chart.ChartTitle = "Products";
+            chart.ChartTitleArea.FontName = "Calibri";
+            chart.ChartTitleArea.Size = 10;
+            chart.ChartTitleArea.IsBold = true;
+            chart.DataRange = sheet.Range[$"F5:F{Products.Count}"];
+            chart.HasLegend = true;
+            chart.Legend.Position = LegendPositionType.Right;
+            chart.Legend.HasDataTable = true;
+
+            ChartSerie cs = chart.Series[0];
+            cs.CategoryLabels = sheet.Range[$"B5:B{Products.Count}"];
+            cs.Values = sheet.Range[$"F5:F{Products.Count}"];
+
+            IChartSerie serie1 = chart.Series[0];
+            
+            serie1.SerieType = ExcelChartType.PieExploded;
+            serie1.DataPoints.DefaultDataPoint.DataLabels.HasValue = true;
+
             workBook.SaveToFile("testProduct.xls");
 
             Process p = new Process();
@@ -959,5 +993,7 @@ namespace MySklad.ViewModel
             };
             p.Start();
         }
+
+
     }
 }
