@@ -187,7 +187,7 @@ namespace MySklad.ViewModel
                 {
                     SelectedOrderProduct = SelectedProduct;
                     SelectedOrderProduct.CountProducts = NewCross;
-                    EditProduction(SelectedOrderProduct);
+                    //EditProduction(SelectedOrderProduct);
                     SelectedOrderProducts.Add(SelectedProduct);
                     SignalChanged("SelectedOrderProducts");
                 }
