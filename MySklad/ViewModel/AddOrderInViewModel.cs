@@ -40,7 +40,27 @@ namespace MySklad.ViewModel
             }
         }
 
+        private IEnumerable<CrossProductOrderApi> selectedCrosses { get; set; }
+        public IEnumerable<CrossProductOrderApi> SelectedCrosses 
+        {
+            get => selectedCrosses;
+            set
+            {
+                selectedCrosses = value;
+                SignalChanged();
+            }
+        }
 
+        private CrossProductOrderApi selectedCross { get; set; }
+        public CrossProductOrderApi SelectedCross
+        {
+            get => selectedCross;
+            set
+            {
+                selectedCross = value;
+                SignalChanged();
+            }
+        }
 
         private ProductApi selectedProduct { get; set; }
         public ProductApi SelectedProduct
@@ -86,8 +106,6 @@ namespace MySklad.ViewModel
             }
         }
 
-
-
         public CustomCommand SaveOrder { get; set; }
         public CustomCommand AddProduct { get; set; }
         public CustomCommand EditProduct { get; set; }
@@ -121,7 +139,8 @@ namespace MySklad.ViewModel
         {
             Suppliers = await Api.GetListAsync<List<SupplierApi>>("Supplier");
             Product = await Api.GetListAsync<List<ProductApi>>("Product");
-            
+            var cross = await Api.GetListAsync<List<CrossProductOrderApi>>("CrossIn");
+
             if(orderInApi == null)
             {
                 SelectedSupplier = Suppliers.FirstOrDefault();
@@ -129,6 +148,12 @@ namespace MySklad.ViewModel
             else
             {
                 SelectedSupplier = Suppliers.FirstOrDefault(s => s.Id == orderInApi.SupplierId);
+                SelectedCrosses = cross.Where(s => s.OrderInId == AddOrderVM.Id);
+                //SelectedCross.Product = SelectedOrderProducts.FirstOrDefault(s => s.Id == SelectedCross.ProductId);
+                foreach(CrossProductOrderApi crossProduct in SelectedCrosses)
+                {
+                    crossProduct.Product = SelectedOrderProducts.FirstOrDefault(s => s.Id == crossProduct.ProductId);
+                }
             }
         }
 

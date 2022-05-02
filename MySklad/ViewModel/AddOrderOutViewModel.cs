@@ -59,6 +59,28 @@ namespace MySklad.ViewModel
             }
         }
 
+        private IEnumerable<CrossOrderOutApi> selectedCrosses { get; set; }
+        public IEnumerable<CrossOrderOutApi> SelectedCrosses
+        {
+            get => selectedCrosses;
+            set
+            {
+                selectedCrosses = value;
+                SignalChanged();
+            }
+        }
+
+        private CrossOrderOutApi selectedCross { get; set; }
+        public CrossOrderOutApi SelectedCross
+        {
+            get => selectedCross;
+            set
+            {
+                selectedCross = value;
+                SignalChanged();
+            }
+        }
+
         private List<SupplierApi> suppliers { get; set; }
         public List<SupplierApi> Suppliers
         {
@@ -140,6 +162,7 @@ namespace MySklad.ViewModel
             Product = await Api.GetListAsync<List<ProductApi>>("Product");
             CrossProductOrders = await Api.GetListAsync<List<CrossProductOrderApi>>("CrossIn");
             CrossOrderOuts = await Api.GetListAsync<List<CrossOrderOutApi>>("OrderOut");
+            var cross = await Api.GetListAsync<List<CrossOrderOutApi>>("CrossOut");
             if (orderOutApi == null)
             {
                 SelectedSupplier = Suppliers.FirstOrDefault();
@@ -149,6 +172,12 @@ namespace MySklad.ViewModel
             {
                 SelectedSupplier = Suppliers.FirstOrDefault(s => s.Id == orderOutApi.SupplierId);
                 SelectedShop = Shops.FirstOrDefault(s => s.Id == orderOutApi.ShopId);
+                SelectedCrosses = cross.Where(s => s.OrderOutId == AddOrderVM.Id);
+                //SelectedCross.Product = SelectedOrderProducts.FirstOrDefault(s => s.Id == SelectedCross.ProductId);
+                foreach (CrossOrderOutApi crossProduct in SelectedCrosses)
+                {
+                    crossProduct.Product = SelectedOrderProducts.FirstOrDefault(s => s.Id == crossProduct.ProductId);
+                }
             }
         }
 
@@ -168,7 +197,7 @@ namespace MySklad.ViewModel
             GetProducts();
             GetShops();
 
-            if(orderOut == null)
+            if (orderOut == null)
             {
                 AddOrderVM = new OrderOutApi { DateOrderOut = DateTime.Now, Status = "В норме" };
             }
@@ -183,7 +212,7 @@ namespace MySklad.ViewModel
                     SupplierId = orderOut.SupplierId
                 };
 
-                if(orderOut.Products != null)
+                if (orderOut.Products != null)
                 {
                     SelectedOrderProducts = orderOut.Products;
                 }
@@ -193,7 +222,7 @@ namespace MySklad.ViewModel
 
             AddProduct = new CustomCommand(() =>
             {
-                if(SelectedProduct == null)
+                if (SelectedProduct == null)
                 {
                     MessageBox.Show("Выберите продукцию!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
@@ -220,7 +249,7 @@ namespace MySklad.ViewModel
                     else if (SelectedOrderProduct.CountProductsOut > SelectedOrderProduct.CrossProductOrderApi.CountInOrder / 2 && SelectedOrderProduct.CountProductsOut > SelectedOrderProduct.CountInStock)
                     {
                         MessageBoxResult message = MessageBox.Show("Невозможно увезти такое количество данной продукции", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Error);
-                        if(message == MessageBoxResult.Yes)
+                        if (message == MessageBoxResult.Yes)
                         {
                             Cross = 0;
                             SelectedOrderProduct.CountProductsOut = 0;
@@ -232,7 +261,7 @@ namespace MySklad.ViewModel
                     {
                         SelectedOrderProducts.Add(SelectedProduct);
                         SignalChanged("SelectedOrderProducts");
-                    }                   
+                    }
                 }
             });
 
@@ -240,7 +269,7 @@ namespace MySklad.ViewModel
             {
                 AddOrderVM.Products = SelectedOrderProducts;
                 //SelectedOrderProduct.CountProductsOut = Cross;
-                
+
                 if (AddOrderVM.Id == 0)
                 {
                     AddOrderVM.SupplierId = SelectedSupplier.Id;
@@ -254,7 +283,7 @@ namespace MySklad.ViewModel
                     EditOrder(AddOrderVM);
                 }
 
-                if(AddOrderVM.Products != null)
+                if (AddOrderVM.Products != null)
                 {
                     SelectedOrderProduct.CountProductsOut = Cross;
                     EditOrder(AddOrderVM);

@@ -248,11 +248,11 @@ namespace MySklad.ViewModel
             Products = await Api.GetListAsync<List<ProductApi>>("Product");
             Suppliers = await Api.GetListAsync<List<SupplierApi>>("Supplier");
             Orders = await Api.GetListAsync<List<OrderInApi>>("OrderIn");
-            CrossProductOrder = await Api.GetListAsync<List<CrossProductOrderApi>>("CrossIn");
+            //CrossProductOrder = await Api.GetListAsync<List<CrossProductOrderApi>>("CrossIn");
             foreach (OrderInApi orderIn in Orders)
             {
                 orderIn.Supplier = Suppliers.First(s => s.Id == orderIn.SupplierId);
-                orderIn.CrossProductOrders = CrossProductOrder.First(s => s.OrderInId == orderIn.Id);
+                //orderIn.CrossProductOrders = CrossProductOrder.First(s => s.OrderInId == orderIn.Id);
             }
             SignalChanged("Orders");
             SignalChanged("Suppliers");

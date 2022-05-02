@@ -36,10 +36,21 @@
         </StackPanel>
         <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Vertical" Width="auto">
             <Label Content="Продукция заказа" Foreground="White"/>
-            <DataGrid ItemsSource="{Binding SelectedOrderProducts}" SelectedItem="{Binding SelectedOrderProduct}" MinHeight="30" AutoGenerateColumns="False" Width="300">
+            <!--<DataGrid ItemsSource="{Binding SelectedOrderProducts}" SelectedItem="{Binding SelectedOrderProduct}" MinHeight="30" AutoGenerateColumns="False" Width="300">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Продукция" Binding="{Binding Title}"/>
                     <DataGridTextColumn Header="Количество привезенной продукции" Binding="{Binding CountProducts}"/>
+                </DataGrid.Columns>
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Command="{Binding EditProductCount}" Header="Изменить привезенное количество"/>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+            </DataGrid>-->
+            <DataGrid ItemsSource="{Binding SelectedCrosses}" SelectedItem="{Binding SelectedCross}" MinHeight="30" AutoGenerateColumns="False" Width="300">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Продукция" Binding="{Binding Product.Title}"/>
+                    <DataGridTextColumn Header="Количество привезенной продукции" Binding="{Binding CountInOrder}"/>
                 </DataGrid.Columns>
                 <DataGrid.ContextMenu>
                     <ContextMenu>
