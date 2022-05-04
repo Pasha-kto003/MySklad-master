@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MySklad.View"
         mc:Ignorable="d"
-        Title="EditRackView" Height="500" Width="920">
+        Title="EditRackView" Height="500" Width="950">
     <Grid Background="#325f63">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
@@ -43,11 +43,18 @@
             <ComboBox Width="250" IsEditable="True" ItemsSource="{Binding Personals}" DisplayMemberPath="LastName" SelectedItem="{Binding SelectedPersonal}"/>
         </StackPanel>
         <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Vertical" Width="auto">
-            <Label Content="Продукция заказа" Foreground="White"/>
-            <DataGrid ItemsSource="{Binding SelectedRackProducts}" SelectedItem="{Binding SelectedRackProduct}" MinHeight="30" AutoGenerateColumns="False" Width="300">
+            <Label Content="Продукция стеллажа" Foreground="White"/>
+            <!--<DataGrid ItemsSource="{Binding SelectedRackProducts}" SelectedItem="{Binding SelectedRackProduct}" MinHeight="30" AutoGenerateColumns="False" Width="300">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Продукция" Binding="{Binding Title}"/>
                     <DataGridTextColumn Header="Количество продукции" Binding="{Binding CountInStock}"/>
+                </DataGrid.Columns>
+            </DataGrid>-->
+            <DataGrid ItemsSource="{Binding SelectedCrosses}" SelectedItem="{Binding SelectedCross}" MinHeight="30" AutoGenerateColumns="False" Width="380">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Продукция" Binding="{Binding Product.Title}"/>
+                    <DataGridTextColumn Header="Количество продукции на стеллаже" Binding="{Binding Product.CountInStock}" Width="100"/>
+                    <DataGridTextColumn Header="Дата добавления" Binding="{Binding DateProductPlacement}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>

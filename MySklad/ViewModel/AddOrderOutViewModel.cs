@@ -237,6 +237,7 @@ namespace MySklad.ViewModel
                     SelectedOrderProduct.CountProductsOut = Cross;
                     EditProduction(SelectedOrderProduct);
                     SelectedOrderProduct.CrossProductOrderApi = CrossProductOrders.FirstOrDefault(s => s.ProductId == SelectedOrderProduct.Id);
+                    SelectedOrderProduct.CrossOrderOutApi = CrossOrderOuts.FirstOrDefault(s => s.ProductId == SelectedOrderProduct.Id);
                     foreach (CrossProductOrderApi cross in CrossProductOrders.Where(s => s.ProductId == SelectedProduct.Id))
                     {
                         SelectedOrderProduct.CrossProductOrderApi.CountInOrder += cross.CountInOrder;
@@ -246,7 +247,7 @@ namespace MySklad.ViewModel
                         MessageBox.Show("Ошибка, этот продукт находится в реестре удалений");
                         SelectedOrderProducts.Remove(SelectedOrderProduct);
                     }
-                    else if (SelectedOrderProduct.CountProductsOut > SelectedOrderProduct.CrossProductOrderApi.CountInOrder / 2 && SelectedOrderProduct.CountProductsOut > SelectedOrderProduct.CountInStock)
+                    else if (Cross > SelectedOrderProduct.CrossProductOrderApi.CountInOrder / 2 || SelectedOrderProduct.CountProductsOut / 2 > SelectedOrderProduct.CountInStock)
                     {
                         MessageBoxResult message = MessageBox.Show("Невозможно увезти такое количество данной продукции", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Error);
                         if (message == MessageBoxResult.Yes)

@@ -218,8 +218,6 @@ namespace MySklad.ViewModel
                 }
             });
 
-
-
             SaveOrder = new CustomCommand(() =>
             {
                 

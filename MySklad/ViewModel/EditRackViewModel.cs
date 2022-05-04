@@ -91,6 +91,28 @@ namespace MySklad.ViewModel
             window.Close();
         }
 
+        private IEnumerable<CrossProductRackApi> selectedCrosses { get; set; }
+        public IEnumerable<CrossProductRackApi> SelectedCrosses
+        {
+            get => selectedCrosses;
+            set
+            {
+                selectedCrosses = value;
+                SignalChanged();
+            }
+        }
+
+        private CrossProductRackApi selectedCross { get; set; }
+        public CrossProductRackApi SelectedCross
+        {
+            get => selectedCross;
+            set
+            {
+                selectedCross = value;
+                SignalChanged();
+            }
+        }
+
         async Task GetProducts()
         {
             var products = await Api.GetListAsync<List<ProductApi>>("Product");
@@ -107,14 +129,23 @@ namespace MySklad.ViewModel
         {
             Personals = await Api.GetListAsync<List<PersonalApi>>("Personal");
             Product = await Api.GetListAsync<List<ProductApi>>("Product");
+            var cross = await Api.GetListAsync<List<CrossProductRackApi>>("CrossRack");
             CrossProductRacks = await Api.GetListAsync<List<CrossProductRackApi>>("CrossRack");
-            if(rackApi == null)
+
+            if (rackApi == null)
             {
                 SelectedPersonal = Personals.FirstOrDefault();
             }
             else
             {
                 SelectedPersonal = Personals.FirstOrDefault(s => s.Id == rackApi.PersonalId);
+                SelectedCrosses = cross.Where(s => s.RackId == AddRackVM.Id);
+
+                foreach (CrossProductRackApi crossProduct in SelectedCrosses)
+                {
+                    crossProduct.Product = SelectedRackProducts.FirstOrDefault(s => s.Id == crossProduct.ProductId);
+                    //crossProduct.DateProductPlacement = 
+                }
             }
         }
 
@@ -123,6 +154,11 @@ namespace MySklad.ViewModel
         async Task PostRack(RackApi rackApi)
         {
             var rack = await Api.PostAsync<RackApi>(rackApi, "Rack");
+            foreach (CrossProductRackApi crossProduct in SelectedCrosses)
+            {
+                //crossProduct.Product = SelectedRackProducts.FirstOrDefault(s => s.Id == crossProduct.ProductId);
+                crossProduct.DateProductPlacement = DateTime.Now;
+            }
         }
 
         async Task EditRack(RackApi rackApi)
@@ -183,14 +219,19 @@ namespace MySklad.ViewModel
                     if(result == MessageBoxResult.Yes)
                     {
                         SelectedRackProducts.Remove(SelectedRackProduct);
-                        CrossProductRacks.Remove(AddRackVM.CrossProductRacks);
+                        //CrossProductRacks.Remove(AddRackVM.CrossProductRacks);
                         MessageBox.Show("Удаление завершено");
                     }
                 }
 
                 else if (SelectedProduct.CrossProductRack != null)
                 {
-                    MessageBox.Show("Ошибка, данная продукция уже расположена на стеллаже");
+                    MessageBoxResult result = MessageBox.Show("Ошибка, данная продукция уже расположена на стеллаже!", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        return;
+                    }
                 }
                 else
                 {
@@ -203,12 +244,12 @@ namespace MySklad.ViewModel
 
             SaveRack = new CustomCommand(() =>
             {
-                AddRackVM.CrossProductRacks = CrossProductRacks.FirstOrDefault(s => s.RackId == AddRackVM.Id);
+                //AddRackVM.CrossProductRacks = CrossProductRacks.FirstOrDefault(s => s.RackId == AddRackVM.Id);
                 AddRackVM.Products = SelectedRackProducts;
                 if (AddRackVM.Id == 0)
                 {
                     AddRackVM.PersonalId = SelectedPersonal.Id;
-                    AddRackVM.CrossProductRacks = CrossProductRacks.FirstOrDefault(s => s.RackId == AddRackVM.Id);
+                    //AddRackVM.CrossProductRacks = CrossProductRacks.FirstOrDefault(s => s.RackId == AddRackVM.Id);
                     //SelectedRackProduct.CountInStock = 0;
                     foreach (ProductApi product in SelectedRackProducts)
                     {
@@ -223,12 +264,17 @@ namespace MySklad.ViewModel
                         if (result == MessageBoxResult.Yes)
                         {
                             SelectedRackProducts.Remove(SelectedRackProduct);
-                            CrossProductRacks.Remove(AddRackVM.CrossProductRacks);
+                            //CrossProductRacks.Remove(AddRackVM.CrossProductRacks);
                             MessageBox.Show("Удаление завершено");
                         }
                     }
                     else
                     {
+                        var time = DateTime.Now;
+                        foreach (CrossProductRackApi cross in CrossProductRacks)
+                        {
+                            cross.DateProductPlacement = time;
+                        }
                         PostRack(AddRackVM);
                         MessageBox.Show("Добавлен новый стеллаж");
                     }
@@ -236,8 +282,13 @@ namespace MySklad.ViewModel
                 }
                 else
                 {
+                    //var time = DateTime.Now;
+                    //foreach (CrossProductRackApi cross in CrossProductRacks)
+                    //{
+                    //    cross.DateProductPlacement = time;
+                    //}
                     AddRackVM.PersonalId = SelectedPersonal.Id;
-                    AddRackVM.CrossProductRacks = CrossProductRacks.FirstOrDefault(s => s.RackId == AddRackVM.Id);
+                    //AddRackVM.CrossProductRacks = CrossProductRacks.FirstOrDefault(s => s.RackId == AddRackVM.Id);
                     //foreach (CrossProductRackApi productApi in CrossProductRacks.Where(s => s.RackId == AddRackVM.Id))
                     //{
                     //    productApi.Product = SelectedRackProduct;
