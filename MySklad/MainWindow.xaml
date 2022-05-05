@@ -9,14 +9,7 @@
         Title="MainWindow" Height="550" Width="800">
     <Border Background="#325f63" CornerRadius="20">
         <Grid>
-        <!--<DataGrid ItemsSource="{Binding Units}" SelectedItem="{Binding SelectedUnit}" AutoGenerateColumns="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Номер" Binding="{Binding Id}"/>
-                <DataGridTextColumn Header="Название" Binding="{Binding Title}"/>
-            </DataGrid.Columns>
-        </DataGrid>-->
-
-        <Grid.RowDefinitions>
+            <Grid.RowDefinitions>
             <RowDefinition Height="75"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
