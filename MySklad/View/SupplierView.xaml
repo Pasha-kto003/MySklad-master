@@ -90,7 +90,7 @@
             <ListBox.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Изменить поставшика" Command="{Binding EditSupplier}" Background="Transparent" BorderBrush="Transparent"/>
-                    <Button Content="Удалить поставщика" Command="{Binding DeleteSupplier}" Background="Transparent" BorderBrush="Transparent"/>
+                    <MenuItem Header="Удалить поставщика" Command="{Binding RemoveSupplier}" Background="Transparent" BorderBrush="Transparent"/>
                 </ContextMenu>
             </ListBox.ContextMenu>
         </ListBox>

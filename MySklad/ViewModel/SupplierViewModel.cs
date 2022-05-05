@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace MySklad.ViewModel
 {
@@ -92,6 +93,28 @@ namespace MySklad.ViewModel
             }
         }
 
+        private IEnumerable<OrderInApi> orders { get; set; }
+        public IEnumerable<OrderInApi> Orders
+        {
+            get => orders;
+            set
+            {
+                orders = value;
+                SignalChanged();
+            }
+        }
+
+        private IEnumerable<OrderOutApi> ordersOut { get; set; }
+        public IEnumerable<OrderOutApi> OrdersOut
+        {
+            get => ordersOut;
+            set
+            {
+                ordersOut = value;
+                SignalChanged();
+            }
+        }
+
         private List<CompanyApi> companies { get; set; }
         public List<CompanyApi> Companies
         {
@@ -127,6 +150,7 @@ namespace MySklad.ViewModel
         public CustomCommand ForwardPage { get; set; }
         public CustomCommand AddSupplier { get; set; }
         public CustomCommand EditSupplier { get; set; }
+        public CustomCommand RemoveSupplier { get; set; }
 
         private string pages;
         public string Pages
@@ -144,6 +168,7 @@ namespace MySklad.ViewModel
             Suppliers = new List<SupplierApi>();
             Companies = new List<CompanyApi>();
             GetSuppliers();
+            GetOrders();
 
             ViewCountRows = new List<string>();
             ViewCountRows.AddRange(new string[] { "5", "все" });
@@ -184,6 +209,36 @@ namespace MySklad.ViewModel
 
             });
 
+            RemoveSupplier = new CustomCommand(() =>
+            {
+                foreach (OrderInApi orderIn in Orders)
+                {
+                    var id = SelectedSupplier.Id;
+                    var search = Orders.Where(s=> s.SupplierId == id);
+                    if(search == null)
+                    {
+                        MessageBox.Show("Можно удалить данного поставщика");
+                        return;
+                    }
+                    if (search != null)
+                    {
+                        MessageBox.Show("Невозможно удалить данного поставщика");
+                        return;
+                    }
+                    //if (orderIn.SupplierId == SelectedSupplier.Id)
+                    //{
+                    //    MessageBox.Show("Невозможно удалить данного поставщика");
+                    //    return;
+                    //}
+
+                    //else if (orderIn.SupplierId != SelectedSupplier.Id)
+                    //{
+                    //    MessageBox.Show("Можно удалить данного поставщика");
+                    //    DeleteSupplier(SelectedSupplier);
+                    //}
+                } 
+            });
+
             AddSupplier = new CustomCommand(() =>
             {
                 AddSupplier addSupplier = new AddSupplier();
@@ -217,6 +272,19 @@ namespace MySklad.ViewModel
                 supplier.Company = Companies.First(s => s.Id == supplier.CompanyId);
             }
             SignalChanged("Suppliers");
+        }
+
+        private async Task GetOrders()
+        {
+            var order = await Api.GetListAsync<List<OrderInApi>>("OrderIn");
+            var orderOut = await Api.GetListAsync<List<OrderOutApi>>("OrderOut");
+            Orders = order.Where(s => s.SupplierId != 0);
+            OrdersOut = orderOut.Where(s => s.SupplierId != 0);
+        }
+
+        private async Task DeleteSupplier(SupplierApi supplierApi)
+        {
+            var delete = await Api.DeleteAsync<SupplierApi>(supplierApi, "Supplier");
         }
 
         internal void Sort()
