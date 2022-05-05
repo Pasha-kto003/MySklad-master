@@ -19,7 +19,7 @@
         <StackPanel Width="233" HorizontalAlignment="Left">
             <Label Content="Изображение:" Foreground="White"/>
             <Image Source="{Binding ImageCompany}" Width="150" Height="150"/>
-            <Button Height="30" Style="{StaticResource ButtonTheme}" Content="Выбрать изображение" Command="{Binding SelectImage}"/>
+            <Button Height="30" Style="{StaticResource ButtonTheme}" Content="Выбрать изображение" Width="150" Command="{Binding SelectImage}"/>
         </StackPanel>
         <StackPanel DataContext="{Binding AddCompanyVM}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal">
             <StackPanel Width="250" HorizontalAlignment="Left" Margin="0 0 10 0">
