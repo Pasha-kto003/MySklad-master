@@ -59,6 +59,7 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel  Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Left">
                             <StackPanel Orientation="Horizontal">
+                                <Label Content="Наименование поставщика:"/>
                                 <Label Content="{Binding Title}">
                                 </Label>
                             </StackPanel>
@@ -75,8 +76,12 @@
                                 <Label Content="{Binding Phone}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Компания"/>
+                                <Label Content="Компания:"/>
                                 <Label Content="{Binding Company.NameOfCompany}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Логотип:"/>
+                                <Image Source="{Binding Company.Image}" Width="80" Height="80"/>
                             </StackPanel>
                         </StackPanel>
                     </Grid>
