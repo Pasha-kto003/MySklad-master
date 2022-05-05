@@ -19,7 +19,7 @@
                     <Label Content="Дата удаления" Foreground="White"/>
                     <DatePicker SelectedDate="{Binding DeletedAt, StringFormat = '{}{0:dd.MM.yyyy}'}"/>
                     <Label Content="Причина удаления" Foreground="White"/>
-                <TextBox Text="{Binding ReasonDelete}" IsReadOnly="True"/>
+                <TextBox Text="{Binding ReasonDelete}"/>
             </StackPanel>
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Vertical" Width="250" HorizontalAlignment="Center">
@@ -28,6 +28,7 @@
         </StackPanel>
         <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Content="Отмена" Click="Button_Click" Style="{StaticResource ButtonTheme}" HorizontalAlignment="Left" Width="150"/>
+            
             <Button Content="Сохранить реестр" Command="{Binding SaveRegister}" Style="{StaticResource ButtonTheme}" HorizontalAlignment="Right" Width="150"/>
         </StackPanel>
     </Grid>

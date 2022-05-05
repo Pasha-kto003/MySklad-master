@@ -8,17 +8,18 @@
         Title="AddPersonalView" Height="500" Width="900">
     <Grid Background="#325f63">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="466"/>
+            <ColumnDefinition Width="230"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="150"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <StackPanel DataContext="{Binding AddPersonalVM}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+        <StackPanel DataContext="{Binding AddPersonalVM}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal">
             <StackPanel Width="233" HorizontalAlignment="Left">
 
                 <Label Content="Имя:" Foreground="White"/>
@@ -29,7 +30,7 @@
                 <Label Content="Отчество:" Foreground="White"/>
                 <TextBox Text="{Binding Patronimyc}"/>
             </StackPanel>
-            <StackPanel Width="233" Grid.Column="1">
+            <StackPanel Width="233" Grid.Column="2">
                 <Label Content="Рейтинг:" Foreground="White"/>
                 <TextBox Text="{Binding Rating}"/>
                 <Label Content="Номер телефона:" Foreground="White"/>
@@ -40,24 +41,23 @@
                 <DatePicker SelectedDate="{Binding DateEndWork, StringFormat = '{}{0:dd.MM.yyyy}'}"/>
             </StackPanel>
         </StackPanel>
-        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0 10 0 0">
-            <Button Height="30" Width="150" Style="{StaticResource ButtonTheme}" HorizontalAlignment="Center" Content="Удалить работника" Command="{Binding RemovePersonal}"/>
+        <StackPanel Grid.Row="1" Grid.Column="0" Height="50" Margin="0 10 0 0">
         </StackPanel>
-        <StackPanel Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" Grid.Row="1" >
+        <StackPanel Grid.Column="0" Orientation="Horizontal" Grid.Row="0" >
 
             <StackPanel Grid.Column="1">
                 <Label Content="Изображение:" Foreground="White"/>
-                <Image Source="{Binding ImagePersonal}" Width="150" Height="150"/>
-                <Button Height="30" Style="{StaticResource ButtonTheme}" Content="Выбрать изображение" Command="{Binding SelectImage}"/>
+                <Image Source="{Binding ImagePersonal}" Width="180" Height="150"/>
+                <Button Height="30" Style="{StaticResource ButtonTheme}" Content="Выбрать изображение" Command="{Binding SelectImage}" HorizontalAlignment="Center"/>
             </StackPanel>
 
         </StackPanel>
-        <StackPanel Grid.Column="2">
+        <StackPanel Grid.Column="2" Width="230">
             <Label Content="Статус работника:" Foreground="White"/>
             <ComboBox IsEditable="True" ItemsSource="{Binding Statuses}" DisplayMemberPath="Title" SelectedItem="{Binding SelectedStatus}"/>
         </StackPanel>
-        
-        <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal">
+
+        <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal">
             <Button Style="{StaticResource ButtonTheme}" Width="150" Height="30" Content="Отмена" HorizontalAlignment="Left" Click="Button_Click"/>
             <Button Command="{Binding SavePersonal}" Style="{StaticResource ButtonTheme}" Width="150" Height="30" Content="Сохранить" HorizontalAlignment="Right"/>
         </StackPanel>

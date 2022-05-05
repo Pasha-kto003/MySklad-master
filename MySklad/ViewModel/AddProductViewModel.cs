@@ -207,7 +207,7 @@ namespace MySklad.ViewModel
                     }
                     else
                     {
-                        if (AddProductVM.CountProducts == 0)
+                        if (AddProductVM.CrossProductOrderApi == null)
                         {
                             AddProductVM.CountInStock = AddProductVM.CountInStock / 2;
                         }

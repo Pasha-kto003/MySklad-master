@@ -93,6 +93,7 @@ namespace MySklad.ViewModel
 
         public CustomCommand AddRegister { get; set; }
         public CustomCommand EditRegister { get; set; }
+        public CustomCommand DeleteShopRegister { get; set; }
         public CustomCommand UpdateList { get; set; }
         public CustomCommand BackPage { get; set; }
         public CustomCommand ForwardPage { get; set; }
@@ -159,6 +160,18 @@ namespace MySklad.ViewModel
                 GetRegisters();
             });
 
+            DeleteShopRegister = new CustomCommand(() =>
+            {
+                MessageBoxResult message = MessageBox.Show($"Вы действительно хотите убрать продукт: {SelectedRegister.Product.Title} из реестра удалений", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Error);
+                if (message == MessageBoxResult.Yes)
+                {
+                    DeleteRegister(SelectedRegister);
+                    MessageBox.Show("Продукт восстановлен");
+                    return;
+                }
+                
+            });
+
             ForwardPage = new CustomCommand(() =>
             {
                 if (searchResult == null)
@@ -214,6 +227,24 @@ namespace MySklad.ViewModel
             }
             SignalChanged("Registers");
             InitPagination();
+        }
+
+        private async Task DeleteRegister(WriteOffRegisterApi writeOff)
+        {
+            foreach (WriteOffRegisterApi registerApi in Registers)
+            {
+                registerApi.Product = Products.First(s => s.Id == registerApi.ProductId);
+            }
+            writeOff.Product.Status = "В норме";
+            EditProduction(writeOff.Product);
+            writeOff.ProductId = 0;
+            writeOff.Product = null;
+            var write = await Api.DeleteAsync<WriteOffRegisterApi>(writeOff, "WriteOffRegister");
+        }
+
+        private async Task EditProduction(ProductApi product)
+        {
+            var prod = await Api.PutAsync<ProductApi>(product, "Product");
         }
 
         private void Search()
