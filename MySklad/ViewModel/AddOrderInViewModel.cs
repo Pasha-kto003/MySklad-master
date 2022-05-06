@@ -40,6 +40,9 @@ namespace MySklad.ViewModel
             }
         }
 
+        public string TimeWait { get; set; }
+        public DateTime date { get; set; } = DateTime.Now;
+
         private IEnumerable<CrossProductOrderApi> selectedCrosses { get; set; }
         public IEnumerable<CrossProductOrderApi> SelectedCrosses 
         {
@@ -194,7 +197,10 @@ namespace MySklad.ViewModel
                     SelectedOrderProducts = orderInApi.Products;
                 }
             }
-            
+
+            var time = AddOrderVM.DateOrderIn.Day - date.Day;
+            TimeWait = $"{time * 24} часов";
+            SignalChanged("TimeWait");
             GetOrders(AddOrderVM);
 
             AddProduct = new CustomCommand(() =>

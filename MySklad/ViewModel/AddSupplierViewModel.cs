@@ -88,14 +88,16 @@ namespace MySklad.ViewModel
             GetSuppliers(AddSupplierVM);
             if (supplierApi == null)
             {
-                AddSupplierVM = new SupplierApi { Title = "Название компании", Email = "Email", Rating = 100 };
+                AddSupplierVM = new SupplierApi { FirstName = "Название компании", Email = "Email", Rating = 100 };
             }
             else
             {
                 AddSupplierVM = new SupplierApi
                 {
                     Id = supplierApi.Id,
-                    Title = supplierApi.Title,
+                    FirstName = supplierApi.FirstName,
+                    LastName = supplierApi.LastName,
+                    Patronimyc = supplierApi.Patronimyc,
                     Email = supplierApi.Email,
                     Rating = supplierApi.Rating,
                     Phone = supplierApi.Phone,

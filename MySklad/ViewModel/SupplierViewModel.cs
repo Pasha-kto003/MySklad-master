@@ -180,7 +180,7 @@ namespace MySklad.ViewModel
 
 
             SearchType = new List<string>();
-            SearchType.AddRange(new string[] { "Название поставщика", "Рейтинг"});
+            SearchType.AddRange(new string[] { "Имя поставщика", "Рейтинг"});
             selectedSearchType = SearchType.First();
 
             BackPage = new CustomCommand(() => {
@@ -335,9 +335,9 @@ namespace MySklad.ViewModel
         private void Search()
         {
             var search = SearchText.ToLower();
-            if (SelectedSearchType == "Название поставщика")
+            if (SelectedSearchType == "Имя поставщика")
             {
-                searchResult = Suppliers.Where(c => c.Title.ToLower().Contains(search)).ToList();
+                searchResult = Suppliers.Where(c => c.FirstName.ToLower().Contains(search)).ToList();
             }
             else if (SelectedSearchType == "Рейтинг")
                 searchResult = Suppliers.Where(c => c.Rating.ToString().ToLower().Contains(search)).ToList();

@@ -11,7 +11,6 @@ namespace MySklad.ViewModel
 {
     public class OrderInViewModel : BaseViewModel
     {
-
         public List<OrderInApi> searchResult { get; set; }
         public string SearchCountRows
         {
@@ -151,7 +150,7 @@ namespace MySklad.ViewModel
             }
         }
 
-        
+
 
         public OrderInViewModel()
         {
@@ -165,7 +164,7 @@ namespace MySklad.ViewModel
             selectedViewCountRows = ViewCountRows.Last();
 
             SortType = new List<string>();
-            SortType.AddRange(new string[] { "Дата"});
+            SortType.AddRange(new string[] { "Дата" });
             selectedSortType = SortType.First();
 
             OrderType = new List<string>();
@@ -290,10 +289,10 @@ namespace MySklad.ViewModel
             }
             var search = SearchText.ToLower();
             if (SelectedSearchType == "Поставщик")
-                searchResult = Orders.Where(s => s.Supplier.Title.ToString().ToLower().Contains(search)).ToList();
+                searchResult = Orders.Where(s => s.Supplier.FirstName.ToString().ToLower().Contains(search)).ToList();
             else if (SelectedSearchType == "Дата")
                 searchResult = Orders
-                    .Where(c => c.DateOrderIn.ToShortDateString().ToLower().Contains(search)).ToList(); 
+                    .Where(c => c.DateOrderIn.ToShortDateString().ToLower().Contains(search)).ToList();
             Sort();
             InitPagination();
             Pagination();
@@ -301,3 +300,4 @@ namespace MySklad.ViewModel
         }
     }
 }
+

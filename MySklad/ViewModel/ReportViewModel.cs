@@ -600,7 +600,7 @@ namespace MySklad.ViewModel
                 sheet.Range[$"A{index}"].NumberValue = count++;
                 sheet.Range[$"B{index}"].Value = date.ToShortDateString();
                 sheet.Range[$"C{index}"].Value = order.Status;
-                sheet.Range[$"F{index}"].Value = order.Supplier.Title;
+                sheet.Range[$"F{index}"].Value = order.Supplier.FirstName;
                 sheet.Range[$"G5:AC5"].Value = order.Products.ToString();
 
                 index++;
@@ -643,7 +643,7 @@ namespace MySklad.ViewModel
             foreach (var supp in OrderBySupplier)
             {
                 sheet.Range[$"A{index}"].NumberValue = count++;
-                sheet.Range[$"B{index}"].Value = supp.Supplier.Title;
+                sheet.Range[$"B{index}"].Value = supp.Supplier.FirstName;
                 sheet.Range[$"C{index}"].Value = supp.Id.ToString();
                 sheet.Range[$"D{index}"].Value = supp.Supplier.Email;
                 sheet.Range[$"E{index}"].Value = supp.Supplier.Phone;
@@ -697,7 +697,7 @@ namespace MySklad.ViewModel
                 sheet.Range[$"A{index}"].NumberValue = count++;
                 sheet.Range[$"B{index}"].Value = date.ToShortDateString();
                 sheet.Range[$"C{index}"].Value = order.Status;
-                sheet.Range[$"D{index}"].Value = order.Supplier.Title;
+                sheet.Range[$"D{index}"].Value = order.Supplier.FirstName;
                 sheet.Range[$"E{index}"].Value = order.Shop.Name;
                 sheet.Range[$"F5:AC5"].Value = order.Products.ToString();
 
@@ -742,7 +742,7 @@ namespace MySklad.ViewModel
             foreach (var supp in OrderOutByPeriod)
             {
                 sheet.Range[$"A{index}"].NumberValue = count++;
-                sheet.Range[$"B{index}"].Value = supp.Supplier.Title;
+                sheet.Range[$"B{index}"].Value = supp.Supplier.FirstName;
                 sheet.Range[$"C{index}"].Value = supp.Id.ToString();
                 sheet.Range[$"D{index}"].Value = supp.Supplier.Email;
                 sheet.Range[$"E{index}"].Value = supp.Supplier.Phone;

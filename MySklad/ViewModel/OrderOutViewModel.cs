@@ -296,7 +296,7 @@ namespace MySklad.ViewModel
                     .Where(c => c.DateOrderOut.ToShortDateString().ToLower().Contains(search)).ToList();
             else if (SelectedSearchType == "Поставщик")
                 searchResult = Orders
-                        .Where(c => c.Supplier.Title.ToLower().Contains(search)).ToList();
+                        .Where(c => c.Supplier.FirstName.ToLower().Contains(search)).ToList();
             else if (SelectedSearchType == "Магазин")
                 searchResult = Orders.Where(c => c.Shop.Name.ToLower().Contains(search)).ToList();
             Sort();

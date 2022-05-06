@@ -39,12 +39,10 @@
             </Grid>
             <StackPanel Grid.Column="2">
                 <Label Content="Выбор сортирвки"/>
-                <!--<Button Command="{Binding Sortirovka}" Content="Сортировать"/>-->
                 <ComboBox IsEditable="True" Width="200" ItemsSource="{Binding SortType}" SelectedItem="{Binding SelectedSortType}"/>
             </StackPanel>
             <StackPanel Grid.Column="3">
                 <Label Content="Сортировка по типу"/>
-                <!--<Button Command="{Binding Sortirovka}" Content="Сортировать"/>-->
                 <ComboBox IsEditable="True" Width="200" ItemsSource="{Binding OrderType}" SelectedItem="{Binding SelectedOrderType}"/>
             </StackPanel>
         </Grid>
@@ -59,8 +57,18 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel  Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Left">
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Наименование поставщика:"/>
-                                <Label Content="{Binding Title}">
+                                <Label Content="Имя поставщика:"/>
+                                <Label Content="{Binding FirstName}">
+                                </Label>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Фамилия поставщика поставщика:"/>
+                                <Label Content="{Binding LastName}">
+                                </Label>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Отчество поставщика:"/>
+                                <Label Content="{Binding Patronimyc}">
                                 </Label>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">

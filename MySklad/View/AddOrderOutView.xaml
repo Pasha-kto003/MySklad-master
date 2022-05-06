@@ -32,7 +32,7 @@
         </StackPanel>
         <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Orientation="Vertical" Grid.Row="1" >
             <Label HorizontalAlignment="Center" HorizontalContentAlignment="Center" Width="250" Content="Поставщик продукции:" Foreground="White"/>
-            <ComboBox Width="250" IsEditable="True" ItemsSource="{Binding Suppliers}" DisplayMemberPath="Title" SelectedItem="{Binding SelectedSupplier}"/>
+            <ComboBox Width="250" IsEditable="True" ItemsSource="{Binding Suppliers}" DisplayMemberPath="FirstName" SelectedItem="{Binding SelectedSupplier}"/>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="2">
             <Label Content="Точка доставки" Foreground="White"/>
