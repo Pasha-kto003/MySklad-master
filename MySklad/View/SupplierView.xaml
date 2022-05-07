@@ -84,6 +84,10 @@
                                 <Label Content="{Binding Phone}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
+                                <Label Content="Статус:"/>
+                                <Label Content="{Binding Status}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
                                 <Label Content="Компания:"/>
                                 <Label Content="{Binding Company.NameOfCompany}"/>
                             </StackPanel>

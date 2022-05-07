@@ -13,9 +13,10 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="150"/>
         </Grid.RowDefinitions>
-        <StackPanel DataContext="{Binding AddSupplierVM}" Orientation="Vertical" VerticalAlignment="Center" Grid.Row="1" Width="505">
+        <StackPanel DataContext="{Binding AddSupplierVM}" Orientation="Vertical" VerticalAlignment="Center" Grid.Row="1" Width="800">
             <Grid>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
@@ -26,7 +27,7 @@
                     <TextBox Text="{Binding LastName}"/>
                     <Label Content="Отчество поставщика" Foreground="White"/>
                     <TextBox Text="{Binding Patronimyc}"/>
-                    
+
                 </StackPanel>
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" Grid.Column="1" Width="250">
                     <Label Content="Рейтинг" Foreground="White"/>
@@ -36,14 +37,18 @@
                     <Label Content="Телефон" Foreground="White"/>
                     <TextBox Text="{Binding Phone}"/>
                 </StackPanel>
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" Grid.Column="2" Width="250" Height="174">
+                    <Label Content="Статус" Foreground="White"/>
+                    <TextBox Text="{Binding Status}"/>
+                </StackPanel>
             </Grid>
-            
+
         </StackPanel>
         <StackPanel Grid.Row="2">
             <Label Content="Выберите компанию поставщика" Foreground="White"/>
             <ComboBox ItemsSource="{Binding Companies}" SelectedItem="{Binding SelectedCompany}" DisplayMemberPath="NameOfCompany" Width="250" IsEditable="True" Background="#325f63" HorizontalAlignment="Center"/>
         </StackPanel>
-        
+
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
             <Grid>
                 <Grid.ColumnDefinitions>

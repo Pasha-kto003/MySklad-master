@@ -231,11 +231,21 @@ namespace MySklad.ViewModel
                 SelectedOrderProduct.CountProducts = NewCross;
                 if (AddOrderVM.Id == 0)
                 {
+                    if(SelectedSupplier.Status == "Удален")
+                    {
+                        MessageBox.Show("Выберите другого поставщика");
+                        return;
+                    }
                     AddOrderVM.SupplierId = SelectedSupplier.Id;
                     PostOrder(AddOrderVM);
                 }
                 else
                 {
+                    if (SelectedSupplier.Status == "Удален")
+                    {
+                        MessageBox.Show("Выберите другого поставщика");
+                        return;
+                    }
                     AddOrderVM.SupplierId = SelectedSupplier.Id;
                     EditOrder(AddOrderVM);
                 }

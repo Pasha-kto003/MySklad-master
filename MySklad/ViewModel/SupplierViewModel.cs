@@ -211,41 +211,59 @@ namespace MySklad.ViewModel
 
             RemoveSupplier = new CustomCommand(() =>
             {
-                foreach (OrderInApi orderIn in Orders)
+                MessageBoxResult message = MessageBox.Show($"Вы действительно хотите удалить поставщика: {SelectedSupplier.LastName}, {SelectedSupplier.FirstName}", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (message == MessageBoxResult.Yes)
                 {
-                    if(SelectedSupplier == orderIn.Supplier)
-                    {
-                        MessageBox.Show("Невозможно удалить данного поставщика");
-                        return;
-                    }
+                    SelectedSupplier.Status = "Удален";
+                    DeleteSupplier(SelectedSupplier);
+                    MessageBox.Show("Поставщик удален");
+                    SignalChanged("SelectedSupplier");
+                    GetSuppliers();
+                    return;
+                }
 
-                    else if (SelectedSupplier != orderIn.Supplier)
-                    {
-                        MessageBox.Show("Можно удалить данного поставщика");
-                        return;
-                    }
-                    //if(search == null)
-                    //{
-                    //    MessageBox.Show("Можно удалить данного поставщика");
-                    //    return;
-                    //}
-                    //if (search != null)
-                    //{
-                    //    MessageBox.Show("Невозможно удалить данного поставщика");
-                    //    return;
-                    //}
-                    //if (orderIn.SupplierId == SelectedSupplier.Id)
-                    //{
-                    //    MessageBox.Show("Невозможно удалить данного поставщика");
-                    //    return;
-                    //}
+                //foreach (OrderInApi orderIn in Orders)
+                //{
+                //    foreach (OrderOutApi orderOut in OrdersOut)
+                //    {
+                //        orderOut.Supplier = Suppliers.FirstOrDefault(s => s.Id == SelectedSupplier.Id);
 
-                    //else if (orderIn.SupplierId != SelectedSupplier.Id)
-                    //{
-                    //    MessageBox.Show("Можно удалить данного поставщика");
-                    //    DeleteSupplier(SelectedSupplier);
-                    //}
-                } 
+                //        orderIn.Supplier = Suppliers.FirstOrDefault(s => s.Id == SelectedSupplier.Id);
+                //        if (SelectedSupplier.Id == orderIn.SupplierId || SelectedSupplier.Id == orderOut.SupplierId)
+                //        {
+                //            MessageBox.Show("Невозможно удалить данного поставщика");
+                //            return;
+                //        }
+
+                //        else if (orderIn.SupplierId != SelectedSupplier.Id || orderOut.SupplierId != SelectedSupplier.Id)
+                //        {
+                //            MessageBox.Show("Можно удалить данного поставщика");
+                //            return;
+                //        }
+                //    }
+
+                //if(search == null)
+                //{
+                //    MessageBox.Show("Можно удалить данного поставщика");
+                //    return;
+                //}
+                //if (search != null)
+                //{
+                //    MessageBox.Show("Невозможно удалить данного поставщика");
+                //    return;
+                //}
+                //if (orderIn.SupplierId == SelectedSupplier.Id)
+                //{
+                //    MessageBox.Show("Невозможно удалить данного поставщика");
+                //    return;
+                //}
+
+                //else if (orderIn.SupplierId != SelectedSupplier.Id)
+                //{
+                //    MessageBox.Show("Можно удалить данного поставщика");
+                //    DeleteSupplier(SelectedSupplier);
+                //}
+                //} 
             });
 
             AddSupplier = new CustomCommand(() =>
@@ -289,15 +307,12 @@ namespace MySklad.ViewModel
             var orderOut = await Api.GetListAsync<List<OrderOutApi>>("OrderOut");
             Orders = order.Where(s => s.SupplierId != 0);
             OrdersOut = orderOut.Where(s => s.SupplierId != 0);
-            foreach(OrderInApi orderIn in Orders)
-            {
-                orderIn.Supplier = Suppliers.FirstOrDefault(s => s.Id == orderIn.SupplierId);
-            }
+            
         }
 
         private async Task DeleteSupplier(SupplierApi supplierApi)
         {
-            var delete = await Api.DeleteAsync<SupplierApi>(supplierApi, "Supplier");
+            var delete = await Api.PutAsync<SupplierApi>(supplierApi, "Supplier");
         }
 
         internal void Sort()
