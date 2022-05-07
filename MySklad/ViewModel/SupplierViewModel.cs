@@ -222,6 +222,8 @@ namespace MySklad.ViewModel
                     return;
                 }
 
+                //поставщик удален
+
                 //foreach (OrderInApi orderIn in Orders)
                 //{
                 //    foreach (OrderOutApi orderOut in OrdersOut)
