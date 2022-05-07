@@ -47,7 +47,7 @@
                     </ContextMenu>
                 </DataGrid.ContextMenu>
             </DataGrid>-->
-            <DataGrid ItemsSource="{Binding SelectedCrosses, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedCross}" MinHeight="30" AutoGenerateColumns="False" Width="300">
+            <DataGrid ItemsSource="{Binding SelectedCrosses, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedCross}" MinHeight="30" AutoGenerateColumns="False" Width="300" MaxHeight="100">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Продукция" Binding="{Binding Product.Title}"/>
                     <DataGridTextColumn Header="Количество привезенной продукции" Binding="{Binding CountInOrder}"/>

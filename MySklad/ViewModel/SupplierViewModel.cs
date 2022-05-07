@@ -213,18 +213,27 @@ namespace MySklad.ViewModel
             {
                 foreach (OrderInApi orderIn in Orders)
                 {
-                    var id = SelectedSupplier.Id;
-                    var search = Orders.Where(s=> s.SupplierId == id);
-                    if(search == null)
-                    {
-                        MessageBox.Show("Можно удалить данного поставщика");
-                        return;
-                    }
-                    if (search != null)
+                    if(SelectedSupplier == orderIn.Supplier)
                     {
                         MessageBox.Show("Невозможно удалить данного поставщика");
                         return;
                     }
+
+                    else if (SelectedSupplier != orderIn.Supplier)
+                    {
+                        MessageBox.Show("Можно удалить данного поставщика");
+                        return;
+                    }
+                    //if(search == null)
+                    //{
+                    //    MessageBox.Show("Можно удалить данного поставщика");
+                    //    return;
+                    //}
+                    //if (search != null)
+                    //{
+                    //    MessageBox.Show("Невозможно удалить данного поставщика");
+                    //    return;
+                    //}
                     //if (orderIn.SupplierId == SelectedSupplier.Id)
                     //{
                     //    MessageBox.Show("Невозможно удалить данного поставщика");
@@ -280,6 +289,10 @@ namespace MySklad.ViewModel
             var orderOut = await Api.GetListAsync<List<OrderOutApi>>("OrderOut");
             Orders = order.Where(s => s.SupplierId != 0);
             OrdersOut = orderOut.Where(s => s.SupplierId != 0);
+            foreach(OrderInApi orderIn in Orders)
+            {
+                orderIn.Supplier = Suppliers.FirstOrDefault(s => s.Id == orderIn.SupplierId);
+            }
         }
 
         private async Task DeleteSupplier(SupplierApi supplierApi)
