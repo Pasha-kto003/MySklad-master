@@ -80,7 +80,7 @@
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn Header="Дата накладной" DisplayMemberBinding="{Binding DateOrderIn}"/>
-                                    <GridViewColumn Header="Поставщик товара" DisplayMemberBinding="{Binding Supplier.Title}"/>
+                                    <GridViewColumn Header="Поставщик товара" DisplayMemberBinding="{Binding Supplier.FirstName}"/>
                                     <GridViewColumn Header="Статус накладной" DisplayMemberBinding="{Binding Status}"/>
                                 </GridView>
                             </ListView.View>
@@ -108,7 +108,7 @@
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Дата накладной" DisplayMemberBinding="{Binding DateOrderOut}"/>
-                                <GridViewColumn Header="Поставщик товара" DisplayMemberBinding="{Binding Supplier.Title}"/>
+                                <GridViewColumn Header="Поставщик товара" DisplayMemberBinding="{Binding Supplier.FirstName}"/>
                                 <GridViewColumn Header="Точка доставки" DisplayMemberBinding="{Binding Shop.Name}"/>
                                 <GridViewColumn Header="Статус накладной" DisplayMemberBinding="{Binding Status}"/>
                             </GridView>
