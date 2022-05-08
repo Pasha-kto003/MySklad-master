@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace MySklad.ViewModel
 {
@@ -151,6 +153,8 @@ namespace MySklad.ViewModel
         public CustomCommand AddSupplier { get; set; }
         public CustomCommand EditSupplier { get; set; }
         public CustomCommand RemoveSupplier { get; set; }
+
+        public Label colorStatus { get; set; }
 
         private string pages;
         public string Pages
