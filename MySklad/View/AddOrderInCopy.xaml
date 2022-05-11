@@ -1,0 +1,66 @@
+﻿<Window x:Class="MySklad.View.AddOrderInCopy"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MySklad.View"
+        mc:Ignorable="d"
+        Title="AddOrderInCopy" Height="900" Width="1050">
+    <ScrollViewer>
+        <Grid Background="#325f63">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="70"/>
+                <RowDefinition Height="200"/>
+                <RowDefinition Height="200"/>
+                <RowDefinition Height="200"/>
+                <RowDefinition Height="500"/>
+                <RowDefinition Height="100"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0">
+                <Label Content="Заполнение приходной" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" FontSize="26" Foreground="White"/>
+            </StackPanel>
+            <StackPanel DataContext="{Binding AddOrderVM}" Grid.Row="1" Width="350" HorizontalAlignment="Center" VerticalAlignment="Center" Height="200">
+                <Label Content="Введите дату приходной" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
+                <DatePicker SelectedDate="{Binding DateOrderIn, StringFormat = '{}{0:dd.MM.yyyy}'}" Width="250"/>
+                <Label Content="Введите статус накладной" Margin="0 20 0 0" Foreground="White"/>
+                <TextBox Text="{Binding Status}" Width="250"/>
+            </StackPanel>
+            <StackPanel Grid.Row="2" Width="350" HorizontalAlignment="Center" VerticalAlignment="Center" Height="200">
+                <Label Content="Выберите поставщика приходной" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
+                <ComboBox Width="250" IsEditable="True" ItemsSource="{Binding Suppliers}" DisplayMemberPath="FirstName" SelectedItem="{Binding SelectedSupplier}" Margin="0 5 0 0"/>
+            </StackPanel>
+            <StackPanel Grid.Row="3" Width="970" Orientation="Vertical">
+                <Label Content="Продукты для добавления в заказ" Foreground="White" Height="30"/>
+                <ComboBox ItemsSource="{Binding Product}" SelectedItem="{Binding SelectedProduct}" DisplayMemberPath="Title" MinHeight="30" Height="30" Width="250"/>
+                <Label Content="Введите количество привезенного товара" Foreground="White" Height="30"/>
+                <TextBox Text="{Binding NewCross}" Width="250" Height="30"/>
+                <Button Width="100" Content="Добавить" Height="30" Command="{Binding AddProduct}" Style="{StaticResource ButtonTheme}" HorizontalAlignment="Center" Margin="0 15 0 0"/>
+            </StackPanel>
+            <StackPanel Grid.Row="4">
+                <Label Content="Продукция заказа" Foreground="White"/>
+                <!--<DataGrid ItemsSource="{Binding SelectedOrderProducts}" SelectedItem="{Binding SelectedOrderProduct}" MinHeight="30" AutoGenerateColumns="False" Width="300">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Продукция" Binding="{Binding Title}"/>
+                    <DataGridTextColumn Header="Количество привезенной продукции" Binding="{Binding CountProducts}"/>
+                </DataGrid.Columns>
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Command="{Binding EditProductCount}" Header="Изменить привезенное количество"/>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+            </DataGrid>-->
+                <DataGrid ItemsSource="{Binding SelectedCrosses, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedCross}" MinHeight="30" AutoGenerateColumns="False" Width="900" MaxHeight="500">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Название продукта" Binding="{Binding Product.Title}"/>
+                        <DataGridTextColumn Header="Количество привезенной продукции" Binding="{Binding CountInOrder}"/>
+                        <DataGridTextColumn Header="Ед. измерения" Binding="{Binding Product.Unit.Title}"/>
+                        <DataGridTextColumn Header="Дата начала срока годности продукта" Binding="{Binding Product.BestBeforeDateStart}"/>
+                        <DataGridTextColumn Header="Дата конца срока годности продукта" Binding="{Binding Product.BestBeforeDateEnd}"/>
+                        <DataGridTextColumn Header="Тип продукции" Binding="{Binding Product.ProductTYpe.Title}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Window>
