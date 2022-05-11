@@ -601,7 +601,10 @@ namespace MySklad.ViewModel
                 sheet.Range[$"B{index}"].Value = date.ToShortDateString();
                 sheet.Range[$"C{index}"].Value = order.Status;
                 sheet.Range[$"F{index}"].Value = order.Supplier.FirstName;
-                sheet.Range[$"G5:AC5"].Value = order.Products.ToString();
+                foreach(ProductApi product in order.Products)
+                {
+                    sheet.Range[$"G5:G200"].Value = product.Title;
+                }
 
                 index++;
             }
@@ -725,12 +728,14 @@ namespace MySklad.ViewModel
             var sheet = workBook.Worksheets[0];
             GetProducts();
             GetOrderOut();
-            sheet.Range["B1"].Value = "Наименование поставщика";
-            sheet.Range["C1"].Value = "Заказ";
-            sheet.Range["D1"].Value = "Почта";
-            sheet.Range["E1"].Value = "Телефон";
-            sheet.Range["F1"].Value = "Рейтинг";
-            sheet.Range["G4"].Value = "Наименование компании";
+            sheet.Range["B1"].Value = "Имя поставщика";
+            sheet.Range["C1"].Value = "Фамилия поставщика";
+            sheet.Range["D1"].Value = "Отчество поставщика";
+            sheet.Range["E1"].Value = "Заказ";
+            sheet.Range["F1"].Value = "Почта";
+            sheet.Range["G1"].Value = "Телефон";
+            sheet.Range["H1"].Value = "Рейтинг";
+            sheet.Range["I4"].Value = "Наименование компании";
 
             List<OrderInApi> OrderOutByPeriod = OrdersIn.FindAll(s => s.Id == s.Id).Where
                 (
@@ -743,11 +748,13 @@ namespace MySklad.ViewModel
             {
                 sheet.Range[$"A{index}"].NumberValue = count++;
                 sheet.Range[$"B{index}"].Value = supp.Supplier.FirstName;
-                sheet.Range[$"C{index}"].Value = supp.Id.ToString();
-                sheet.Range[$"D{index}"].Value = supp.Supplier.Email;
-                sheet.Range[$"E{index}"].Value = supp.Supplier.Phone;
-                sheet.Range[$"F{index}"].Value = supp.Supplier.Rating.ToString();
-                sheet.Range[$"G{index}"].Value = supp.Supplier.Company.NameOfCompany;
+                sheet.Range[$"C{index}"].Value = supp.Supplier.LastName;
+                sheet.Range[$"D{index}"].Value = supp.Supplier.Patronimyc;
+                sheet.Range[$"E{index}"].Value = supp.Id.ToString();
+                sheet.Range[$"F{index}"].Value = supp.Supplier.Email;
+                sheet.Range[$"G{index}"].Value = supp.Supplier.Phone;
+                sheet.Range[$"H{index}"].Value = supp.Supplier.Rating.ToString();
+                sheet.Range[$"I{index}"].Value = supp.Supplier.Company.NameOfCompany;
                 index++;
             }
             sheet.Range[$"B1:E2"].BorderInside(LineStyleType.Thin);
