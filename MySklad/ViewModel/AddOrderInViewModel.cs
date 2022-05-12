@@ -40,6 +40,17 @@ namespace MySklad.ViewModel
             }
         }
 
+        private List<ProductTypeApi> productTypes { get; set; }
+        public List<ProductTypeApi> ProductTypes
+        {
+            get => productTypes;
+            set
+            {
+                productTypes = value;
+                SignalChanged();
+            }
+        }
+
         public string TimeWait { get; set; }
         public DateTime date { get; set; } = DateTime.Now;
 
@@ -142,6 +153,7 @@ namespace MySklad.ViewModel
         {
             Suppliers = await Api.GetListAsync<List<SupplierApi>>("Supplier");
             Product = await Api.GetListAsync<List<ProductApi>>("Product");
+            ProductTypes = await Api.GetListAsync<List<ProductTypeApi>>("ProductType");
             var cross = await Api.GetListAsync<List<CrossProductOrderApi>>("CrossIn");
 
             if(orderInApi == null)
@@ -156,6 +168,7 @@ namespace MySklad.ViewModel
                 foreach(CrossProductOrderApi crossProduct in SelectedCrosses)
                 {
                     crossProduct.Product = SelectedOrderProducts.FirstOrDefault(s => s.Id == crossProduct.ProductId);
+                    crossProduct.Product.ProductType = ProductTypes.FirstOrDefault(s => s.Id == crossProduct.Product.ProductTypeId);
                 }
             }
         }
