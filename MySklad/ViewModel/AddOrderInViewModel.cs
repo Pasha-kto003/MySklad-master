@@ -16,6 +16,7 @@ namespace MySklad.ViewModel
         public OrderInApi AddOrderVM { get; set; }
 
         public int NewCross { get; set; }
+        public int CountAllProducts { get; set; }
 
         private ProductApi selectedOrderProduct { get; set; }
 
@@ -138,6 +139,20 @@ namespace MySklad.ViewModel
             Suppliers = (List<SupplierApi>)supplier;
         }
 
+        async Task GetCrosses()
+        {
+            var cross = await Api.GetListAsync<List<CrossProductOrderApi>>("CrossIn");
+            SelectedCrosses = cross.Where(s => s.OrderInId == AddOrderVM.Id);
+            //SelectedCross.Product = SelectedOrderProducts.FirstOrDefault(s => s.Id == SelectedCross.ProductId);
+            foreach (CrossProductOrderApi crossProduct in SelectedCrosses)
+            {
+                crossProduct.Product = SelectedOrderProducts.FirstOrDefault(s => s.Id == crossProduct.ProductId);
+                crossProduct.Product.ProductType = ProductTypes.FirstOrDefault(s => s.Id == crossProduct.Product.ProductTypeId);
+                CountAllProducts += (int)crossProduct.CountInOrder;
+                SignalChanged(nameof(CountAllProducts));
+            }
+        }
+
         async Task GetProducts()
         {
             var products = await Api.GetListAsync<List<ProductApi>>("Product");
@@ -169,8 +184,11 @@ namespace MySklad.ViewModel
                 {
                     crossProduct.Product = SelectedOrderProducts.FirstOrDefault(s => s.Id == crossProduct.ProductId);
                     crossProduct.Product.ProductType = ProductTypes.FirstOrDefault(s => s.Id == crossProduct.Product.ProductTypeId);
+                    CountAllProducts += (int)crossProduct.CountInOrder;
+                    SignalChanged(nameof(CountAllProducts));
                 }
             }
+            //SignalChanged(nameof(SelectedCrosses));
         }
 
         public List<CrossProductOrderApi> CrossProductOrders { get; set; }
@@ -191,7 +209,7 @@ namespace MySklad.ViewModel
             GetSuppliers();
             GetProducts();
 
-            if(orderInApi == null)
+            if (orderInApi == null)
             {
                 AddOrderVM = new OrderInApi { DateOrderIn = DateTime.Now, Status = "В норме" };
             }
@@ -215,6 +233,7 @@ namespace MySklad.ViewModel
             TimeWait = $"{time * 24} часов";
             SignalChanged("TimeWait");
             GetOrders(AddOrderVM);
+            
 
             AddProduct = new CustomCommand(() =>
             {
@@ -233,6 +252,10 @@ namespace MySklad.ViewModel
                     SelectedOrderProduct.CountProducts = NewCross;
                     //EditProduction(SelectedOrderProduct);
                     SelectedOrderProducts.Add(SelectedProduct);
+                    MessageBox.Show($"Продукт {SelectedProduct.Title} добавлен в накладную");
+                    SignalChanged(nameof(SelectedOrderProducts));
+                    SignalChanged(nameof(SelectedCrosses));
+                    SignalChanged("SelectedCrosses");
                     SignalChanged("SelectedOrderProducts");
                 }
             });

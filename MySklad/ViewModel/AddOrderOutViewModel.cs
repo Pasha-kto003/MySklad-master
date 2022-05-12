@@ -14,6 +14,7 @@ namespace MySklad.ViewModel
     {
         public OrderOutApi AddOrderVM { get; set; }
         public int Cross { get; set; }
+        public int CountAllProducts { get; set; }
         private ProductApi selectedOrderProduct { get; set; }
 
         public ProductApi SelectedOrderProduct
@@ -117,6 +118,17 @@ namespace MySklad.ViewModel
             }
         }
 
+        private List<ProductTypeApi> productTypes { get; set; }
+        public List<ProductTypeApi> ProductTypes
+        {
+            get => productTypes;
+            set
+            {
+                productTypes = value;
+                SignalChanged();
+            }
+        }
+
         private ShopApi selectedShop { get; set; }
         public ShopApi SelectedShop { get; set; }
 
@@ -160,6 +172,7 @@ namespace MySklad.ViewModel
             Suppliers = await Api.GetListAsync<List<SupplierApi>>("Supplier");
             Shops = await Api.GetListAsync<List<ShopApi>>("Shop");
             Product = await Api.GetListAsync<List<ProductApi>>("Product");
+            ProductTypes = await Api.GetListAsync<List<ProductTypeApi>>("ProductType");
             CrossProductOrders = await Api.GetListAsync<List<CrossProductOrderApi>>("CrossIn");
             CrossOrderOuts = await Api.GetListAsync<List<CrossOrderOutApi>>("OrderOut");
             var cross = await Api.GetListAsync<List<CrossOrderOutApi>>("CrossOut");
@@ -177,6 +190,9 @@ namespace MySklad.ViewModel
                 foreach (CrossOrderOutApi crossProduct in SelectedCrosses)
                 {
                     crossProduct.Product = SelectedOrderProducts.FirstOrDefault(s => s.Id == crossProduct.ProductId);
+                    crossProduct.Product.ProductType = ProductTypes.FirstOrDefault(s => s.Id == crossProduct.Product.ProductTypeId);
+                    CountAllProducts += (int)crossProduct.CountOutOrder;
+                    SignalChanged(nameof(CountAllProducts));
                 }
             }
         }

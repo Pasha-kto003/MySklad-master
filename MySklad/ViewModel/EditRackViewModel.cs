@@ -13,6 +13,8 @@ namespace MySklad.ViewModel
     {
         public RackApi AddRackVM { get; set; }
 
+        public int CountAllProducts { get; set; }
+
         private List<PersonalApi> personals { get; set; }
         public List<PersonalApi> Personals
         {
@@ -144,7 +146,8 @@ namespace MySklad.ViewModel
                 foreach (CrossProductRackApi crossProduct in SelectedCrosses)
                 {
                     crossProduct.Product = SelectedRackProducts.FirstOrDefault(s => s.Id == crossProduct.ProductId);
-                    //crossProduct.DateProductPlacement = 
+                    CountAllProducts += (int)crossProduct.Product.CountInStock;
+                    SignalChanged(nameof(CountAllProducts));
                 }
             }
         }

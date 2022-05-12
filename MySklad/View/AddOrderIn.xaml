@@ -69,14 +69,14 @@
                 </ScrollViewer>
                 
             </StackPanel>
-            <StackPanel Grid.Row="4" Orientation="Horizontal" Height="50" HorizontalAlignment="Right">
-                <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right" Margin="0 0 50 0">
-                    <Label Content="Итого: " Foreground="White" Height="30" Width="250" HorizontalAlignment="Right" HorizontalContentAlignment="Right" FontSize="22"/>
+            <StackPanel Grid.Row="4" Orientation="Horizontal" Height="50" HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Grid.Column="2" Margin="450 0 0 0">
+                    <Label Content="Итого: " Foreground="White" Height="30" Width="250" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right" FontSize="22"/>
                     <TextBox Text="{Binding CountAllProducts, UpdateSourceTrigger=PropertyChanged}" Width="150" Height="30" IsReadOnly="True"/>
                 </StackPanel>
             </StackPanel>
-            <StackPanel Grid.Row="5" Orientation="Horizontal">
-                <Button Content="Отмена" Click="Button_Click" Style="{StaticResource ButtonTheme}" HorizontalAlignment="Left" Width="150" Height="30"/>
+            <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 0 500 0">
+                <Button Content="Отмена" Click="Button_Click" Style="{StaticResource ButtonTheme}" HorizontalAlignment="Left" Width="150" Height="30" Margin="0 0 50 0"/>
                 <Button Content="Сохранить накладную" Command="{Binding SaveOrder}" Style="{StaticResource ButtonTheme}" Width="150" Height="30"/>
             </StackPanel>
         </Grid>

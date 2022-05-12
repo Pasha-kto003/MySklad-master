@@ -61,7 +61,7 @@
                         </StackPanel>
                         
                     </Grid>
-                    <Button Content="Показать отчет" Command="{Binding CountAll}" Style="{DynamicResource ButtonTheme}" Width="150" Height="30" Grid.Row="2"/>
+                    <Button Content="Показать отчет" Command="{Binding CountAll}" Style="{StaticResource ButtonTheme}" Width="150" Height="30" Grid.Row="2"/>
                 </Grid>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>

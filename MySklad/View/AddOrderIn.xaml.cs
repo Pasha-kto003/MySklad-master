@@ -38,10 +38,5 @@ namespace MySklad.View
         {
             Close();
         }
-
-        private void DataGrid_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
-        {
-
-        }
     }
 }
