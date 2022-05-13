@@ -641,7 +641,7 @@ namespace MySklad.ViewModel
 
             List<CrossProductOrderApi> OrderBySupplier = OrdersIn.Where
                 (
-                    s => s.OrderIn.SupplierId == s.OrderIn.Supplier.Id
+                    s => s.OrderIn.SupplierId == SelectedOrderIn.OrderIn.Supplier.Id
                 ).ToList();
             int index = 5;
             int count = 1;
