@@ -587,7 +587,7 @@ namespace MySklad.ViewModel
 
             sheet.Range["B4"].Value = "Дата накладной";
             sheet.Range["F4"].Value = "Поставщик выполнивший заказ";
-            sheet.Range["C4"].Value = "Статус накалдной";
+            sheet.Range["C4"].Value = "Статус накладной";
             sheet.Range["G4"].Value = "Товары";
 
             int index = 5;
