@@ -89,8 +89,8 @@ namespace MySklad.ViewModel
 
         public ProductApi AddProductVM { get; set; }
 
-        private List<OrderInApi> ordersIn { get; set; }
-        public List<OrderInApi> OrdersIn
+        private List<CrossProductOrderApi> ordersIn { get; set; }
+        public List<CrossProductOrderApi> OrdersIn
         {
             get => ordersIn;
             set
@@ -177,6 +177,8 @@ namespace MySklad.ViewModel
             }
         }
 
+        public List<OrderInApi> Orders { get; set; }
+
         private List<SupplierApi> suppliers { get; set; }
         public List<SupplierApi> Suppliers
         {
@@ -245,8 +247,8 @@ namespace MySklad.ViewModel
 
         private SupplierApi selectedSupplier { get; set; }
 
-        private OrderInApi selectedOrderIn { get; set; }
-        public OrderInApi SelectedOrderIn
+        private CrossProductOrderApi selectedOrderIn { get; set; }
+        public CrossProductOrderApi SelectedOrderIn
         {
             get => selectedOrderIn;
             set
@@ -310,11 +312,15 @@ namespace MySklad.ViewModel
         async Task GetOrderIn()
         {
             //var order = await Api.GetListAsync<List<OrderInApi>>("OrderIn");
-            OrdersIn = await Api.GetListAsync<List<OrderInApi>>("OrderIn");
+            Orders = await Api.GetListAsync<List<OrderInApi>>("OrderIn");
+            OrdersIn = await Api.GetListAsync<List<CrossProductOrderApi>>("CrossIn");
             Suppliers = await Api.GetListAsync<List<SupplierApi>>("Supplier");
-            foreach (OrderInApi orderIn in OrdersIn)
+            Products = await Api.GetListAsync<List<ProductApi>>("Product");
+            foreach (CrossProductOrderApi orderIn in OrdersIn)
             {
-                orderIn.Supplier = Suppliers.First(s => s.Id == orderIn.SupplierId);
+                orderIn.OrderIn = Orders.First(s => s.Id == orderIn.OrderInId);
+                orderIn.OrderIn.Supplier = Suppliers.First(s => s.Id == orderIn.OrderIn.SupplierId);
+                orderIn.Product = Products.First(s => s.Id == orderIn.ProductId);
             }
             //OrdersIn = (List<OrderInApi>)order;
         }
@@ -432,9 +438,9 @@ namespace MySklad.ViewModel
 
             CountAll = new CustomCommand(() =>
             {
-                OrderInCount = OrdersIn.FindAll(s => s.Id == s.Id).Where
+                OrderInCount = OrdersIn.Where
                 (
-                    s => s.DateOrderIn >= SelectedAfterDate && s.DateOrderIn <= SelectedBeforeDate
+                    s => s.OrderIn.DateOrderIn >= SelectedAfterDate && s.OrderIn.DateOrderIn <= SelectedBeforeDate
                 ).Count();
 
                 OrderOutCount = OrdersOut.FindAll(s => s.Id == s.Id).Where
@@ -587,24 +593,20 @@ namespace MySklad.ViewModel
             int index = 5;
             int count = 1;
 
-
-            List<OrderInApi> OrderByPeriod = OrdersIn.FindAll(s => s.Id == s.Id).Where
+            List<CrossProductOrderApi> OrderByPeriod = OrdersIn.Where
                 (
-                    s => s.DateOrderIn >= firstDate && s.DateOrderIn <= lastDate &&
-                    s.SupplierId == s.Supplier.Id
+                    s => s.OrderIn.DateOrderIn >= firstDate && s.OrderIn.DateOrderIn <= lastDate &&
+                    s.OrderIn.SupplierId == s.OrderIn.Supplier.Id
                 ).ToList();
 
             foreach (var order in OrderByPeriod)
             {
-                DateTime date = (DateTime)order.DateOrderIn;
+                DateTime date = (DateTime)order.OrderIn.DateOrderIn;
                 sheet.Range[$"A{index}"].NumberValue = count++;
                 sheet.Range[$"B{index}"].Value = date.ToShortDateString();
-                sheet.Range[$"C{index}"].Value = order.Status;
-                sheet.Range[$"F{index}"].Value = order.Supplier.FirstName;
-                foreach(ProductApi product in order.Products)
-                {
-                    sheet.Range[$"G5:G200"].Value = product.Title;
-                }
+                sheet.Range[$"C{index}"].Value = order.OrderIn.Status;
+                sheet.Range[$"F{index}"].Value = order.OrderIn.Supplier.FirstName;
+                sheet.Range[$"G{index}"].Value = order.Product.Title;
 
                 index++;
             }
@@ -623,7 +625,7 @@ namespace MySklad.ViewModel
             p.Start();
         }
 
-        public void ConvertReportToXLSBySupplier(OrderInApi orderIn)
+        public void ConvertReportToXLSBySupplier(CrossProductOrderApi orderIn)
         {
             var workBook = new Workbook();
             var sheet = workBook.Worksheets[0];
@@ -637,20 +639,21 @@ namespace MySklad.ViewModel
             sheet.Range["F1"].Value = "Рейтинг";
             sheet.Range["G4"].Value = "Наименование компании";
 
-            List<OrderInApi> OrderBySupplier = OrdersIn.FindAll(s => s.Id == s.Id).Where
+            List<CrossProductOrderApi> OrderBySupplier = OrdersIn.Where
                 (
-                    s => s.Supplier == orderIn.Supplier && s.SupplierId == s.Supplier.Id
+                    s => s.OrderIn.SupplierId == s.OrderIn.Supplier.Id
                 ).ToList();
             int index = 5;
             int count = 1;
+
             foreach (var supp in OrderBySupplier)
             {
                 sheet.Range[$"A{index}"].NumberValue = count++;
-                sheet.Range[$"B{index}"].Value = supp.Supplier.FirstName;
-                sheet.Range[$"C{index}"].Value = supp.Id.ToString();
-                sheet.Range[$"D{index}"].Value = supp.Supplier.Email;
-                sheet.Range[$"E{index}"].Value = supp.Supplier.Phone;
-                sheet.Range[$"F{index}"].Value = supp.Supplier.CompanyId.ToString();
+                sheet.Range[$"B{index}"].Value = supp.OrderIn.Supplier.FirstName;
+                sheet.Range[$"C{index}"].Value = supp.OrderIn.Id.ToString();
+                sheet.Range[$"D{index}"].Value = supp.OrderIn.Supplier.Email;
+                sheet.Range[$"E{index}"].Value = supp.OrderIn.Supplier.Phone;
+                sheet.Range[$"F{index}"].Value = supp.OrderIn.Supplier.CompanyId.ToString();
                 index++;
             }
             sheet.Range[$"B1:E2"].BorderInside(LineStyleType.Thin);
@@ -737,7 +740,7 @@ namespace MySklad.ViewModel
             sheet.Range["H1"].Value = "Рейтинг";
             sheet.Range["I4"].Value = "Наименование компании";
 
-            List<OrderInApi> OrderOutByPeriod = OrdersIn.FindAll(s => s.Id == s.Id).Where
+            List<OrderOutApi> OrderOutByPeriod = OrdersOut.FindAll(s => s.Id == s.Id).Where
                 (
                     s => s.Supplier == orderOut.Supplier && s.SupplierId == s.Supplier.Id
                 ).ToList();

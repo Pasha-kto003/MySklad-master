@@ -1,4 +1,5 @@
-﻿using MySklad.ViewModel;
+﻿using ModelApi;
+using MySklad.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +22,11 @@ namespace MySklad.View
     /// </summary>
     public partial class ReportView : Page
     {
+        public List<ProductApi> Products { get; set; }
         public ReportView()
         {
             InitializeComponent();
-            DataContext = new ReportViewModel();
+            DataContext = new ReportViewModel();     
         }
     }
 }

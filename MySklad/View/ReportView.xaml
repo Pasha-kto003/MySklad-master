@@ -5,16 +5,17 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MySklad.View"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="900"
+      d:DesignHeight="500" d:DesignWidth="1000"
       Title="ReportView">
     <TabControl Background="Transparent">
         <TabItem Header="Отчет по приходу">
             <Grid Background="#325f63">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="293*"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="600*"/>
                 </Grid.ColumnDefinitions>
-                <Grid Grid.Column="0">
+                <Grid Grid.Column="0" Grid.ColumnSpan="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="70"/>
                         <RowDefinition/>
@@ -29,7 +30,7 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0" Orientation="Vertical">
+                        <StackPanel Grid.Column="0" Height="470" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Width="300">
                             <TextBlock Text="За выбранный период было приходных: " Height="24" Foreground="White" Margin="5"/>
                             <TextBlock Text="За выбранный период было расходных: " Height="24" Foreground="White" Margin="5"/>
                             <TextBlock Text="За выбранный период остаток продукции составил: " Height="24" Foreground="White" Margin="5"/>
@@ -44,7 +45,7 @@
                             <TextBlock Text="В среднем объем привезенной продукции составляет:" Foreground="White" Height="24" Margin="5"/>
                             <TextBlock Text="В среднем объем увезенной продукции составляет:" Foreground="White" Height="24" Margin="5"/>
                         </StackPanel>
-                        <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Right" Width="100">
+                        <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Stretch" Width="100">
                             <TextBox Text="{Binding OrderInCount, UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="True" Width="70" Margin="5"/>
                             <TextBox Text="{Binding OrderOutCount, UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="True" Width="70" Margin="5"/>
                             <TextBox Text="{Binding ProductCount, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Width="70" Margin="5"/>
@@ -59,11 +60,11 @@
                             <TextBox Text="{Binding MidleCountValue, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Width="70" Margin="5"/>
                             <TextBox Text="{Binding MidleCountValueOut, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Width="70" Margin="5"/>
                         </StackPanel>
-                        
+
                     </Grid>
                     <Button Content="Показать отчет" Command="{Binding CountAll}" Style="{StaticResource ButtonTheme}" Width="150" Height="30" Grid.Row="2"/>
                 </Grid>
-                <Grid Grid.Column="1">
+                <Grid Grid.Column="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="70"/>
                         <RowDefinition/>
@@ -73,10 +74,10 @@
                         <DatePicker SelectedDate="{Binding SelectedDateStartPeriod}" Width="190" Margin="10" VerticalAlignment="Center"/>
                         <DatePicker SelectedDate="{Binding SelectedDateEndPeriod}" Width="190" VerticalAlignment="Center"/>
                     </StackPanel>
-                    <StackPanel Grid.Row="1">
+                    <StackPanel Grid.Row="1" Width="600">
                         <TextBlock Text="Сформировать отчет по выбранному критерию" Foreground="White"/>
                         <ComboBox ItemsSource="{Binding Types}" SelectedItem="{Binding SelectedType}" Height="30" Width="250" HorizontalAlignment="Left" Margin="0,5,0,0"/>
-                        <ListView ItemsSource="{Binding OrdersIn}" SelectedItem="{Binding SelectedOrderIn}" Height="250" Margin="0,10,0,0" Background="White" Width="500" HorizontalAlignment="Left">
+                        <!--<ListView ItemsSource="{Binding OrdersIn}" SelectedItem="{Binding SelectedOrderIn}" Height="350" Margin="0,10,0,0" Background="White" Width="500" HorizontalAlignment="Left">
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn Header="Дата накладной" DisplayMemberBinding="{Binding DateOrderIn}"/>
@@ -84,7 +85,15 @@
                                     <GridViewColumn Header="Статус накладной" DisplayMemberBinding="{Binding Status}"/>
                                 </GridView>
                             </ListView.View>
-                        </ListView>
+                        </ListView>-->
+                        <DataGrid ItemsSource="{Binding OrdersIn}" SelectedItem="{Binding SelectedOrderIn}" Height="350" Margin="0,10,0,0" Width="800" HorizontalAlignment="Left" AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Название продукта" Binding="{Binding Product.Title}"/>
+                                <DataGridTextColumn Header="Количество привезенной продукции" Binding="{Binding CountInOrder}"/>
+                                <DataGridTextColumn Header="Дата прихода продукции" Binding="{Binding OrderIn.DateOrderIn}"/>
+                                <DataGridTextColumn Header="Поставщик продукции" Binding="{Binding OrderIn.Supplier.FirstName}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
                     </StackPanel>
                     <Button Grid.Row="2" Content="Сформировать отчет" Command="{Binding EditReport}" Style="{DynamicResource ButtonTheme}" Width="150" Height="30"/>
                 </Grid>
