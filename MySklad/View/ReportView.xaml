@@ -86,7 +86,7 @@
                                 </GridView>
                             </ListView.View>
                         </ListView>-->
-                        <DataGrid ItemsSource="{Binding OrdersIn}" SelectedItem="{Binding SelectedOrderIn}" Height="350" Margin="0,10,0,0" Width="800" HorizontalAlignment="Left" AutoGenerateColumns="False">
+                        <DataGrid ItemsSource="{Binding CrossProductOrders}" SelectedItem="{Binding SelectedOrderIn}" Height="350" Margin="0,10,0,0" Width="800" HorizontalAlignment="Left" AutoGenerateColumns="False">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Название продукта" Binding="{Binding Product.Title}"/>
                                 <DataGridTextColumn Header="Количество привезенной продукции" Binding="{Binding CountInOrder}"/>
@@ -113,13 +113,13 @@
                 <StackPanel Grid.Row="1">
                     <TextBlock Text="Сформировать отчет по выбранному критерию" Foreground="White" HorizontalAlignment="Center"/>
                     <ComboBox ItemsSource="{Binding TypesOut}" SelectedItem="{Binding SelectedTypeOut}" Height="30" Width="250" HorizontalAlignment="Center" Margin="0,5,0,0"/>
-                    <ListView Width="600" ItemsSource="{Binding OrdersOut}" SelectedItem="{Binding SelectedOrderOut}" Height="250" Margin="0,10,0,0" Background="White">
+                    <ListView Width="600" ItemsSource="{Binding CrossProductOrdersOut}" SelectedItem="{Binding SelectedOrderOut}" Height="250" Margin="0,10,0,0" Background="White">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Дата накладной" DisplayMemberBinding="{Binding DateOrderOut}"/>
-                                <GridViewColumn Header="Поставщик товара" DisplayMemberBinding="{Binding Supplier.FirstName}"/>
-                                <GridViewColumn Header="Точка доставки" DisplayMemberBinding="{Binding Shop.Name}"/>
-                                <GridViewColumn Header="Статус накладной" DisplayMemberBinding="{Binding Status}"/>
+                                <GridViewColumn Header="Дата накладной" DisplayMemberBinding="{Binding OrderOut.DateOrderOut}"/>
+                                <GridViewColumn Header="Поставщик товара" DisplayMemberBinding="{Binding OrderOut.Supplier.FirstName}"/>
+                                <GridViewColumn Header="Точка доставки" DisplayMemberBinding="{Binding OrderOut.Shop.Name}"/>
+                                <GridViewColumn Header="Статус накладной" DisplayMemberBinding="{Binding OrderOut.Status}"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
@@ -185,6 +185,35 @@
                     </ListView>
                 </StackPanel>
                 <Button Grid.Row="2" Content="Сформировать отчет" Command="{Binding EditReportWriteOff}" Style="{DynamicResource ButtonTheme}" Width="150" Height="30"/>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Отчет по стеллажам">
+            <Grid Background="#325f63">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <DatePicker SelectedDate="{Binding SelectedDateStartOut}" Width="190" Margin="10" VerticalAlignment="Center"/>
+                    <DatePicker SelectedDate="{Binding SelectedDateEndOut}" Width="190" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Grid.Row="1">
+                    <TextBlock Text="Сформировать отчет по выбранному критерию" Foreground="White" HorizontalAlignment="Center"/>
+                    <ComboBox ItemsSource="{Binding TypesRack}" SelectedItem="{Binding SelectedTypeRack}" Height="30" Width="250" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                    <ListView Width="600" ItemsSource="{Binding CrossProductRacks}" SelectedItem="{Binding SelectedRack}" Height="250" Margin="0,10,0,0" Background="White">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Дата Создания стеллажа" DisplayMemberBinding="{Binding Rack.Placement_Date}"/>
+                                <GridViewColumn Header="Продукт на стеллаже" DisplayMemberBinding="{Binding Product.Title}"/>
+                                <GridViewColumn Header="Дата добавления продукта на стеллаж" DisplayMemberBinding="{Binding DateProductPlacement}"/>
+                                <GridViewColumn Header="Дата изменения стеллажа" DisplayMemberBinding="{Binding Rack.Changed_Date}"/>
+                                <GridViewColumn Header="Сотрудник" DisplayMemberBinding="{Binding Rack.Personal.FirstName}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </StackPanel>
+                <Button Grid.Row="2" Content="Сформировать отчет" Command="{Binding EditReportRack}" Style="{DynamicResource ButtonTheme}" Width="150" Height="30"/>
             </Grid>
         </TabItem>
     </TabControl>

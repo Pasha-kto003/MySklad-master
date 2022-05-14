@@ -57,10 +57,22 @@ namespace MySklad.ViewModel
             }
         }
 
+        private string selectedTypeRack { get; set; }
+        public string SelectedTypeRack
+        {
+            get => selectedTypeRack;
+            set
+            {
+                selectedTypeRack = value;
+                SignalChanged();
+            }
+        }
+
         public List<string> Types { get; set; }
         public List<string> TypesOut { get; set; }
         public List<string> TypesProduct { get; set; }
         public List<string> TypesWriteOff { get; set; }
+        public List<string> TypesRack { get; set; }
 
         public DateTime SelectedAfterDate { get; set; }
         public DateTime SelectedBeforeDate { get; set; }
@@ -89,8 +101,8 @@ namespace MySklad.ViewModel
 
         public ProductApi AddProductVM { get; set; }
 
-        private List<CrossProductOrderApi> ordersIn { get; set; }
-        public List<CrossProductOrderApi> OrdersIn
+        private List<OrderInApi> ordersIn { get; set; }
+        public List<OrderInApi> OrdersIn
         {
             get => ordersIn;
             set
@@ -166,6 +178,17 @@ namespace MySklad.ViewModel
             }
         }
 
+        private List<CrossProductRackApi> crossProductRacks { get; set; }
+        public List<CrossProductRackApi> CrossProductRacks
+        {
+            get => crossProductRacks;
+            set
+            {
+                crossProductRacks = value;
+                SignalChanged();
+            }
+        }
+
         private List<RackApi> racks { get; set; }
         public List<RackApi> Racks
         {
@@ -178,6 +201,7 @@ namespace MySklad.ViewModel
         }
 
         public List<OrderInApi> Orders { get; set; }
+        public List<OrderOutApi> OrderOuts { get; set; }
 
         private List<SupplierApi> suppliers { get; set; }
         public List<SupplierApi> Suppliers
@@ -258,8 +282,8 @@ namespace MySklad.ViewModel
             }
         }
 
-        private OrderOutApi selectedOrderOut { get; set; }
-        public OrderOutApi SelectedOrderOut
+        private CrossOrderOutApi selectedOrderOut { get; set; }
+        public CrossOrderOutApi SelectedOrderOut
         {
             get => selectedOrderOut;
             set
@@ -296,6 +320,7 @@ namespace MySklad.ViewModel
         public CustomCommand EditReportOut { get; set; }
         public CustomCommand EditReportProduct { get; set; }
         public CustomCommand EditReportWriteOff { get; set; }
+        public CustomCommand EditReportRack { get; set; }
 
         async Task GetProducts()
         {
@@ -312,15 +337,12 @@ namespace MySklad.ViewModel
         async Task GetOrderIn()
         {
             //var order = await Api.GetListAsync<List<OrderInApi>>("OrderIn");
-            Orders = await Api.GetListAsync<List<OrderInApi>>("OrderIn");
-            OrdersIn = await Api.GetListAsync<List<CrossProductOrderApi>>("CrossIn");
+            OrdersIn = await Api.GetListAsync<List<OrderInApi>>("OrderIn");
             Suppliers = await Api.GetListAsync<List<SupplierApi>>("Supplier");
             Products = await Api.GetListAsync<List<ProductApi>>("Product");
-            foreach (CrossProductOrderApi orderIn in OrdersIn)
+            foreach (OrderInApi orderIn in OrdersIn)
             {
-                orderIn.OrderIn = Orders.First(s => s.Id == orderIn.OrderInId);
-                orderIn.OrderIn.Supplier = Suppliers.First(s => s.Id == orderIn.OrderIn.SupplierId);
-                orderIn.Product = Products.First(s => s.Id == orderIn.ProductId);
+                orderIn.Supplier = Suppliers.First(s => s.Id == orderIn.SupplierId);
             }
             //OrdersIn = (List<OrderInApi>)order;
         }
@@ -341,14 +363,32 @@ namespace MySklad.ViewModel
 
         async Task GetCrossIn()
         {
-            var cross = await Api.GetListAsync<List<CrossProductOrderApi>>("CrossIn");
-            CrossProductOrders = (List<CrossProductOrderApi>)cross;
+            CrossProductOrders = await Api.GetListAsync<List<CrossProductOrderApi>>("CrossIn");
+            OrdersIn = await Api.GetListAsync<List<OrderInApi>>("OrderIn");
+            Suppliers = await Api.GetListAsync<List<SupplierApi>>("Supplier");
+            Products = await Api.GetListAsync<List<ProductApi>>("Product");
+            foreach(CrossProductOrderApi crossProduct in CrossProductOrders)
+            {
+                crossProduct.OrderIn = OrdersIn.First(s => s.Id == crossProduct.OrderInId);
+                crossProduct.OrderIn.Supplier = Suppliers.First(s => s.Id == crossProduct.OrderIn.SupplierId);
+                crossProduct.Product = Products.First(s => s.Id == crossProduct.ProductId);
+            }
         }
 
         async Task GetCrossOut()
         {
-            var crosses = await Api.GetListAsync<List<CrossOrderOutApi>>("CrossOut");
-            CrossProductOrdersOut = (List<CrossOrderOutApi>)crosses;
+            CrossProductOrdersOut = await Api.GetListAsync<List<CrossOrderOutApi>>("CrossOut");
+            OrdersOut = await Api.GetListAsync<List<OrderOutApi>>("OrderOut");
+            Suppliers = await Api.GetListAsync<List<SupplierApi>>("Supplier");
+            Shops = await Api.GetListAsync<List<ShopApi>>("Shop");
+            Companies = await Api.GetListAsync<List<CompanyApi>>("Company");
+            foreach (CrossOrderOutApi crossProduct in CrossProductOrdersOut)
+            {
+                crossProduct.OrderOut = OrdersOut.First(s => s.Id == crossProduct.OrderOutId);
+                crossProduct.OrderOut.Supplier = Suppliers.First(s => s.Id == crossProduct.OrderOut.SupplierId);
+                crossProduct.Product = Products.First(s => s.Id == crossProduct.ProductId);
+                crossProduct.OrderOut.Shop = Shops.First(s => s.Id == crossProduct.OrderOut.ShopId);
+            }
         }
 
         async Task GetPersonals()
@@ -380,8 +420,27 @@ namespace MySklad.ViewModel
 
         async Task GetRacks()
         {
-            var rack = await Api.GetListAsync<List<RackApi>>("Rack");
-            Racks = (List<RackApi>)rack;
+            Racks = await Api.GetListAsync<List<RackApi>>("Rack");
+            Products = await Api.GetListAsync<List<ProductApi>>("Product");
+            Personals = await Api.GetListAsync<List<PersonalApi>>("Personal");
+            foreach(RackApi rackApi in Racks)
+            {
+                rackApi.Personal = Personals.First(s => s.Id == rackApi.PersonalId);
+            }
+        }
+
+        async Task GetCrossRack()
+        {
+            CrossProductRacks = await Api.GetListAsync<List<CrossProductRackApi>>("CrossRack");
+            Racks = await Api.GetListAsync<List<RackApi>>("Rack");
+            Products = await Api.GetListAsync<List<ProductApi>>("Product");
+            Personals = await Api.GetListAsync<List<PersonalApi>>("Personal");
+            foreach(CrossProductRackApi crossProduct in CrossProductRacks)
+            {
+                crossProduct.Rack = Racks.First(s => s.Id == crossProduct.RackId);
+                crossProduct.Rack.Personal = Personals.First(s => s.Id == crossProduct.Rack.PersonalId);
+                crossProduct.Product = Products.First(s => s.Id == crossProduct.ProductId);
+            }
         }
 
         async Task GetWriteOffRegisters()
@@ -405,6 +464,7 @@ namespace MySklad.ViewModel
             GetOrderIn();
             GetOrderOut();
             GetRacks();
+            GetCrossRack();
             GetCrossIn();
             GetCrossOut();
             GetCompany();
@@ -436,11 +496,18 @@ namespace MySklad.ViewModel
                 "Продукт"
             };
 
+            TypesRack = new List<string>
+            {
+                "Период",
+                "Продукт",
+                "Сотрудник"
+            };
+
             CountAll = new CustomCommand(() =>
             {
                 OrderInCount = OrdersIn.Where
                 (
-                    s => s.OrderIn.DateOrderIn >= SelectedAfterDate && s.OrderIn.DateOrderIn <= SelectedBeforeDate
+                    s => s.DateOrderIn >= SelectedAfterDate && s.DateOrderIn <= SelectedBeforeDate
                 ).Count();
 
                 OrderOutCount = OrdersOut.FindAll(s => s.Id == s.Id).Where
@@ -448,7 +515,7 @@ namespace MySklad.ViewModel
                     s => s.DateOrderOut >= SelectedAfterDate && s.DateOrderOut <= SelectedBeforeDate
                 ).Count();
 
-                foreach (CrossProductOrderApi cross in CrossProductOrders.Where(s => s.ProductId != 0))
+                foreach (CrossProductOrderApi cross in CrossProductOrders.Where(s => s.ProductId != 0 && s.OrderIn.DateOrderIn >= SelectedAfterDate && s.OrderIn.DateOrderIn <= SelectedBeforeDate))
                 {
                     if(cross.CountInOrder != null)
                     {
@@ -458,7 +525,7 @@ namespace MySklad.ViewModel
                     MidleCountValue = ProductInOrderIn / CrossProductOrders.Count;
                     SignalChanged(nameof(MidleCountValue));
                 }
-                foreach (CrossOrderOutApi cross in CrossProductOrdersOut.FindAll(s => s.ProductId != 0))
+                foreach (CrossOrderOutApi cross in CrossProductOrdersOut.FindAll(s => s.ProductId != 0 && s.OrderOut.DateOrderOut >= SelectedAfterDate && s.OrderOut.DateOrderOut <= SelectedBeforeDate))
                 {
                     ProductInOrderOut += (int)cross.CountOutOrder / 2;
 
@@ -471,7 +538,6 @@ namespace MySklad.ViewModel
                 Products.Sort((x, y) => x.CountInStock.CompareTo(y.CountInStock));
                 MaxValueCount = Products.Last().Title.ToString();
                 SignalChanged(MaxValueCount);
-
 
                 PersonalCount = Personals.FindAll(s => s.Id == s.Id).Where
                 (
@@ -489,8 +555,6 @@ namespace MySklad.ViewModel
                 PersonalSickCount = Math.Round(PersonalSickCount, 2);
 
                 PersonalSickProcent = $"{PersonalSickCount} %";
-
-               
 
                 RackCount = Racks.FindAll(s => s.Id == s.Id).Where
                 (
@@ -571,6 +635,8 @@ namespace MySklad.ViewModel
                         break;
                 }
             });
+
+            
         }
 
         public void ConvertReportToXLSByPeriod(DateTime firstDate, DateTime lastDate)
@@ -593,7 +659,7 @@ namespace MySklad.ViewModel
             int index = 5;
             int count = 1;
 
-            List<CrossProductOrderApi> OrderByPeriod = OrdersIn.Where
+            List<CrossProductOrderApi> OrderByPeriod = CrossProductOrders.Where
                 (
                     s => s.OrderIn.DateOrderIn >= firstDate && s.OrderIn.DateOrderIn <= lastDate &&
                     s.OrderIn.SupplierId == s.OrderIn.Supplier.Id
@@ -639,7 +705,7 @@ namespace MySklad.ViewModel
             sheet.Range["F1"].Value = "Рейтинг";
             sheet.Range["G4"].Value = "Наименование компании";
 
-            List<CrossProductOrderApi> OrderBySupplier = OrdersIn.Where
+            List<CrossProductOrderApi> OrderBySupplier = CrossProductOrders.Where
                 (
                     s => s.OrderIn.SupplierId == SelectedOrderIn.OrderIn.Supplier.Id
                 ).ToList();
@@ -654,6 +720,59 @@ namespace MySklad.ViewModel
                 sheet.Range[$"D{index}"].Value = supp.OrderIn.Supplier.Email;
                 sheet.Range[$"E{index}"].Value = supp.OrderIn.Supplier.Phone;
                 sheet.Range[$"F{index}"].Value = supp.OrderIn.Supplier.CompanyId.ToString();
+                index++;
+            }
+            sheet.Range[$"B1:E2"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"B1:E2"].BorderAround(LineStyleType.Medium);
+            sheet.Range[$"A4:G{index - 1}"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A4:G{index - 1}"].BorderAround(LineStyleType.Medium);
+            sheet.AllocatedRange.AutoFitColumns();
+            workBook.SaveToFile("testsupp.xls");
+            Process p = new Process();
+            p.StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "/testsupp.xls")
+            {
+                UseShellExecute = true
+            };
+            p.Start();
+        }
+
+        public void ReportRackByPeriod(DateTime firstDate, DateTime lastDate)
+        {
+            GetCrossRack();
+
+            var workBook = new Workbook();
+            var sheet = workBook.Worksheets[0];
+            sheet.Range["A1"].Value = $"С ";
+            sheet.Range["B1"].Value = $" { firstDate.Date.ToShortDateString()}";
+            sheet.Range["D1"].Value = $"{lastDate.Date.ToShortDateString()}";
+            sheet.Range["C1"].Value = $"По ";
+
+            sheet.Range["B4"].Value = "Дата добавления продукта";
+            sheet.Range["C4"].Value = "Товары";
+            sheet.Range["D4"].Value = "Количество товаров";
+            sheet.Range["E4"].Value = "Сотрудник данного стеллажа";
+            sheet.Range["F4"].Value = "Дата изменения стеллажа";
+            sheet.Range["G4"].Value = "Дата удаления стеллажа";
+
+            int index = 5;
+            int count = 1;
+
+            List<CrossProductRackApi> RackByPeriod = CrossProductRacks.FindAll(s => s.RackId == s.RackId).Where
+                (
+                    s => s.DateProductPlacement >= firstDate && s.DateProductPlacement <= lastDate && s.Rack.PersonalId == s.Rack.Personal.Id
+                ).ToList();
+
+            foreach(var rack in RackByPeriod)
+            {
+                DateTime date = (DateTime)rack.DateProductPlacement;
+                sheet.Range[$"A{index}"].NumberValue = count++;
+                sheet.Range[$"B{index}"].Value = date.ToShortDateString();
+                sheet.Range[$"C{index}"].Value = rack.Product.Title;
+                sheet.Range[$"C{index}"].Value = rack.Product.CountInStock.ToString();
+                sheet.Range[$"E{index}"].Value = rack.Rack.Personal.FirstName;
+                sheet.Range[$"F{index}"].Value = rack.Rack.ChangedDate.ToShortDateString();
+                sheet.Range[$"G{index}"].Value = rack.Rack.DeletionDate.ToString();
+
                 index++;
             }
             sheet.Range[$"B1:E2"].BorderInside(LineStyleType.Thin);
@@ -691,21 +810,21 @@ namespace MySklad.ViewModel
             int index = 5;
             int count = 1;
 
-            List<OrderOutApi> OrderOutByPeriod = OrdersOut.FindAll(s => s.Id == s.Id).Where
+            List<CrossOrderOutApi> OrderOutByPeriod = CrossProductOrdersOut.FindAll(s => s.OrderOutId == s.OrderOutId).Where
                 (
-                    s => s.DateOrderOut >= firstDate && s.DateOrderOut <= lastDate &&
-                    s.SupplierId == s.Supplier.Id && s.ShopId == s.Shop.Id
+                    s => s.OrderOut.DateOrderOut >= firstDate && s.OrderOut.DateOrderOut <= lastDate &&
+                    s.OrderOut.SupplierId == s.OrderOut.Supplier.Id && s.OrderOut.ShopId == s.OrderOut.Shop.Id
                 ).ToList();
 
             foreach (var order in OrderOutByPeriod)
             {
-                DateTime date = (DateTime)order.DateOrderOut;
+                DateTime date = (DateTime)order.OrderOut.DateOrderOut;
                 sheet.Range[$"A{index}"].NumberValue = count++;
                 sheet.Range[$"B{index}"].Value = date.ToShortDateString();
-                sheet.Range[$"C{index}"].Value = order.Status;
-                sheet.Range[$"D{index}"].Value = order.Supplier.FirstName;
-                sheet.Range[$"E{index}"].Value = order.Shop.Name;
-                sheet.Range[$"F5:AC5"].Value = order.Products.ToString();
+                sheet.Range[$"C{index}"].Value = order.OrderOut.Status;
+                sheet.Range[$"D{index}"].Value = order.OrderOut.Supplier.FirstName;
+                sheet.Range[$"E{index}"].Value = order.OrderOut.Shop.Name;
+                sheet.Range[$"F5{index}"].Value = order.Product.Title;
 
                 index++;
             }
@@ -725,7 +844,7 @@ namespace MySklad.ViewModel
             p.Start();
         }
 
-        public void ConvertReportOutToXLSBySupplier(OrderOutApi orderOut)
+        public void ConvertReportOutToXLSBySupplier(CrossOrderOutApi orderOut)
         {
             var workBook = new Workbook();
             var sheet = workBook.Worksheets[0];
@@ -739,10 +858,11 @@ namespace MySklad.ViewModel
             sheet.Range["G1"].Value = "Телефон";
             sheet.Range["H1"].Value = "Рейтинг";
             sheet.Range["I4"].Value = "Наименование компании";
+            sheet.Range["J4"].Value = "Увезенный продукт";
 
-            List<OrderOutApi> OrderOutByPeriod = OrdersOut.FindAll(s => s.Id == s.Id).Where
+            List<CrossOrderOutApi> OrderOutByPeriod = CrossProductOrdersOut.FindAll(s => s.OrderOutId == s.OrderOutId).Where
                 (
-                    s => s.Supplier == orderOut.Supplier && s.SupplierId == s.Supplier.Id
+                    s => s.OrderOut.SupplierId == SelectedOrderOut.OrderOut.Supplier.Id
                 ).ToList();
             int index = 5;
             int count = 1;
@@ -750,14 +870,15 @@ namespace MySklad.ViewModel
             foreach (var supp in OrderOutByPeriod)
             {
                 sheet.Range[$"A{index}"].NumberValue = count++;
-                sheet.Range[$"B{index}"].Value = supp.Supplier.FirstName;
-                sheet.Range[$"C{index}"].Value = supp.Supplier.LastName;
-                sheet.Range[$"D{index}"].Value = supp.Supplier.Patronimyc;
-                sheet.Range[$"E{index}"].Value = supp.Id.ToString();
-                sheet.Range[$"F{index}"].Value = supp.Supplier.Email;
-                sheet.Range[$"G{index}"].Value = supp.Supplier.Phone;
-                sheet.Range[$"H{index}"].Value = supp.Supplier.Rating.ToString();
-                sheet.Range[$"I{index}"].Value = supp.Supplier.Company.NameOfCompany;
+                sheet.Range[$"B{index}"].Value = supp.OrderOut.Supplier.FirstName;
+                sheet.Range[$"C{index}"].Value = supp.OrderOut.Supplier.LastName;
+                sheet.Range[$"D{index}"].Value = supp.OrderOut.Supplier.Patronimyc;
+                sheet.Range[$"E{index}"].Value = supp.OrderOut.Id.ToString();
+                sheet.Range[$"F{index}"].Value = supp.OrderOut.Supplier.Email;
+                sheet.Range[$"G{index}"].Value = supp.OrderOut.Supplier.Phone;
+                sheet.Range[$"H{index}"].Value = supp.OrderOut.Supplier.Rating.ToString();
+                sheet.Range[$"I{index}"].Value = supp.OrderOut.Supplier.Company.NameOfCompany;
+                sheet.Range[$"J{index}"].Value = supp.Product.Title;
                 index++;
             }
             sheet.Range[$"B1:E2"].BorderInside(LineStyleType.Thin);
@@ -774,7 +895,7 @@ namespace MySklad.ViewModel
             p.Start();
         }
 
-        public void ConvertReportOutToXLSByShop(OrderOutApi orderOutApi)
+        public void ConvertReportOutToXLSByShop(CrossOrderOutApi orderOutApi)
         {
             var workBook = new Workbook();
             var sheet = workBook.Worksheets[0];
@@ -785,10 +906,9 @@ namespace MySklad.ViewModel
             sheet.Range["D1"].Value = "Почта";
             sheet.Range["E1"].Value = "Телефон";
 
-            List<OrderOutApi> OrderOutByPeriod = OrdersOut.FindAll(s => s.Id == s.Id).Where
+            List<CrossOrderOutApi> OrderOutByPeriod = CrossProductOrdersOut.FindAll(s => s.OrderOutId == s.OrderOutId).Where
                 (
-                    s => s.Supplier == orderOutApi.Supplier && s.SupplierId == s.Supplier.Id &&
-                    s.Shop == orderOutApi.Shop && s.ShopId == s.Shop.Id
+                     s => s.OrderOut.ShopId == SelectedOrderOut.OrderOut.Shop.Id
                 ).ToList();
             int index = 5;
             int count = 1;
@@ -796,10 +916,10 @@ namespace MySklad.ViewModel
             foreach (var supp in OrderOutByPeriod)
             {
                 sheet.Range[$"A{index}"].NumberValue = count++;
-                sheet.Range[$"B{index}"].Value = supp.Shop.Name;
-                sheet.Range[$"C{index}"].Value = supp.Id.ToString();
-                sheet.Range[$"D{index}"].Value = supp.Shop.Email;
-                sheet.Range[$"E{index}"].Value = supp.Shop.Phone;
+                sheet.Range[$"B{index}"].Value = supp.OrderOut.Shop.Name;
+                sheet.Range[$"C{index}"].Value = supp.OrderOut.Id.ToString();
+                sheet.Range[$"D{index}"].Value = supp.OrderOut.Shop.Email;
+                sheet.Range[$"E{index}"].Value = supp.OrderOut.Shop.Phone;
                 index++;
             }
             sheet.Range[$"B1:E2"].BorderInside(LineStyleType.Thin);
