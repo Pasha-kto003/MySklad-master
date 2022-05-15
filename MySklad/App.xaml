@@ -599,6 +599,8 @@
             <Setter Property="Background" Value="{StaticResource SecondaryBackground}" />
             <Setter Property="Margin" Value="3"/>
             <Setter Property="Padding" Value="3"/>
+            <Setter Property="BorderThickness" Value="5"/>
+            <Setter Property="BorderBrush" Value="{StaticResource SecondaryBackground}"/>
         </Style>
         
         <Style TargetType="ListBox">
@@ -607,14 +609,12 @@
             <Setter Property="Padding" Value="3"/>
             
         </Style>
-        
+
         <Style TargetType="ListView">
             <Setter Property="Background" Value="{StaticResource SecondaryBackground}" />
             <Setter Property="Margin" Value="3"/>
             <Setter Property="Padding" Value="3"/>
         </Style>
-        
-        
-        
+
     </Application.Resources>
 </Application>

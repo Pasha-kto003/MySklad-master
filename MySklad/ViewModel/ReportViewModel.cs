@@ -84,6 +84,8 @@ namespace MySklad.ViewModel
         public DateTime SelectedDateEndProduct { get; set; }
         public DateTime SelectedDateStartWriteOff { get; set; }
         public DateTime SelectedDateEndWriteOff { get; set; }
+        public DateTime SelectedDateStartRack { get; set; }
+        public DateTime SelectedDateEndRack { get; set; }
 
         public int OrderInCount { get; set; }
         public int OrderOutCount { get; set; }
@@ -636,7 +638,15 @@ namespace MySklad.ViewModel
                 }
             });
 
-            
+            EditReportRack = new CustomCommand(() =>
+            {
+                switch (SelectedTypeRack)
+                {
+                    case "Период":
+                        ReportRackByPeriod(SelectedDateStartRack, SelectedDateEndRack);
+                        break;
+                }
+            });
         }
 
         public void ConvertReportToXLSByPeriod(DateTime firstDate, DateTime lastDate)
@@ -739,7 +749,7 @@ namespace MySklad.ViewModel
         public void ReportRackByPeriod(DateTime firstDate, DateTime lastDate)
         {
             GetCrossRack();
-
+            GetRacks();
             var workBook = new Workbook();
             var sheet = workBook.Worksheets[0];
             sheet.Range["A1"].Value = $"С ";
@@ -747,12 +757,13 @@ namespace MySklad.ViewModel
             sheet.Range["D1"].Value = $"{lastDate.Date.ToShortDateString()}";
             sheet.Range["C1"].Value = $"По ";
 
-            sheet.Range["B4"].Value = "Дата добавления продукта";
-            sheet.Range["C4"].Value = "Товары";
-            sheet.Range["D4"].Value = "Количество товаров";
-            sheet.Range["E4"].Value = "Сотрудник данного стеллажа";
-            sheet.Range["F4"].Value = "Дата изменения стеллажа";
-            sheet.Range["G4"].Value = "Дата удаления стеллажа";
+            sheet.Range["B4"].Value = "Номер стеллажа";
+            sheet.Range["C4"].Value = "Дата добавления продукта";
+            sheet.Range["D4"].Value = "Товары";
+            sheet.Range["E4"].Value = "Количество товаров";
+            sheet.Range["F4"].Value = "Сотрудник данного стеллажа";
+            sheet.Range["G4"].Value = "Дата изменения стеллажа";
+            sheet.Range["H4"].Value = "Дата удаления стеллажа";
 
             int index = 5;
             int count = 1;
@@ -766,12 +777,13 @@ namespace MySklad.ViewModel
             {
                 DateTime date = (DateTime)rack.DateProductPlacement;
                 sheet.Range[$"A{index}"].NumberValue = count++;
-                sheet.Range[$"B{index}"].Value = date.ToShortDateString();
-                sheet.Range[$"C{index}"].Value = rack.Product.Title;
-                sheet.Range[$"C{index}"].Value = rack.Product.CountInStock.ToString();
-                sheet.Range[$"E{index}"].Value = rack.Rack.Personal.FirstName;
-                sheet.Range[$"F{index}"].Value = rack.Rack.ChangedDate.ToShortDateString();
-                sheet.Range[$"G{index}"].Value = rack.Rack.DeletionDate.ToString();
+                sheet.Range[$"B{index}"].Value = rack.Rack.Name;
+                sheet.Range[$"C{index}"].Value = date.ToShortDateString();
+                sheet.Range[$"D{index}"].Value = rack.Product.Title;
+                sheet.Range[$"E{index}"].Value = rack.Product.CountInStock.ToString();
+                sheet.Range[$"F{index}"].Value = rack.Rack.Personal.FirstName;
+                sheet.Range[$"G{index}"].Value = rack.Rack.ChangedDate.ToShortDateString();
+                sheet.Range[$"H{index}"].Value = rack.Rack.DeletionDate.ToString();
 
                 index++;
             }
