@@ -8,6 +8,7 @@
         Title="AddWriteOffRegisterView" Height="450" Width="800">
     <Grid Background="#325f63">
         <Grid.RowDefinitions>
+            
             <RowDefinition Height="auto"/>
             <RowDefinition Height="100"/>
             <RowDefinition Height="auto"/>

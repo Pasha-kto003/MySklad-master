@@ -5,61 +5,61 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MySklad.View"
         mc:Ignorable="d"
-        Title="AddPersonalView" Height="500" Width="900">
+        Title="AddPersonalView" Height="500" Width="900"
+        ResizeMode="NoResize">
     <Grid Background="#325f63">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
-            <ColumnDefinition Width="466"/>
-            <ColumnDefinition Width="230"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="150"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="250"/>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
-        <StackPanel DataContext="{Binding AddPersonalVM}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal">
-            <StackPanel Width="233" HorizontalAlignment="Left">
-
-                <Label Content="Имя:" Foreground="White"/>
-                <TextBox Text="{Binding FirstName}"/>
-
-                <Label Content="Фамилия сотрудника:" Foreground="White"/>
-                <TextBox Text="{Binding LastName}"/>
-                <Label Content="Отчество:" Foreground="White"/>
-                <TextBox Text="{Binding Patronimyc}"/>
-            </StackPanel>
-            <StackPanel Width="233" Grid.Column="2">
-                <Label Content="Рейтинг:" Foreground="White"/>
-                <TextBox Text="{Binding Rating}"/>
-                <Label Content="Номер телефона:" Foreground="White"/>
-                <TextBox Text="{Binding Phone}" Foreground="White"/>
-                <Label Content="Дата старта работы:" Foreground="White"/>
-                <DatePicker SelectedDate="{Binding DateStartWork, StringFormat = '{}{0:dd.MM.yyyy}'}"/>
-                <Label Content="Дата окончания работы:" Foreground="White"/>
-                <DatePicker SelectedDate="{Binding DateEndWork, StringFormat = '{}{0:dd.MM.yyyy}'}"/>
-            </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="0" Grid.Column="1" Margin="0 0 0 0" DataContext="{Binding AddPersonalVM}" Width="Auto" Height="250">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="300"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="200"/>
+                    <RowDefinition Height="300"/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1" Width="300">
+                    <Label Content="Имя сотрудника" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" Grid.Row="0" Grid.Column="1"/>
+                    <TextBox Text="{Binding FirstName}" VerticalAlignment="Bottom" HorizontalAlignment="Center" Foreground="White" Grid.Row="0" Grid.Column="1" Margin="0 0 0 40" Width="200"/>
+                    <Label Content="Фамилия сотрудника" Margin="0 -30 0 0" Foreground="White"/>
+                    <TextBox Text="{Binding LastName}" VerticalAlignment="Bottom" HorizontalAlignment="Center" Foreground="White" Grid.Row="0" Grid.Column="1" Margin="0 0 0 40" Width="200"/>
+                    <Label Content="Отчество сотрудника" Margin="0 -30 0 0" Foreground="White"/>
+                    <TextBox Text="{Binding LastName}" VerticalAlignment="Bottom" HorizontalAlignment="Center" Foreground="White" Grid.Row="0" Grid.Column="1" Margin="0 0 0 40" Width="200"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0" Width="300">
+                    <Label Content="Номер телефона сотрудника"  HorizontalAlignment="Center" Foreground="White"/>
+                    <TextBox Text="{Binding Phone}" Width="200" Margin="0 0 0 0" />
+                    <Label Content="Дата старта работы:" Foreground="White"/>
+                    <DatePicker SelectedDate="{Binding DateStartWork, StringFormat = '{}{0:dd.MM.yyyy}'}" Width="200" Margin="0 10 0 0" Height="30"/>
+                    <Label Content="Дата окончания работы:" Foreground="White" />
+                    <DatePicker SelectedDate="{Binding DateEndWork, StringFormat = '{}{0:dd.MM.yyyy}'}" Width="200" Margin="0 10 0 0" Height="30"/>
+                </StackPanel>
+            </Grid>
         </StackPanel>
-        <StackPanel Grid.Row="1" Grid.Column="0" Height="50" Margin="0 10 0 0">
+        <StackPanel Grid.Row="0" Grid.Column="0" Width="200" Margin="10 0 0 0">
+            <Image Source="{Binding ImagePersonal}" Width="200" Height="200" Grid.Column="0" Margin="0 0 0 20"/>
+            <Button Height="30" Style="{StaticResource ButtonTheme}" Content="Выбрать изображение" Width="150" Command="{Binding SelectImage}" HorizontalAlignment="Center" Margin="0 0 0 0"/>
         </StackPanel>
-        <StackPanel Grid.Column="0" Orientation="Horizontal" Grid.Row="0" >
-
-            <StackPanel Grid.Column="1">
-                <Label Content="Изображение:" Foreground="White"/>
-                <Image Source="{Binding ImagePersonal}" Width="180" Height="150"/>
-                <Button Height="30" Style="{StaticResource ButtonTheme}" Content="Выбрать изображение" Command="{Binding SelectImage}" HorizontalAlignment="Center"/>
-            </StackPanel>
-
-        </StackPanel>
-        <StackPanel Grid.Column="2" Width="230">
+        <StackPanel Grid.Column="1" Grid.Row="1" Width="300">
             <Label Content="Статус работника:" Foreground="White"/>
             <ComboBox IsEditable="True" ItemsSource="{Binding Statuses}" DisplayMemberPath="Title" SelectedItem="{Binding SelectedStatus}"/>
         </StackPanel>
-
-        <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal">
-            <Button Style="{StaticResource ButtonTheme}" Width="150" Height="30" Content="Отмена" HorizontalAlignment="Left" Click="Button_Click"/>
-            <Button Command="{Binding SavePersonal}" Style="{StaticResource ButtonTheme}" Width="150" Height="30" Content="Сохранить" HorizontalAlignment="Right"/>
-        </StackPanel>
+        <Grid Grid.Row="2" Grid.Column="1" Height="50" Width="430" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+            <Button Style="{StaticResource ButtonTheme}" Width="150" Height="30" Content="Отмена" HorizontalAlignment="Center" Click="Button_Click"/>
+            <Button Command="{Binding SavePersonal}" Style="{StaticResource ButtonTheme}" Width="150" Height="30" Content="Сохранить" HorizontalAlignment="Center" Grid.Column="1"/>
+        </Grid>
     </Grid>
 </Window>

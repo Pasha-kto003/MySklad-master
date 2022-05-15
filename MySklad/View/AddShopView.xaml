@@ -24,8 +24,8 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Content="Сохранить" Command="{Binding SaveShop}" Height="30" Style="{StaticResource ButtonTheme}" Width="250"/>
-            <Button Content="Отмена" Click="Button_Click_1" Width="250" Height="30" Grid.Column="1" Style="{StaticResource ButtonTheme}"/>
+            <Button Content="Сохранить" Command="{Binding SaveShop}" Height="30" Style="{StaticResource ButtonTheme}" Width="200" Grid.Column="1"/>
+            <Button Content="Отмена" Click="Button_Click_1" Width="200" Height="30" Grid.Column="0" Style="{StaticResource ButtonTheme}"/>
         </Grid>
     </Grid>
 </Window>
