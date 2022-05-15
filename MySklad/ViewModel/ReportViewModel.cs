@@ -202,6 +202,17 @@ namespace MySklad.ViewModel
             }
         }
 
+        private RackApi selectedRack { get; set; }
+        public RackApi SelectedRack
+        {
+            get => selectedRack;
+            set
+            {
+                selectedRack = value;
+                SignalChanged();
+            }
+        }
+
         public List<OrderInApi> Orders { get; set; }
         public List<OrderOutApi> OrderOuts { get; set; }
 
@@ -799,6 +810,45 @@ namespace MySklad.ViewModel
                 UseShellExecute = true
             };
             p.Start();
+        }
+
+        //
+
+        public void ConvertReportRackByPersonal(PersonalApi personal)
+        {
+            GetCrossRack();
+            GetRacks();
+            var workBook = new Workbook();
+            var sheet = workBook.Worksheets[0];
+
+            sheet.Range["B1"].Value = "Имя сотрудника";
+            sheet.Range["C1"].Value = "Фамилия сотрудника";
+            sheet.Range["D1"].Value = "Отчество сотрудника";
+            sheet.Range["E1"].Value = "Статус сотрудника";
+            sheet.Range["F1"].Value = "Стеллаж";
+
+            int index = 5;
+            int count = 1;
+
+            List<CrossProductRackApi> RackByPeriod = CrossProductRacks.FindAll(s => s.RackId == s.RackId).Where
+                (
+                    s => s.Rack.PersonalId == SelectedRack.PersonalId
+                ).ToList();
+
+            foreach(var rack in RackByPeriod)
+            {
+                DateTime date = (DateTime)rack.DateProductPlacement;
+                sheet.Range[$"A{index}"].NumberValue = count++;
+                sheet.Range[$"B{index}"].Value = rack.Rack.Name;
+                sheet.Range[$"C{index}"].Value = date.ToShortDateString();
+                sheet.Range[$"D{index}"].Value = rack.Product.Title;
+                sheet.Range[$"E{index}"].Value = rack.Product.CountInStock.ToString();
+                sheet.Range[$"F{index}"].Value = rack.Rack.Personal.FirstName;
+                sheet.Range[$"G{index}"].Value = rack.Rack.ChangedDate.ToShortDateString();
+                sheet.Range[$"H{index}"].Value = rack.Rack.DeletionDate.ToString();
+
+                index++;
+            }
         }
 
         public void ConvertReportOutToXLSByPeriod(DateTime firstDate, DateTime lastDate)
