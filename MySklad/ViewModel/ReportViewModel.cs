@@ -202,8 +202,8 @@ namespace MySklad.ViewModel
             }
         }
 
-        private RackApi selectedRack { get; set; }
-        public RackApi SelectedRack
+        private CrossProductRackApi selectedRack { get; set; }
+        public CrossProductRackApi SelectedRack
         {
             get => selectedRack;
             set
@@ -334,6 +334,7 @@ namespace MySklad.ViewModel
         public CustomCommand EditReportProduct { get; set; }
         public CustomCommand EditReportWriteOff { get; set; }
         public CustomCommand EditReportRack { get; set; }
+        public CustomCommand CountAllProduct { get; set; }
 
         async Task GetProducts()
         {
@@ -452,6 +453,7 @@ namespace MySklad.ViewModel
             {
                 crossProduct.Rack = Racks.First(s => s.Id == crossProduct.RackId);
                 crossProduct.Rack.Personal = Personals.First(s => s.Id == crossProduct.Rack.PersonalId);
+                crossProduct.Rack.Personal.Status = Statuses.First(s => s.Id == crossProduct.Rack.Personal.StatusId);
                 crossProduct.Product = Products.First(s => s.Id == crossProduct.ProductId);
             }
         }
@@ -488,14 +490,16 @@ namespace MySklad.ViewModel
             Types = new List<string>
             {
                 "Поставщик",
-                "Период"
+                "Период",
+                "Заказ"
             };
 
             TypesOut = new List<string>
             {
                 "Магазин",
                 "Поставщик",
-                "Период"
+                "Период",
+                "Заказ"
             };
 
             TypesProduct = new List<string>
@@ -512,9 +516,10 @@ namespace MySklad.ViewModel
             TypesRack = new List<string>
             {
                 "Период",
-                "Продукт",
+                "Стеллаж",
                 "Сотрудник"
             };
+
 
             CountAll = new CustomCommand(() =>
             {
@@ -607,6 +612,9 @@ namespace MySklad.ViewModel
                     case "Поставщик":
                         ConvertReportToXLSBySupplier(SelectedOrderIn);
                         break;
+                    case "Заказ":
+                        ConvertReportOrderInXLSByOrderIn(SelectedOrderIn.OrderIn);
+                        break;
                 }
             });
 
@@ -622,6 +630,9 @@ namespace MySklad.ViewModel
                         break;
                     case "Магазин":
                         ConvertReportOutToXLSByShop(SelectedOrderOut);
+                        break;
+                    case "Заказ":
+                        ConvertReportOrderOutXLSByOrderOut(SelectedOrderOut.OrderOut);
                         break;
                 }
             });
@@ -655,6 +666,9 @@ namespace MySklad.ViewModel
                 {
                     case "Период":
                         ReportRackByPeriod(SelectedDateStartRack, SelectedDateEndRack);
+                        break;
+                    case "Стеллаж":
+                        ConvertReportRackByRack(SelectedRack.Rack);
                         break;
                 }
             });
@@ -757,6 +771,75 @@ namespace MySklad.ViewModel
             p.Start();
         }
 
+        public void ConvertReportOrderInXLSByOrderIn(OrderInApi orderIn)
+        {
+            GetCrossIn();
+            GetOrderIn();
+            var workBook = new Workbook();
+            var sheet = workBook.Worksheets[0];
+
+            sheet.Range["B1"].Value = "Дата заказа";
+            sheet.Range["C1"].Value = "Продукт";
+            sheet.Range["D1"].Value = "Количество привезенной продукции";
+
+            int index = 5;
+            int count = 1;
+
+            sheet.Range[$"B{index}"].Value = orderIn.DateOrderIn.ToShortDateString();
+            foreach (var product in orderIn.Products)
+            {
+                sheet.Range[$"C{index}"].Value = product.Title;
+                sheet.Range[$"D{index}"].Value2 = SelectedOrderIn.CountInOrder;
+                index++;
+            }
+
+            Chart chart = sheet.Charts.Add(ExcelChartType.PieExploded);
+            chart.SeriesDataFromRange = false;
+
+            chart.LeftColumn = 1;
+            chart.TopRow = 12;
+            chart.RightColumn = 8;
+            chart.BottomRow = 26;
+
+            chart.Width = 400;
+            chart.Height = 400;
+
+            chart.ChartArea.Border.Weight = ChartLineWeightType.Medium;
+            chart.ChartArea.Border.Color = System.Drawing.Color.SandyBrown;
+
+            chart.ChartTitle = "Racks";
+            chart.ChartTitleArea.FontName = "Calibri";
+            chart.ChartTitleArea.Size = 10;
+            chart.ChartTitleArea.IsBold = true;
+
+            chart.DataRange = sheet.Range[$"D5:D{orderIn.Products.Count + 4}"];
+            chart.HasLegend = true;
+            chart.Legend.Position = LegendPositionType.Right;
+            chart.Legend.HasDataTable = true;
+
+            ChartSerie cs = chart.Series[0];
+            cs.CategoryLabels = sheet.Range[$"C5:C{orderIn.Products.Count + 4}"];
+            cs.Values = sheet.Range[$"D5:D{orderIn.Products.Count + 4}"];
+
+            IChartSerie serie1 = chart.Series[0];
+
+            serie1.SerieType = ExcelChartType.PieExploded;
+            serie1.DataPoints.DefaultDataPoint.DataLabels.HasValue = true;
+
+            sheet.Range[$"A1:D1"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A1:D1"].BorderAround(LineStyleType.Medium);
+            sheet.Range[$"A4:L{index - 1}"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A4:L{index - 1}"].BorderAround(LineStyleType.Medium);
+            sheet.AllocatedRange.AutoFitColumns();
+            workBook.SaveToFile("testOrderInByOrderIn.xls");
+            Process p = new Process();
+            p.StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "/testOrderInByOrderIn.xls")
+            {
+                UseShellExecute = true
+            };
+            p.Start();
+        }
+
         public void ReportRackByPeriod(DateTime firstDate, DateTime lastDate)
         {
             GetCrossRack();
@@ -803,16 +886,14 @@ namespace MySklad.ViewModel
             sheet.Range[$"A4:G{index - 1}"].BorderInside(LineStyleType.Thin);
             sheet.Range[$"A4:G{index - 1}"].BorderAround(LineStyleType.Medium);
             sheet.AllocatedRange.AutoFitColumns();
-            workBook.SaveToFile("testsupp.xls");
+            workBook.SaveToFile("testRackPeriod.xls");
             Process p = new Process();
-            p.StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "/testsupp.xls")
+            p.StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "/testRackPeriod.xls")
             {
                 UseShellExecute = true
             };
             p.Start();
         }
-
-        //
 
         public void ConvertReportRackByPersonal(PersonalApi personal)
         {
@@ -821,8 +902,8 @@ namespace MySklad.ViewModel
             var workBook = new Workbook();
             var sheet = workBook.Worksheets[0];
 
-            sheet.Range["B1"].Value = "Имя сотрудника";
-            sheet.Range["C1"].Value = "Фамилия сотрудника";
+            sheet.Range["B1"].Value = "Фамилия сотрудника";
+            sheet.Range["C1"].Value = "Имя сотрудника";
             sheet.Range["D1"].Value = "Отчество сотрудника";
             sheet.Range["E1"].Value = "Статус сотрудника";
             sheet.Range["F1"].Value = "Стеллаж";
@@ -832,23 +913,106 @@ namespace MySklad.ViewModel
 
             List<CrossProductRackApi> RackByPeriod = CrossProductRacks.FindAll(s => s.RackId == s.RackId).Where
                 (
-                    s => s.Rack.PersonalId == SelectedRack.PersonalId
+                    s => s.Rack.PersonalId == SelectedRack.Rack.PersonalId
                 ).ToList();
 
             foreach(var rack in RackByPeriod)
             {
                 DateTime date = (DateTime)rack.DateProductPlacement;
                 sheet.Range[$"A{index}"].NumberValue = count++;
-                sheet.Range[$"B{index}"].Value = rack.Rack.Name;
-                sheet.Range[$"C{index}"].Value = date.ToShortDateString();
-                sheet.Range[$"D{index}"].Value = rack.Product.Title;
-                sheet.Range[$"E{index}"].Value = rack.Product.CountInStock.ToString();
-                sheet.Range[$"F{index}"].Value = rack.Rack.Personal.FirstName;
-                sheet.Range[$"G{index}"].Value = rack.Rack.ChangedDate.ToShortDateString();
-                sheet.Range[$"H{index}"].Value = rack.Rack.DeletionDate.ToString();
+                sheet.Range[$"B{index}"].Value = rack.Rack.Personal.LastName;
+                sheet.Range[$"C{index}"].Value = rack.Rack.Personal.FirstName;
+                sheet.Range[$"D{index}"].Value = rack.Rack.Personal.Patronimyc;
+                sheet.Range[$"E{index}"].Value = rack.Rack.Personal.Status.Title;
+                sheet.Range[$"F{index}"].Value = rack.Rack.Name;
 
                 index++;
             }
+
+            sheet.Range[$"B1:F2"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"B1:F2"].BorderAround(LineStyleType.Medium);
+            sheet.Range[$"A4:G{index - 1}"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A4:G{index - 1}"].BorderAround(LineStyleType.Medium);
+            sheet.AllocatedRange.AutoFitColumns();
+            workBook.SaveToFile("testsupp.xls");
+            Process p = new Process();
+            p.StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "/testRackSupp.xls")
+            {
+                UseShellExecute = true
+            };
+            p.Start();
+        }
+
+        public void ConvertReportRackByRack(RackApi rack)
+        {
+            GetRacks();
+            GetCrossRack();
+            var workBook = new Workbook();
+            var sheet = workBook.Worksheets[0];
+
+            sheet.Range["B1"].Value = "Стеллаж";
+            sheet.Range["C1"].Value = "Продукт";
+            sheet.Range["D1"].Value = "Количество";
+
+            int index = 5;
+            int count = 1;
+
+            sheet.Range[$"B{index}"].Value = rack.Name;
+            foreach(var product in rack.Products)
+            {
+                sheet.Range[$"C{index}"].Value = product.Title;
+                sheet.Range[$"D{index}"].Value = product.CountInStock.ToString();
+
+                index++;
+            }
+
+            Chart chart = sheet.Charts.Add(ExcelChartType.PieExploded);
+            chart.SeriesDataFromRange = false;
+
+            chart.LeftColumn = 1;
+            chart.TopRow = 12;
+            chart.RightColumn = 8;
+            chart.BottomRow = 26;
+
+            chart.Width = 400;
+            chart.Height = 400;
+
+            chart.ChartArea.Border.Weight = ChartLineWeightType.Medium;
+            chart.ChartArea.Border.Color = System.Drawing.Color.SandyBrown;
+
+            chart.ChartTitle = "Racks";
+            chart.ChartTitleArea.FontName = "Calibri";
+            chart.ChartTitleArea.Size = 10;
+            chart.ChartTitleArea.IsBold = true;
+
+            chart.DataRange = sheet.Range[$"D5:D{rack.Products.Count + 4}"];
+            chart.HasLegend = true;
+            chart.Legend.Position = LegendPositionType.Right;
+            chart.Legend.HasDataTable = true;
+
+            ChartSerie cs = chart.Series[0];
+            cs.CategoryLabels = sheet.Range[$"C5:C{rack.Products.Count + 4}"];
+            cs.Values = sheet.Range[$"D5:D{rack.Products.Count + 4}"];
+
+            IChartSerie serie1 = chart.Series[0];
+
+            serie1.SerieType = ExcelChartType.PieExploded;
+            serie1.DataPoints.DefaultDataPoint.DataLabels.HasValue = true;
+
+            sheet.Range[$"A1:D1"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A1:D1"].BorderAround(LineStyleType.Medium);
+            sheet.Range[$"A4:L{index - 1}"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A4:L{index - 1}"].BorderAround(LineStyleType.Medium);
+            sheet.AllocatedRange.AutoFitColumns();
+
+            workBook.SaveToFile("testRackByRack.xls");
+
+            Process p = new Process();
+            p.StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "/" + "testRackByRack.xls")
+            {
+                UseShellExecute = true
+            };
+            p.Start();
         }
 
         public void ConvertReportOutToXLSByPeriod(DateTime firstDate, DateTime lastDate)
@@ -1084,6 +1248,75 @@ namespace MySklad.ViewModel
 
             Process p = new Process();
             p.StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "/" + "testProduct.xls")
+            {
+                UseShellExecute = true
+            };
+            p.Start();
+        }
+
+        public void ConvertReportOrderOutXLSByOrderOut(OrderOutApi orderOut)
+        {
+            GetCrossOut();
+            GetOrderOut();
+            var workBook = new Workbook();
+            var sheet = workBook.Worksheets[0];
+
+            sheet.Range["B1"].Value = "Дата заказа";
+            sheet.Range["C1"].Value = "Продукт";
+            sheet.Range["D1"].Value = "Количество привезенной продукции";
+
+            int index = 5;
+            int count = 1;
+
+            sheet.Range[$"B{index}"].Value = orderOut.DateOrderOut.ToShortDateString();
+            foreach (var product in orderOut.Products)
+            {
+                sheet.Range[$"C{index}"].Value = product.Title;
+                sheet.Range[$"D{index}"].Value = SelectedOrderOut.CountOutOrder.ToString();
+                index++;
+            }
+
+            Chart chart = sheet.Charts.Add(ExcelChartType.PieExploded);
+            chart.SeriesDataFromRange = false;
+
+            chart.LeftColumn = 1;
+            chart.TopRow = 12;
+            chart.RightColumn = 8;
+            chart.BottomRow = 26;
+
+            chart.Width = 400;
+            chart.Height = 400;
+
+            chart.ChartArea.Border.Weight = ChartLineWeightType.Medium;
+            chart.ChartArea.Border.Color = System.Drawing.Color.SandyBrown;
+
+            chart.ChartTitle = "Racks";
+            chart.ChartTitleArea.FontName = "Calibri";
+            chart.ChartTitleArea.Size = 10;
+            chart.ChartTitleArea.IsBold = true;
+
+            chart.DataRange = sheet.Range[$"D5:D{orderOut.Products.Count + 4}"];
+            chart.HasLegend = true;
+            chart.Legend.Position = LegendPositionType.Right;
+            chart.Legend.HasDataTable = true;
+
+            ChartSerie cs = chart.Series[0];
+            cs.CategoryLabels = sheet.Range[$"C5:C{orderOut.Products.Count + 4}"];
+            cs.Values = sheet.Range[$"D5:D{orderOut.Products.Count + 4}"];
+
+            IChartSerie serie1 = chart.Series[0];
+
+            serie1.SerieType = ExcelChartType.PieExploded;
+            serie1.DataPoints.DefaultDataPoint.DataLabels.HasValue = true;
+
+            sheet.Range[$"A1:D1"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A1:D1"].BorderAround(LineStyleType.Medium);
+            sheet.Range[$"A4:L{index - 1}"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A4:L{index - 1}"].BorderAround(LineStyleType.Medium);
+            sheet.AllocatedRange.AutoFitColumns();
+            workBook.SaveToFile("testOrderOutByOrderOut.xls");
+            Process p = new Process();
+            p.StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "/testOrderOutByOrderOut.xls")
             {
                 UseShellExecute = true
             };
