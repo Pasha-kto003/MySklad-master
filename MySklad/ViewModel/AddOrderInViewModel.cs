@@ -161,7 +161,12 @@ namespace MySklad.ViewModel
 
         async Task EditProduction(ProductApi productApi)
         {
-            var prod = Api.PutAsync<ProductApi>(productApi, "Product");
+            var prod = await Api.PutAsync<ProductApi>(productApi, "Product");
+        }
+
+        async Task EditSupplier(SupplierApi supplier)
+        {
+            var supplierApi = await Api.PutAsync<SupplierApi>(supplier, "Supplier");
         }
 
         async Task GetOrders(OrderInApi orderInApi)
@@ -273,6 +278,16 @@ namespace MySklad.ViewModel
                         return;
                     }
                     AddOrderVM.SupplierId = SelectedSupplier.Id;
+                    if (AddOrderVM.SupplierId != 0)
+                    {
+                        MessageBoxResult result = MessageBox.Show($"Поставщик {SelectedSupplier.FirstName} Успешно доставил груз! Поднять ему рейтинг?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            SelectedSupplier.Rating += 10;
+                            EditSupplier(SelectedSupplier);
+                            MessageBox.Show($"Поставщику {SelectedSupplier.FirstName} был поднят рейтинг!");
+                        }
+                    }
                     PostOrder(AddOrderVM);
                 }
                 else
@@ -283,6 +298,16 @@ namespace MySklad.ViewModel
                         return;
                     }
                     AddOrderVM.SupplierId = SelectedSupplier.Id;
+                    if(AddOrderVM.SupplierId != 0)
+                    {
+                        MessageBoxResult result = MessageBox.Show($"Поставщик {SelectedSupplier.FirstName} Успешно доставил груз! Поднять ему рейтинг?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            SelectedSupplier.Rating += 10;
+                            EditSupplier(SelectedSupplier);
+                            MessageBox.Show($"Поставщику {SelectedSupplier.FirstName} был поднят рейтинг!");
+                        }
+                    }
                     EditOrder(AddOrderVM);
                 }
 
