@@ -263,7 +263,7 @@ namespace MySklad.ViewModel
                         MessageBox.Show("Ошибка, этот продукт находится в реестре удалений");
                         SelectedOrderProducts.Remove(SelectedOrderProduct);
                     }
-                    else if (Cross > SelectedOrderProduct.CrossProductOrderApi.CountInOrder / 2 || SelectedOrderProduct.CountProductsOut / 2 > SelectedOrderProduct.CountInStock)
+                    else if (Cross > SelectedOrderProduct.CrossProductOrderApi.CountInOrder / 2 || Cross / 2 > SelectedOrderProduct.CountInStock) // Cross or SelectedOrderProduct.CountProductsOut or SelectedOrderProduct.CrossProductOrderApi.CountOutOrder
                     {
                         MessageBoxResult message = MessageBox.Show("Невозможно увезти такое количество данной продукции", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Error);
                         if (message == MessageBoxResult.Yes)
