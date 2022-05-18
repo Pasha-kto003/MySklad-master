@@ -76,6 +76,7 @@
             <StackPanel Grid.Row="3" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center"  Margin="0 80 0 0">
                 <StackPanel Orientation="Horizontal">
                     <Button Width="250" Content="Добавить продукт" Height="30" Command="{Binding AddProduct}" Style="{StaticResource ButtonTheme}" HorizontalAlignment="Center" Margin="0 15 0 0"/>
+                    <!--<Button Width="250" Command="{Binding ReplaceProduct}" Content="Переместить продукт" Style="{StaticResource ButtonTheme}" Height="30" HorizontalAlignment="Center" Margin="20 15 0 0"/>-->
                 </StackPanel>
             </StackPanel>
             <StackPanel Grid.Row="4" Orientation="Vertical" HorizontalAlignment="Center">

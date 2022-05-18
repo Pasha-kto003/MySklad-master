@@ -104,6 +104,8 @@ namespace MySklad.ViewModel
             }
         }
 
+        public List<RackApi> Racks { get; set; }
+
         private CrossProductRackApi selectedCross { get; set; }
         public CrossProductRackApi SelectedCross
         {
@@ -115,10 +117,37 @@ namespace MySklad.ViewModel
             }
         }
 
+        private List<ProductTypeApi> productTypes { get; set; }
+        public List<ProductTypeApi> ProductTypes
+        {
+            get => productTypes;
+            set
+            {
+                productTypes = value;
+                SignalChanged();
+            }
+        }
+
+        private List<UnitApi> units { get; set; }
+        public List<UnitApi> Units
+        {
+            get => units;
+            set
+            {
+                units = value;
+                SignalChanged();
+            }
+        }
+
         async Task GetProducts()
         {
             var products = await Api.GetListAsync<List<ProductApi>>("Product");
             Product = (List<ProductApi>)products;
+        }
+
+        async Task GetRackToUpdate()
+        {
+            Racks = await Api.GetListAsync<List<RackApi>>("Rack");
         }
 
         async Task GetPersonals()
@@ -131,6 +160,8 @@ namespace MySklad.ViewModel
         {
             Personals = await Api.GetListAsync<List<PersonalApi>>("Personal");
             Product = await Api.GetListAsync<List<ProductApi>>("Product");
+            ProductTypes = await Api.GetListAsync<List<ProductTypeApi>>("ProductType");
+            Units = await Api.GetListAsync<List<UnitApi>>("Unit");
             var cross = await Api.GetListAsync<List<CrossProductRackApi>>("CrossRack");
             CrossProductRacks = await Api.GetListAsync<List<CrossProductRackApi>>("CrossRack");
 
@@ -146,6 +177,8 @@ namespace MySklad.ViewModel
                 foreach (CrossProductRackApi crossProduct in SelectedCrosses)
                 {
                     crossProduct.Product = SelectedRackProducts.FirstOrDefault(s => s.Id == crossProduct.ProductId);
+                    crossProduct.Product.ProductType = ProductTypes.FirstOrDefault(s => s.Id == crossProduct.Product.ProductTypeId);
+                    crossProduct.Product.Unit = Units.FirstOrDefault(s => s.Id == crossProduct.Product.UnitId);
                     CountAllProducts += (int)crossProduct.Product.CountInStock;
                     SignalChanged(nameof(CountAllProducts));
                 }
@@ -229,11 +262,22 @@ namespace MySklad.ViewModel
 
                 else if (SelectedProduct.CrossProductRack != null)
                 {
-                    MessageBoxResult result = MessageBox.Show("Ошибка, данная продукция уже расположена на стеллаже!", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-
+                    MessageBoxResult result = MessageBox.Show("Ошибка, данная продукция уже расположена на стеллаже! Хотите переместить его?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    Racks = new List<RackApi>();
+                    GetRackToUpdate();
                     if (result == MessageBoxResult.Yes)
                     {
-                        return;
+                        var search = CrossProductRacks.FirstOrDefault(s=> s.ProductId == SelectedProduct.Id);
+                        search.Product = Product.FirstOrDefault(s => s.Id == search.ProductId);
+                        if(search != null)
+                        {
+                            CrossProductRacks.Remove(search);
+                            MessageBox.Show("Перемещение подтверждено");
+                        }
+
+                        AddRackVM.CrossProductRacks = CrossProductRacks.Where(s => s.ProductId == search.ProductId);
+                        SelectedCrosses = AddRackVM.CrossProductRacks;
+                        SignalChanged("SelectedCrosses");
                     }
                 }
                 else
@@ -260,7 +304,7 @@ namespace MySklad.ViewModel
                     }
                     SignalChanged("SelectedRackProduct");
                     //SignalChanged("SelectedRackProducts");
-                    AddRackVM.RemainingPlaces = AddRackVM.Capacity - SelectedRackProduct.CountInStock / 2;
+                    AddRackVM.RemainingPlaces = AddRackVM.Capacity - SelectedProduct.CountInStock / 2;
                     if (AddRackVM.RemainingPlaces < 0)
                     {
                         MessageBoxResult result = MessageBox.Show($"Не хватает мест для данного товара, его следует удалить! Количество данного товара : {SelectedProduct.CountInStock / 2}", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning);

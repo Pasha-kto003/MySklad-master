@@ -52,6 +52,17 @@ namespace MySklad.ViewModel
             }
         }
 
+        private List<UnitApi> units { get; set; }
+        public List<UnitApi> Units
+        {
+            get => units;
+            set
+            {
+                units = value;
+                SignalChanged();
+            }
+        }
+
         public string TimeWait { get; set; }
         public DateTime date { get; set; } = DateTime.Now;
 
@@ -174,6 +185,7 @@ namespace MySklad.ViewModel
             Suppliers = await Api.GetListAsync<List<SupplierApi>>("Supplier");
             Product = await Api.GetListAsync<List<ProductApi>>("Product");
             ProductTypes = await Api.GetListAsync<List<ProductTypeApi>>("ProductType");
+            Units = await Api.GetListAsync<List<UnitApi>>("Unit");
             var cross = await Api.GetListAsync<List<CrossProductOrderApi>>("CrossIn");
 
             if(orderInApi == null)
@@ -189,6 +201,7 @@ namespace MySklad.ViewModel
                 {
                     crossProduct.Product = SelectedOrderProducts.FirstOrDefault(s => s.Id == crossProduct.ProductId);
                     crossProduct.Product.ProductType = ProductTypes.FirstOrDefault(s => s.Id == crossProduct.Product.ProductTypeId);
+                    crossProduct.Product.Unit = Units.FirstOrDefault(s => s.Id == crossProduct.Product.UnitId);
                     CountAllProducts += (int)crossProduct.CountInOrder;
                     SignalChanged(nameof(CountAllProducts));
                 }
@@ -258,16 +271,13 @@ namespace MySklad.ViewModel
                     //EditProduction(SelectedOrderProduct);
                     SelectedOrderProducts.Add(SelectedProduct);
                     MessageBox.Show($"Продукт {SelectedProduct.Title} добавлен в накладную");
-                    SignalChanged(nameof(SelectedOrderProducts));
-                    SignalChanged(nameof(SelectedCrosses));
+                    SelectedCrosses = AddOrderVM.CrossProductOrders;
                     SignalChanged("SelectedCrosses");
-                    SignalChanged("SelectedOrderProducts");
                 }
             });
 
             SaveOrder = new CustomCommand(() =>
-            {
-                
+            {   
                 AddOrderVM.Products = SelectedOrderProducts;
                 SelectedOrderProduct.CountProducts = NewCross;
                 if (AddOrderVM.Id == 0)

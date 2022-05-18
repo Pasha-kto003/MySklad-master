@@ -129,6 +129,17 @@ namespace MySklad.ViewModel
             }
         }
 
+        private List<UnitApi> units { get; set; }
+        public List<UnitApi> Units
+        {
+            get => units;
+            set
+            {
+                units = value;
+                SignalChanged();
+            }
+        }
+
         private ShopApi selectedShop { get; set; }
         public ShopApi SelectedShop { get; set; }
 
@@ -173,6 +184,7 @@ namespace MySklad.ViewModel
             Shops = await Api.GetListAsync<List<ShopApi>>("Shop");
             Product = await Api.GetListAsync<List<ProductApi>>("Product");
             ProductTypes = await Api.GetListAsync<List<ProductTypeApi>>("ProductType");
+            Units = await Api.GetListAsync<List<UnitApi>>("Unit");
             CrossProductOrders = await Api.GetListAsync<List<CrossProductOrderApi>>("CrossIn");
             CrossOrderOuts = await Api.GetListAsync<List<CrossOrderOutApi>>("OrderOut");
             var cross = await Api.GetListAsync<List<CrossOrderOutApi>>("CrossOut");
@@ -191,6 +203,7 @@ namespace MySklad.ViewModel
                 {
                     crossProduct.Product = SelectedOrderProducts.FirstOrDefault(s => s.Id == crossProduct.ProductId);
                     crossProduct.Product.ProductType = ProductTypes.FirstOrDefault(s => s.Id == crossProduct.Product.ProductTypeId);
+                    crossProduct.Product.Unit = Units.FirstOrDefault(s => s.Id == crossProduct.Product.UnitId);
                     CountAllProducts += (int)crossProduct.CountOutOrder;
                     SignalChanged(nameof(CountAllProducts));
                 }
