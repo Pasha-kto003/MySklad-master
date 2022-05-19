@@ -299,9 +299,24 @@ namespace MySklad.ViewModel
             {
                 AddOrderVM.Products = SelectedOrderProducts;
                 //SelectedOrderProduct.CountProductsOut = Cross;
+                if(AddOrderVM.Status == null)
+                {
+                    MessageBox.Show("Введите статус приходной");
+                    return;
+                }
 
                 if (AddOrderVM.Id == 0)
                 {
+                    if(SelectedSupplier == null)
+                    {
+                        MessageBox.Show("Выберите поставщика продукции");
+                        return;
+                    }
+                    if(SelectedShop == null)
+                    {
+                        MessageBox.Show("Выберите точку доставки продукции");
+                        return;
+                    }
                     AddOrderVM.SupplierId = SelectedSupplier.Id;
                     AddOrderVM.ShopId = SelectedShop.Id;
                     PostOrder(AddOrderVM);

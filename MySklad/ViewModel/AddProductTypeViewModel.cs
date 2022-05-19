@@ -46,6 +46,11 @@ namespace MySklad.ViewModel
 
             SaveType = new CustomCommand(() =>
             {
+                if(AddTypeVM.Title == null)
+                {
+                    MessageBox.Show("Введите тип продукции");
+                    return;
+                }
                 if (AddTypeVM.Id == 0)
                 {
                     CreateType(AddTypeVM);

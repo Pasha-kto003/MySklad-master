@@ -278,10 +278,25 @@ namespace MySklad.ViewModel
 
             SaveOrder = new CustomCommand(() =>
             {   
+                if(AddOrderVM.Status == null)
+                {
+                    MessageBox.Show("Введите статус");
+                    return;
+                }
                 AddOrderVM.Products = SelectedOrderProducts;
                 SelectedOrderProduct.CountProducts = NewCross;
                 if (AddOrderVM.Id == 0)
                 {
+                    if(AddOrderVM.Products == null)
+                    {
+                        MessageBox.Show("Выберите продукцию для накладной");
+                        return;
+                    }
+                    if(SelectedSupplier == null)
+                    {
+                        MessageBox.Show("Выберите поставщика");
+                        return;
+                    }
                     if(SelectedSupplier.Status == "Удален")
                     {
                         MessageBox.Show("Выберите другого поставщика");

@@ -33,19 +33,19 @@
                     <RowDefinition />
                     
                 </Grid.RowDefinitions>
-                <Label Content="Поиск:"/>
-                <Label Grid.Column="1" Content="Критерий поиска:"/>
+                <Label Content="Поиск:" Foreground="White"/>
+                <Label Grid.Column="1" Content="Критерий поиска:" Foreground="White"/>
                 <TextBox Width="200" Grid.Row="1" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
                 <ComboBox IsEditable="True" Width="200" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}"/>
                 
             </Grid>
             <StackPanel Grid.Column="2">
-                <Label Content="Выбор сортирвки"/>
+                <Label Content="Выбор сортирвки" Foreground="White"/>
                 <!--<Button Command="{Binding Sortirovka}" Content="Сортировать"/>-->
                 <ComboBox IsEditable="True" Width="200" ItemsSource="{Binding SortType}" SelectedItem="{Binding SelectedSortType}"/>
             </StackPanel>
             <StackPanel Grid.Column="3">
-                <Label Content="Сортировка по типу"/>
+                <Label Content="Сортировка по типу" Foreground="White"/>
                 <!--<Button Command="{Binding Sortirovka}" Content="Сортировать"/>-->
                 <ComboBox IsEditable="True" Width="200" ItemsSource="{Binding OrderType}" SelectedItem="{Binding SelectedOrderType}"/>
             </StackPanel>
@@ -60,7 +60,6 @@
                 <DataGridTextColumn Header="Ед. измерения" Binding="{Binding Unit.Title}"/>
                 <DataGridTextColumn Header="Тип продукции" Binding="{Binding ProductType.Title}"/>
                 <DataGridTextColumn Header="Статус" Binding="{Binding Status}"/>
-                
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
                 <ContextMenu>

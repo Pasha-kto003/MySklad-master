@@ -41,7 +41,7 @@ namespace MySklad.ViewModel
             Shops = new List<ShopApi>();
             if (shopApi == null)
             {
-                AddShopVM = new ShopApi { };
+                AddShopVM = new ShopApi { Phone = "+7(___)-XXX-XXX-XX-XX", Email = "examplemail@gmail.com" };
             }
             else
             {
@@ -56,6 +56,24 @@ namespace MySklad.ViewModel
 
             SaveShop = new CustomCommand(() =>
             {
+                if(AddShopVM.Name == null)
+                {
+                    MessageBox.Show("Не введено название магазина");
+                    return;
+                }
+
+                if(AddShopVM.Email == null || !AddShopVM.Email.Contains("@") || !AddShopVM.Email.EndsWith(".com"))
+                {
+                    MessageBox.Show("Не введена почта или введена не верно");
+                    return;
+                }
+
+                if(AddShopVM.Phone == null)
+                {
+                    MessageBox.Show("Не введен номер телефона компании");
+                    return;
+                }
+
                 if (AddShopVM.Id == 0)
                 {
                     CreateShop(AddShopVM);

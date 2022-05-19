@@ -148,6 +148,20 @@ namespace MySklad.ViewModel
 
             SaveRegister = new CustomCommand(() =>
             {
+                if(AddRegisterVM.Title == null)
+                {
+                    MessageBox.Show("Не введено название удаления");
+                    return;
+                }
+                if(AddRegisterVM.ReasonDelete == null)
+                {
+                    MessageBox.Show("Введите причину удаления");
+                    return;
+                }
+                if(AddRegisterVM.DeletedAt == null)
+                {
+                    MessageBox.Show("Введите дату удаления продукта");
+                }
                 if(AddRegisterVM.Id == 0)
                 {
                     if (SelectedProduct == null)

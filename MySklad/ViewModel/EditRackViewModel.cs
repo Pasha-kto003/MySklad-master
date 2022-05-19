@@ -291,10 +291,26 @@ namespace MySklad.ViewModel
 
             SaveRack = new CustomCommand(() =>
             {
+                if(AddRackVM.Products == null)
+                {
+                    MessageBox.Show("Заполните стеллаж");
+                    return;
+                }
+                if(AddRackVM.PlacementDate == null)
+                {
+                    MessageBox.Show("Не введена дата создания стеллажа");
+                    return;
+                }
+
                 //AddRackVM.CrossProductRacks = CrossProductRacks.FirstOrDefault(s => s.RackId == AddRackVM.Id);
                 AddRackVM.Products = SelectedRackProducts;
                 if (AddRackVM.Id == 0)
                 {
+                    if(SelectedPersonal == null)
+                    {
+                        MessageBox.Show("Добавьте сотрудника на стеллаж");
+                        return;
+                    }
                     AddRackVM.PersonalId = SelectedPersonal.Id;
                     //AddRackVM.CrossProductRacks = CrossProductRacks.FirstOrDefault(s => s.RackId == AddRackVM.Id);
                     //SelectedRackProduct.CountInStock = 0;

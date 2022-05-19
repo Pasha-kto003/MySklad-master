@@ -51,6 +51,10 @@ namespace MySklad.ViewModel
 
             SaveUnit = new CustomCommand(() =>
             {
+                if(AddUnitVM.Title == null)
+                {
+                    MessageBox.Show("Не введено название единицы измерения");
+                }
                 if (AddUnitVM.Id == 0)
                 {
                     CreateUnit(AddUnitVM);

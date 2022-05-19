@@ -165,9 +165,29 @@ namespace MySklad.ViewModel
 
             SaveProduct = new CustomCommand(() =>
             {
-
+                if (AddProductVM.BestBeforeDateStart > AddProductVM.BestBeforeDateEnd || AddProductVM.BestBeforeDateStart == null || AddProductVM.BestBeforeDateEnd == null)
+                {
+                    MessageBox.Show("Введена неправильная дата");
+                    return;
+                }
+                if(AddProductVM.Description == null)
+                {
+                    MessageBox.Show("Не введено описание продукта");
+                    return;
+                }
+                
                 if(AddProductVM.Id == 0)
                 {
+                    if (SelectedProductType == null)
+                    {
+                        MessageBox.Show("Отсутсвует тип продукции");
+                        return;
+                    }
+                    if (SelectedUnit == null)
+                    {
+                        MessageBox.Show("Отсутствует единица измерения продукции");
+                        return;
+                    }
                     AddProductVM.UnitId = SelectedUnit.Id;
                     AddProductVM.ProductTypeId = SelectedProductType.Id;
                     //AddProductVM.CountInStock = (int)(AddProductVM.CountProducts.Value - AddProductVM.CountProductsOut);
@@ -195,11 +215,11 @@ namespace MySklad.ViewModel
                         AddProductVM.CrossOrderOutApi.CountOutOrder += crossOrder.CountOutOrder;
                     }
                     //SignalChanged("AddProductVM.CrossOrderOutApi");
-                    
                     if(AddProductVM.CountInStock != 0)
                     {
                         if(AddProductVM.CrossOrderOutApi == null)
                         {
+                            AddProductVM.CountInStock = (int)(AddProductVM.CrossProductOrderApi.CountInOrder - 0);
                             EditProduct(AddProductVM);
                         }
                         else

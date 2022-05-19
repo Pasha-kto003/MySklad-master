@@ -163,10 +163,40 @@ namespace MySklad.ViewModel
             {
                 try
                 {
+                    if(AddPersonalVM.LastName == null || AddPersonalVM.Patronimyc == null || AddPersonalVM.FirstName == null)
+                    {
+                        MessageBox.Show("Введенно неправильно ФИО");
+                        return;
+                    }
+
+                    if(AddPersonalVM.DateStartWork > AddPersonalVM.DateEndWork || AddPersonalVM.DateStartWork == null || AddPersonalVM.DateEndWork == null)
+                    {
+                        MessageBox.Show("Замечена ошибка в датах сотрудника");
+                        return;
+                    }
+
+                    if(AddPersonalVM.Rating == null || AddPersonalVM.Rating < 0)
+                    {
+                        MessageBox.Show("Введен неверный рейтинг");
+                        return;
+                    }
+
+                    if(AddPersonalVM.Phone == null)
+                    {
+                        MessageBox.Show("Не введен номер телефона");
+                        return;
+                    }
+
                     if(AddPersonalVM.Id == 0)
                     {
+                        if(SelectedStatus == null)
+                        {
+                            MessageBox.Show("Не введен статус сотрудника");
+                            return;
+                        }
                         AddPersonalVM.StatusId = SelectedStatus.Id;
                         PostPersonal(AddPersonalVM);
+                        MessageBox.Show($"Новый сотрудник {AddPersonalVM.FirstName} добавлен на склад");
                     }
                     else
                     {

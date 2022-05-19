@@ -113,6 +113,26 @@ namespace MySklad.ViewModel
             {
                 try
                 {
+                    if(AddCompanyVM.NameOfCompany == null)
+                    {
+                        MessageBox.Show("Не введено название компании");
+                        return;
+                    }
+                    if(AddCompanyVM.Phone == null)
+                    {
+                        MessageBox.Show("Не введен телефон компании");
+                        return;
+                    }
+                    if(AddCompanyVM.RegistrationDate == null)
+                    {
+                        MessageBox.Show("Не введена дата регистрации компании");
+                        return;
+                    }
+                    if(AddCompanyVM.Email == null || !AddCompanyVM.Email.Contains("@") || !AddCompanyVM.Email.EndsWith(".com"))
+                    {
+                        MessageBox.Show("Неправильно введена почта предприятия");
+                        return;
+                    }
                     if(AddCompanyVM.Id == 0)
                     {
                         PostCompany(AddCompanyVM);

@@ -88,7 +88,7 @@ namespace MySklad.ViewModel
             GetSuppliers(AddSupplierVM);
             if (supplierApi == null)
             {
-                AddSupplierVM = new SupplierApi { FirstName = "Название компании", Email = "Email", Rating = 100, Status = "В норме" };
+                AddSupplierVM = new SupplierApi { FirstName = "Имя поставщика", Email = "example@mail.com", Rating = 100, Status = "В норме" };
             }
             else
             {
@@ -108,8 +108,37 @@ namespace MySklad.ViewModel
 
             SaveSupplier = new CustomCommand(() =>
             {
+                if(AddSupplierVM.FirstName == null || AddSupplierVM.LastName == null || AddSupplierVM.Patronimyc == null)
+                {
+                    MessageBox.Show("Не правильно введено ФИО");
+                    return;
+                }
+                if(AddSupplierVM.Status == null)
+                {
+                    MessageBox.Show("Не введен статус");
+                    return;
+                }
+                if(AddSupplierVM.Rating == null)
+                {
+                    MessageBox.Show("Не введен рейтинг");
+                    return;
+                }
+                if(AddSupplierVM.Phone == null)
+                {
+                    MessageBox.Show("Не введен номер телефона");
+                    return;
+                }
+                if(AddSupplierVM.Email == null || !AddSupplierVM.Email.Contains("@") || !AddSupplierVM.Email.EndsWith(".com"))
+                {
+                    MessageBox.Show("Ошибки в почтовом адрессе");
+                    return;
+                }
                 if(AddSupplierVM.Id == 0)
                 {
+                    if(SelectedCompany == null)
+                    {
+                        MessageBox.Show("Не записана компания поставщика");
+                    }
                     AddSupplierVM.CompanyId = SelectedCompany.Id;
                     PostSupplier(AddSupplierVM);
                 }

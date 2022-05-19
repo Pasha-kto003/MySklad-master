@@ -51,6 +51,11 @@ namespace MySklad.ViewModel
 
             SaveStatus = new CustomCommand(() =>
             {
+                if(AddStatusVM.Title == null)
+                {
+                    MessageBox.Show("Не введен статус");
+                    return;
+                }
                 if (AddStatusVM.Id == 0)
                 {
                     CreateStatus(AddStatusVM);
