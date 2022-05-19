@@ -291,11 +291,7 @@ namespace MySklad.ViewModel
 
             SaveRack = new CustomCommand(() =>
             {
-                if(AddRackVM.Products == null)
-                {
-                    MessageBox.Show("Заполните стеллаж");
-                    return;
-                }
+                
                 if(AddRackVM.PlacementDate == null)
                 {
                     MessageBox.Show("Не введена дата создания стеллажа");
@@ -309,6 +305,11 @@ namespace MySklad.ViewModel
                     if(SelectedPersonal == null)
                     {
                         MessageBox.Show("Добавьте сотрудника на стеллаж");
+                        return;
+                    }
+                    if (AddRackVM.Products == null)
+                    {
+                        MessageBox.Show("Заполните стеллаж");
                         return;
                     }
                     AddRackVM.PersonalId = SelectedPersonal.Id;
@@ -338,6 +339,7 @@ namespace MySklad.ViewModel
                         {
                             cross.DateProductPlacement = time;
                         }
+                        CrossProductRackApi crossrack = new CrossProductRackApi { ProductId = SelectedProduct.Id, RackId = AddRackVM.Id};
                         PostRack(AddRackVM);
                         MessageBox.Show("Добавлен новый стеллаж");
                     }
@@ -363,7 +365,7 @@ namespace MySklad.ViewModel
                     {
                         SelectedRackProduct.CountInStock += product.CountInStock;
                     }
-                    AddRackVM.RemainingPlaces = AddRackVM.Capacity - SelectedRackProduct.CountInStock / 2;
+                    AddRackVM.RemainingPlaces = AddRackVM.Capacity - SelectedProduct.CountInStock / 2;
                     if (AddRackVM.RemainingPlaces < 0)
                     {
                         MessageBoxResult result = MessageBox.Show("Не хватает мест для данного товара, его следует удалить!", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning);
