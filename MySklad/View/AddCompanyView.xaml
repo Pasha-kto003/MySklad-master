@@ -5,40 +5,40 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MySklad.View"
         mc:Ignorable="d"
-        Title="AddCompanyView" Height="450" Width="800">
+        Title="AddCompanyView" Height="450" Width="1000">
     <Grid Background="#325f63">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="700"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <StackPanel Width="233" HorizontalAlignment="Left">
-            <Label Content="Изображение:" Foreground="White"/>
+        <StackPanel Width="233" HorizontalAlignment="Center">
+            <Label Content="Изображение:" Foreground="White" FontSize="16"/>
             <Image Source="{Binding ImageCompany}" Width="150" Height="150"/>
-            <Button Height="30" Style="{StaticResource ButtonTheme}" Content="Выбрать изображение" Width="150" Command="{Binding SelectImage}"/>
+            <Button Height="30" Style="{StaticResource ButtonTheme}" Content="Выбрать изображение" Width="200" FontSize="16" Command="{Binding SelectImage}"/>
         </StackPanel>
-        <StackPanel DataContext="{Binding AddCompanyVM}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal">
-            <StackPanel Width="250" HorizontalAlignment="Left" Margin="0 0 10 0">
-                <Label Content="Название компании:" Foreground="White"/>
-                <TextBox Text="{Binding NameOfCompany}"/>
-                <Label Content="Почта компании:" Foreground="White"/>
-                <TextBox Text="{Binding Email}"/>
-            </StackPanel>
-            <StackPanel Width="250" Grid.Column="1">
-                <Label Content="Дата старта работы:" Foreground="White"/>
-                <DatePicker SelectedDate="{Binding RegistrationDate, StringFormat = '{}{0:dd.MM.yyyy}'}"/>
-                <Label Content="Номер телефона:" Foreground="White"/>
-                <TextBox Text="{Binding Phone}"/>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0">
+            <StackPanel DataContext="{Binding AddCompanyVM}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                <StackPanel Width="250" HorizontalAlignment="Left" Margin="0 0 10 0">
+                    <Label Content="Название компании:" Foreground="White" FontSize="16"/>
+                    <TextBox Text="{Binding NameOfCompany}" Height="30"/>
+                    <Label Content="Почта компании:" Foreground="White" FontSize="16"/>
+                    <TextBox Text="{Binding Email}" Height="30"/>
+                </StackPanel>
+                <StackPanel Width="250" Grid.Column="1" >
+                    <Label Content="Дата старта работы:" Foreground="White" FontSize="16"/>
+                    <DatePicker SelectedDate="{Binding RegistrationDate, StringFormat = '{}{0:dd.MM.yyyy}'}" Height="36"/>
+                    <Label Content="Номер телефона:" Foreground="White" FontSize="16"/>
+                    <TextBox Text="{Binding Phone}" Height="30"/>
+                </StackPanel>
             </StackPanel>
         </StackPanel>
-
-        <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 50 0 0">
-            <Button Style="{StaticResource ButtonTheme}" Width="150" Height="30" Content="Отмена" HorizontalAlignment="Left" Click="Button_Click" Margin="0 0 50 0"/>
-            <Button Command="{Binding SaveCompany}" Style="{StaticResource ButtonTheme}" Width="150" Height="30" Content="Сохранить" HorizontalAlignment="Right"/>
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 50 0 0">
+            <Button Style="{StaticResource ButtonTheme}" Width="200" Height="30" Content="Отмена" HorizontalAlignment="Left" Click="Button_Click" Margin="0 0 50 0" FontSize="16"/>
+            <Button Command="{Binding SaveCompany}" Style="{StaticResource ButtonTheme}" Width="200" Height="30" Content="Сохранить" HorizontalAlignment="Right" FontSize="16"/>
         </StackPanel>
     </Grid>
 </Window>

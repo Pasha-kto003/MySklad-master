@@ -15,22 +15,22 @@
         </Grid.RowDefinitions>
         <StackPanel DataContext="{Binding AddRegisterVM}" Orientation="Horizontal" HorizontalAlignment="Center">
             <StackPanel Width="250"  HorizontalAlignment="Center" Grid.Row="0">
-                    <Label Content="Наименование Реестра" Foreground="White"/>
-                    <TextBox Text="{Binding Title}"/>
-                    <Label Content="Дата удаления" Foreground="White"/>
-                    <DatePicker SelectedDate="{Binding DeletedAt, StringFormat = '{}{0:dd.MM.yyyy}'}"/>
-                    <Label Content="Причина удаления" Foreground="White"/>
+                <Label Content="Наименование Реестра" Foreground="White" FontSize="16"/>
+                <TextBox Text="{Binding Title}" FontSize="16"/>
+                <Label Content="Дата удаления" Foreground="White" FontSize="16"/>
+                <DatePicker SelectedDate="{Binding DeletedAt, StringFormat = '{}{0:dd.MM.yyyy}'}" FontSize="16"/>
+                <Label Content="Причина удаления" Foreground="White" FontSize="16"/>
                 <TextBox Text="{Binding ReasonDelete}"/>
             </StackPanel>
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Vertical" Width="250" HorizontalAlignment="Center">
-            <Label Content="Удаленный продукт:" Foreground="White"/>
-            <ComboBox IsEditable="True" ItemsSource="{Binding Products}" DisplayMemberPath="Title" SelectedItem="{Binding SelectedProduct}"/>
+            <Label Content="Удаленный продукт:" Foreground="White" FontSize="16"/>
+            <ComboBox IsEditable="True" ItemsSource="{Binding Products}" DisplayMemberPath="Title" SelectedItem="{Binding SelectedProduct}" FontSize="16"/>
         </StackPanel>
         <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Content="Отмена" Click="Button_Click" Style="{StaticResource ButtonTheme}" HorizontalAlignment="Left" Width="150"/>
-            
-            <Button Content="Сохранить реестр" Command="{Binding SaveRegister}" Style="{StaticResource ButtonTheme}" HorizontalAlignment="Right" Width="150"/>
+            <Button Content="Отмена" Click="Button_Click" Style="{StaticResource ButtonTheme}" HorizontalAlignment="Left" Width="200" FontSize="16"/>
+
+            <Button Content="Сохранить реестр" Command="{Binding SaveRegister}" Style="{StaticResource ButtonTheme}" HorizontalAlignment="Right" Width="200" FontSize="16"/>
         </StackPanel>
     </Grid>
 </Window>

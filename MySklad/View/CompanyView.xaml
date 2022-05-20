@@ -33,10 +33,10 @@
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <Label Content="Поиск:" Foreground="White"/>
-                <Label Grid.Column="1" Content="Критерий поиска:" Foreground="White"/>
-                <TextBox Width="200" Grid.Row="1" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
-                <ComboBox IsEditable="True" Width="200" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}"/>
+                <Label Content="Поиск:" Foreground="White" FontSize="16"/>
+                <Label Grid.Column="1" Content="Критерий поиска:" Foreground="White" FontSize="16"/>
+                <TextBox Width="200" Grid.Row="1" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" FontSize="16"/>
+                <ComboBox IsEditable="True" Width="200" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}" FontSize="16"/>
             </Grid>
             
         </Grid>
@@ -52,20 +52,20 @@
                         <Image Source="{Binding Image}" Width="100" Height="100" Grid.Column="0" HorizontalAlignment="Left"/>
                         <StackPanel  Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Left">
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Название компании: "/>
-                                <Label Content="{Binding NameOfCompany}"/>
+                                <Label Content="Название компании: " FontSize="16"/>
+                                <Label Content="{Binding NameOfCompany}" FontSize="16"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Телефон: "/>
-                                <Label Content="{Binding Phone}"/>
+                                <Label Content="Телефон: " FontSize="16"/>
+                                <Label Content="{Binding Phone}" FontSize="16"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Почта: "/>
-                                <Label Content="{Binding Email}"/>
+                                <Label Content="Почта: " FontSize="16"/>
+                                <Label Content="{Binding Email}" FontSize="16"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" >
-                                <Label Content="Дата начала работы: "/>
-                                <Label Content="{Binding RegistrationDate}"/>
+                                <Label Content="Дата начала работы: " FontSize="16"/>
+                                <Label Content="{Binding RegistrationDate}" FontSize="16"/>
                             </StackPanel>
                         </StackPanel>
                     </Grid>

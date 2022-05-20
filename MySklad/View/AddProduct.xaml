@@ -20,31 +20,31 @@
                     <ColumnDefinition Width="500"/>
                     <ColumnDefinition Width="500"/>
                 </Grid.ColumnDefinitions>
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top" Width="500" Height="200" Grid.Column="0">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="20 0 0 0" VerticalAlignment="Top" Width="490" Height="200" Grid.Column="0">
                     <StackPanel Orientation="Horizontal">
-                        <Label Content="Название продукта: " HorizontalAlignment="Center" Width="150" Foreground="White"/>
+                        <Label Content="Название продукта: " HorizontalAlignment="Center" FontSize="16" Width="150" Foreground="White"/>
                         <TextBox Text="{Binding Title}" Width="250"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0 40 0 0">
-                        <Label Content="Отстаток продукции: " HorizontalAlignment="Center" Width="150" Foreground="White"/>
+                        <Label Content="Отстаток продукта: " HorizontalAlignment="Center" FontSize="16" Width="150" Foreground="White"/>
                         <TextBox Text="{Binding CountInStock}" Width="250"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0 40 0 0">
-                        <Label Content="Статус продукта: " HorizontalAlignment="Center" Width="150" Foreground="White"/>
+                        <Label Content="Статус продукта: " HorizontalAlignment="Center"  FontSize="16" Width="150" Foreground="White"/>
                         <TextBox Text="{Binding Status}" Width="250"/>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="500" Grid.Column="1">
                     <StackPanel Orientation="Horizontal">
-                        <Label Content="Дата начала срока годности: " HorizontalAlignment="Center" Width="170" Foreground="White"/>
+                        <Label Content="Начало срока годности: " HorizontalAlignment="Center" Width="200" FontSize="16" Foreground="White"/>
                         <DatePicker SelectedDate="{Binding BestBeforeDateStart, StringFormat = '{}{0:dd.MM.yyyy}'}" Width="250"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0 40 0 0">
-                        <Label Content="Дата конца срока годности: " HorizontalAlignment="Center" Width="170" Foreground="White"/>
+                        <Label Content="Конец срока годности: " HorizontalAlignment="Center" Width="200" Foreground="White" FontSize="16"/>
                         <DatePicker SelectedDate="{Binding BestBeforeDateEnd, StringFormat = '{}{0:dd.MM.yyyy}'}" Width="250"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0 40 0 0">
-                        <Label Content="Описание продукта: " HorizontalAlignment="Center" Width="170" Foreground="White" Height="30" VerticalAlignment="Top"/>
+                        <Label Content="Описание продукта: " HorizontalAlignment="Center" Width="200" Foreground="White" Height="30" VerticalAlignment="Top" FontSize="16"/>
                         <TextBox Text="{Binding Description}" Width="250" Height="100" VerticalScrollBarVisibility="Auto"/>
                     </StackPanel>
                 </StackPanel>
@@ -55,9 +55,9 @@
                 <ColumnDefinition Width="500"/>
                 <ColumnDefinition Width="500"/>
             </Grid.ColumnDefinitions>
-            <Label Content="Тип продукции" Foreground="White" Height="30" VerticalAlignment="Top"/>
+            <Label Content="Тип продукции" Foreground="White" Height="30" VerticalAlignment="Top" FontSize="16"/>
             <ComboBox ItemsSource="{Binding ProductTypes}" DisplayMemberPath="Title" SelectedItem="{Binding SelectedProductType}" Width="250" Height="30" IsEditable="True"/>
-            <Label Content="Ед. измерения" Foreground="White" Grid.Column="1" Height="30" VerticalAlignment="Top"/>
+            <Label Content="Ед. измерения" Foreground="White" Grid.Column="1" Height="30" VerticalAlignment="Top" FontSize="16"/>
             <ComboBox ItemsSource="{Binding Units}" DisplayMemberPath="Title" SelectedItem="{Binding SelectedUnit}" Width="250" Height="30" IsEditable="True" Grid.Column="1"/>
         </Grid>
         <Grid Grid.Row="3" HorizontalAlignment="Center">
