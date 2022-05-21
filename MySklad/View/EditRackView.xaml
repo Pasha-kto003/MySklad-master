@@ -28,28 +28,28 @@
                         <ColumnDefinition Width="450"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel Orientation="Horizontal" Margin="0 0 0 170">
-                        <Label Content="Номер стеллажа: " Width="150"  Height="30" Foreground="White"/>
-                        <TextBox Text="{Binding Name}" Width="250"/>
+                        <Label Content="Номер стеллажа: " Width="150"  Height="30" Foreground="White" FontSize="16"/>
+                        <TextBox Text="{Binding Name}" Width="250" FontSize="16"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0 0 0 0">
-                        <Label Content="Вместительность: " Width="150" Height="30" Foreground="White"/>
-                        <TextBox Text="{Binding Capacity}" Height="30" Width="250"/>
+                        <Label Content="Вместительность: " Width="150" Height="30" Foreground="White" FontSize="16"/>
+                        <TextBox Text="{Binding Capacity}" Height="30" Width="250" FontSize="16"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0 170 0 0">
-                        <Label Content="Остаток мест: " Width="150" Height="30" Foreground="White"/>
-                        <TextBox Text="{Binding RemainingPlaces}" Height="30" Width="250"/>
+                        <Label Content="Остаток мест: " Width="150" Height="30" Foreground="White" FontSize="16"/>
+                        <TextBox Text="{Binding RemainingPlaces}" Height="30" Width="250" FontSize="16"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0 0 0 170">
-                        <Label Content="Дата создания стеллажа" Foreground="White" Width="150" Height="30"/>
-                        <DatePicker SelectedDate="{Binding PlacementDate, StringFormat = '{}{0:dd.MM.yyyy}'}" Width="250" Height="30"/>
+                        <Label Content="Дата создания стеллажа" Foreground="White" Width="200" Height="30" FontSize="16"/>
+                        <DatePicker SelectedDate="{Binding PlacementDate, StringFormat = '{}{0:dd.MM.yyyy}'}" Width="250" Height="30" FontSize="16"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0 0 0 0">
-                        <Label Content="Дата изменения стеллажа" Foreground="White" Width="150" Height="30"/>
-                        <DatePicker SelectedDate="{Binding ChangedDate, StringFormat = '{}{0:dd.MM.yyyy}'}" Width="250" Height="30"/>
+                        <Label Content="Дата изменения стеллажа" Foreground="White" Width="200" Height="30" FontSize="16"/>
+                        <DatePicker SelectedDate="{Binding ChangedDate, StringFormat = '{}{0:dd.MM.yyyy}'}" Width="250" Height="30" FontSize="16"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0 170 0 0">
-                        <Label Content="Дата удаления стеллажа" Foreground="White" Width="150" Height="30"/>
-                        <DatePicker SelectedDate="{Binding DeletionDate, StringFormat = '{}{0:dd.MM.yyyy}'}" Width="250" Height="30"/>
+                        <Label Content="Дата удаления стеллажа" Foreground="White" Width="200" Height="30" FontSize="16"/>
+                        <DatePicker SelectedDate="{Binding DeletionDate, StringFormat = '{}{0:dd.MM.yyyy}'}" Width="250" Height="30" FontSize="16"/>
                     </StackPanel>
                 </Grid>
 

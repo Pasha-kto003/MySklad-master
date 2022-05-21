@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="AddOrderIn" Height="1100" Width="980">
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-        <Grid Background="#325f63">
+        <Grid Background="#325f63" x:Name="grid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="100"/>
                 <RowDefinition Height="150"/>
@@ -23,7 +23,7 @@
             <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1">
                 <StackPanel Grid.Row="1" DataContext="{Binding AddOrderVM}" Orientation="Vertical" HorizontalAlignment="Center" Margin="0 0 0 0">
                     <StackPanel Orientation="Horizontal">
-                        <Label Content="Дата заказа: " HorizontalAlignment="Center" Width="150" Foreground="White" Height="30"/>
+                        <Label Content="Дата заказа: " HorizontalAlignment="Center" Width="150" Foreground="White" Height="30" FontSize="16"/>
                         <DatePicker SelectedDate="{Binding DateOrderIn, StringFormat = '{}{0:dd.MM.yyyy}'}" Width="250" Height="30"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0 40 0 0">
@@ -53,7 +53,8 @@
             </StackPanel>
             <StackPanel Grid.Row="2" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center"  Margin="0 110 0 0">
                 <StackPanel Orientation="Horizontal">
-                    <Button Width="250" Content="Добавить продукт" Height="30" Command="{Binding AddProduct}" Style="{StaticResource ButtonTheme}" HorizontalAlignment="Center" Margin="0 15 0 0"/>
+                    <Button Width="250" Content="Добавить продукт" Height="30" Command="{Binding AddProduct}" Style="{StaticResource ButtonTheme}" HorizontalAlignment="Center" Margin="0 0 0 0"/>
+                    <!--<Button Width="250" Click="InvokePrint" Height="30" Command="{Binding PrintPage}" Style="{StaticResource ButtonTheme}">Invoke PrintDialog</Button>-->
                 </StackPanel>
             </StackPanel>
             <StackPanel Grid.Row="3" Orientation="Vertical" HorizontalAlignment="Center">

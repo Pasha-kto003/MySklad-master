@@ -1199,8 +1199,8 @@ namespace MySklad.ViewModel
                 sheet.Range[$"D{index}"].Value = date.ToShortDateString();
                 sheet.Range[$"E{index}"].Value = dateEnd.ToShortDateString();
                 sheet.Range[$"F{index}"].Value = product.CountInStock.ToString();
-                sheet.Range[$"G{index}"].Value = product.ProductType.Title;
-                sheet.Range[$"H{index}"].Value = product.Unit.Title;
+                //sheet.Range[$"G{index}"].Value = product.ProductType.Title;
+                //sheet.Range[$"H{index}"].Value = product.Unit.Title;
                 sheet.Range[$"I{index}"].Value = product.Status;
 
                 index++;
