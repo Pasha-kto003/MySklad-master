@@ -146,8 +146,8 @@
                                 <GridViewColumn Header="Остаток на складе" DisplayMemberBinding="{Binding CountInStock}"/>
                                 <GridViewColumn Header="Начало срока годности" DisplayMemberBinding="{Binding BestBeforeDateStart}"/>
                                 <GridViewColumn Header="Конец срока годности" DisplayMemberBinding="{Binding BestBeforeDateEnd}"/>
-                                <!--<GridViewColumn Header="Единица измерения" DisplayMemberBinding="{Binding Unit.Title}"/>
-                                <GridViewColumn Header="Тип продукции" DisplayMemberBinding="{Binding ProductType.Title}"/>-->
+                                <GridViewColumn Header="Единица измерения" DisplayMemberBinding="{Binding UnitId}"/>
+                                <GridViewColumn Header="Тип продукции" DisplayMemberBinding="{Binding ProductTypeId}"/>
                                 <GridViewColumn Header="Статус продукции" DisplayMemberBinding="{Binding Status}"/>
                             </GridView>
                         </ListView.View>

@@ -9,12 +9,12 @@
     <Grid Background="#325f63">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
-            <RowDefinition Height="300"/>
+            <RowDefinition Height="310"/>
             <RowDefinition Height="100"/>
             <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
         <Label Content="Редактирование продукта" HorizontalAlignment="Center" VerticalAlignment="Center" Width="350" HorizontalContentAlignment="Center" FontSize="26" Foreground="White"/>
-        <StackPanel Grid.Row="1" DataContext="{Binding AddProductVM}" Orientation="Vertical" HorizontalAlignment="Center" Margin="0 50 0 0">
+        <StackPanel Grid.Row="1" DataContext="{Binding AddProductVM}" Orientation="Vertical" HorizontalAlignment="Center" Margin="0 50 0 0" >
             <Grid Width="1000">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="500"/>

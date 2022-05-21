@@ -1164,6 +1164,9 @@ namespace MySklad.ViewModel
 
         public void ConvertProductToXLSByPeriod(DateTime firstDate, DateTime lastDate)
         {
+            GetProducts();
+            GetOrderOut();
+
             var workBook = new Workbook();
             var sheet = workBook.Worksheets[0];
             GetProducts();
@@ -1189,7 +1192,7 @@ namespace MySklad.ViewModel
                     s => s.BestBeforeDateStart >= firstDate && s.BestBeforeDateStart <= lastDate
                 ).ToList();
 
-            foreach(var product in ProductByPeriod)
+            foreach (var product in ProductByPeriod)
             {
                 DateTime date = (DateTime)product.BestBeforeDateStart;
                 DateTime dateEnd = (DateTime)product.BestBeforeDateEnd;
@@ -1199,8 +1202,8 @@ namespace MySklad.ViewModel
                 sheet.Range[$"D{index}"].Value = date.ToShortDateString();
                 sheet.Range[$"E{index}"].Value = dateEnd.ToShortDateString();
                 sheet.Range[$"F{index}"].Value = product.CountInStock.ToString();
-                //sheet.Range[$"G{index}"].Value = product.ProductType.Title;
-                //sheet.Range[$"H{index}"].Value = product.Unit.Title;
+                sheet.Range[$"G{index}"].Value = product.ProductTypeId.ToString();
+                sheet.Range[$"H{index}"].Value = product.UnitId.ToString();
                 sheet.Range[$"I{index}"].Value = product.Status;
 
                 index++;
@@ -1240,14 +1243,14 @@ namespace MySklad.ViewModel
             cs.Values = sheet.Range[$"F5:F{Products.Count}"];
 
             IChartSerie serie1 = chart.Series[0];
-            
+
             serie1.SerieType = ExcelChartType.PieExploded;
             serie1.DataPoints.DefaultDataPoint.DataLabels.HasValue = true;
 
-            workBook.SaveToFile("testProduct.xls");
+            workBook.SaveToFile("testProductOut1.xls");
 
             Process p = new Process();
-            p.StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "/" + "testProduct.xls")
+            p.StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "/" + "testProductOut1.xls")
             {
                 UseShellExecute = true
             };
