@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MySklad.View"
       mc:Ignorable="d" 
-      d:DesignHeight="500" d:DesignWidth="1000"
+      d:DesignHeight="500" d:DesignWidth="1080"
       Title="ReportView">
     <TabControl Background="Transparent">
         <TabItem Header="Отчет по приходу">
@@ -83,14 +83,17 @@
                                 </GridView>
                             </ListView.View>
                         </ListView>-->
-                        <DataGrid ItemsSource="{Binding CrossProductOrders}" SelectedItem="{Binding SelectedOrderIn}" Height="350" Margin="0,10,0,0" Width="800" HorizontalAlignment="Left" AutoGenerateColumns="False">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Название продукта" Binding="{Binding Product.Title}"/>
-                                <DataGridTextColumn Header="Количество привезенной продукции" Binding="{Binding CountInOrder}"/>
-                                <DataGridTextColumn Header="Дата прихода продукции" Binding="{Binding OrderIn.DateOrderIn}"/>
-                                <DataGridTextColumn Header="Поставщик продукции" Binding="{Binding OrderIn.Supplier.FirstName}"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
+                        <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Hidden">
+                            <DataGrid ItemsSource="{Binding CrossProductOrders}" SelectedItem="{Binding SelectedOrderIn}" Height="350" Margin="0,10,0,0" Width="900" ScrollViewer.HorizontalScrollBarVisibility="Visible" HorizontalAlignment="Left" AutoGenerateColumns="False">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Название продукта" Binding="{Binding Product.Title}"/>
+                                    <DataGridTextColumn Header="Количество привезенной продукции" Binding="{Binding CountInOrder}"/>
+                                    <DataGridTextColumn Header="Дата прихода продукции" Binding="{Binding OrderIn.DateOrderIn}"/>
+                                    <DataGridTextColumn Header="Поставщик продукции" Binding="{Binding OrderIn.Supplier.FirstName}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </ScrollViewer>
+                        
                     </StackPanel>
                     <Button Grid.Row="2" Content="Сформировать отчет" Command="{Binding EditReport}" Style="{DynamicResource ButtonTheme}" Width="150" Height="30"/>
                 </Grid>
