@@ -116,7 +116,7 @@ namespace MySklad.ViewModel
         public CustomCommand ForwardPage { get; set; }
         public CustomCommand AddShop { get; set; }
         public CustomCommand EditShop { get; set; }
-
+        public CustomCommand UpdateList { get; set; }
 
         private string pages;
         public string Pages
@@ -181,6 +181,11 @@ namespace MySklad.ViewModel
                 if (countPage > paginationPageIndex + 1)
                     paginationPageIndex++;
                 Pagination();
+            });
+
+            UpdateList = new CustomCommand(() =>
+            {
+                ShopsApi();
             });
 
             AddShop = new CustomCommand(() =>

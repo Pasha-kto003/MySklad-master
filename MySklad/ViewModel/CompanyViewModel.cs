@@ -70,6 +70,7 @@ namespace MySklad.ViewModel
         public CustomCommand EditCompany { get; set; }
         public CustomCommand BackPage { get; set; }
         public CustomCommand ForwardPage { get; set; }
+        public CustomCommand UpdateList { get; set; }
 
         private CompanyApi selectedCompany { get; set; }
         public CompanyApi SelectedCompany
@@ -148,6 +149,11 @@ namespace MySklad.ViewModel
                 if (countPage > paginationPageIndex + 1)
                     paginationPageIndex++;
                 Pagination();
+            });
+
+            UpdateList = new CustomCommand(() =>
+            {
+                GetCompanies();
             });
 
             AddCompany = new CustomCommand(() =>

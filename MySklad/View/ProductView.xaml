@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MySklad.View"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="900"
+      d:DesignHeight="450" d:DesignWidth="1000"
       Title="ProductView">
 
     <Grid Background="#325f63">
@@ -48,6 +48,9 @@
                 <Label Content="Сортировка по типу" Foreground="White"/>
                 <!--<Button Command="{Binding Sortirovka}" Content="Сортировать"/>-->
                 <ComboBox IsEditable="True" Width="200" ItemsSource="{Binding OrderType}" SelectedItem="{Binding SelectedOrderType}"/>
+            </StackPanel>
+            <StackPanel Grid.Column="4">
+                <Button Command="{Binding UpdateList}" Content="Обновить" Style="{StaticResource ButtonTheme}" FontSize="16" Width="150" Margin="10 24 0 0"/>
             </StackPanel>
         </Grid>
         <DataGrid Grid.Row="1"  ItemsSource="{Binding Products}" AutoGenerateColumns="False" IsReadOnly="True" SelectedItem="{Binding SelectedProduct}" FontSize="16">

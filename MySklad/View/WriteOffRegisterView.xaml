@@ -39,7 +39,7 @@
             </Grid>
             
         </Grid>
-        <ListBox x:Name="list" Grid.Row="1" ItemsSource="{Binding Registers}" SelectedItem="{Binding SelectedRegister}" Background="White" HorizontalContentAlignment="Stretch">
+        <ListBox x:Name="list" Grid.Row="1" ItemsSource="{Binding Registers}" SelectedItem="{Binding SelectedRegister}" Background="White" HorizontalContentAlignment="Stretch" FontSize="16">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>

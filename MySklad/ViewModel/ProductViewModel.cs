@@ -129,6 +129,7 @@ namespace MySklad.ViewModel
         public CustomCommand EditProduct { get; set; }
         public CustomCommand BackPage { get; set; }
         public CustomCommand ForwardPage { get; set; }
+        public CustomCommand UpdateList { get; set; }
 
         public List<ProductApi> searchResult;
 
@@ -201,6 +202,11 @@ namespace MySklad.ViewModel
                 if (countPage > paginationPageIndex + 1)
                     paginationPageIndex++;
                 Pagination();
+            });
+
+            UpdateList = new CustomCommand(() =>
+            {
+                GetProducts();
             });
 
             CreateProduct = new CustomCommand(() =>

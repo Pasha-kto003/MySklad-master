@@ -27,7 +27,9 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition />
+                    <ColumnDefinition  Width="Auto"/>
+                    <ColumnDefinition  Width="Auto"/>
+                    <ColumnDefinition  Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition />
@@ -37,6 +39,9 @@
                 <Label Grid.Column="1" Content="Критерий поиска:" Foreground="White" FontSize="16"/>
                 <TextBox Width="200" Grid.Row="1" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" FontSize="16"/>
                 <ComboBox IsEditable="True" Width="200" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}" FontSize="16"/>
+                <Label Content="Обноваление" FontSize="16" Foreground="White" Grid.Column="2"/>
+                <Button Command="{Binding UpdateList}" Grid.Row="1" Grid.Column="2" Content="Обновить" Style="{StaticResource ButtonTheme}" FontSize="16" Width="150"/>
+
             </Grid>
             
         </Grid>

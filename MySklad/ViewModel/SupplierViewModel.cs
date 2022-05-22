@@ -154,6 +154,7 @@ namespace MySklad.ViewModel
         public CustomCommand AddSupplier { get; set; }
         public CustomCommand EditSupplier { get; set; }
         public CustomCommand RemoveSupplier { get; set; }
+        public CustomCommand UpdateList { get; set; }
 
         public Label colorStatus { get; set; }
 
@@ -212,6 +213,11 @@ namespace MySklad.ViewModel
                     paginationPageIndex++;
                 Pagination();
 
+            });
+
+            UpdateList = new CustomCommand(() =>
+            {
+                GetSuppliers();
             });
 
             RemoveSupplier = new CustomCommand(() =>

@@ -141,7 +141,7 @@ namespace MySklad.ViewModel
         public CustomCommand ForwardPage { get; set; }
         public CustomCommand AddPersonal { get; set; }
         public CustomCommand EditPersonal { get; set; }
-
+        public CustomCommand UpdateList { get; set; }
 
         private string pages;
         public string Pages
@@ -200,6 +200,11 @@ namespace MySklad.ViewModel
                     paginationPageIndex++;
                 Pagination();
                 
+            });
+
+            UpdateList = new CustomCommand(() =>
+            {
+                GetPersonals();
             });
 
             AddPersonal = new CustomCommand(() =>

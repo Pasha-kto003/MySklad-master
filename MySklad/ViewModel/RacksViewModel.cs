@@ -130,6 +130,7 @@ namespace MySklad.ViewModel
         public CustomCommand CreateRack { get; set; }
         public CustomCommand BackPage { get; set; }
         public CustomCommand ForwardPage { get; set; }
+        public CustomCommand UpdateList { get; set; }
 
         int paginationPageIndex = 0;
         private string searchCountRows;
@@ -194,6 +195,11 @@ namespace MySklad.ViewModel
                 if (countPage > paginationPageIndex + 1)
                     paginationPageIndex++;
                 Pagination();
+            });
+
+            UpdateList = new CustomCommand(() =>
+            {
+                GetRacks();
             });
 
             CreateRack = new CustomCommand(() =>
