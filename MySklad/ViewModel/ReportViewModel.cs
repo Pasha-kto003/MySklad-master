@@ -396,6 +396,7 @@ namespace MySklad.ViewModel
             Suppliers = await Api.GetListAsync<List<SupplierApi>>("Supplier");
             Shops = await Api.GetListAsync<List<ShopApi>>("Shop");
             Companies = await Api.GetListAsync<List<CompanyApi>>("Company");
+            Products = await Api.GetListAsync<List<ProductApi>>("Product");
             foreach (CrossOrderOutApi crossProduct in CrossProductOrdersOut)
             {
                 crossProduct.OrderOut = OrdersOut.First(s => s.Id == crossProduct.OrderOutId);
@@ -1019,6 +1020,7 @@ namespace MySklad.ViewModel
         {
             GetProducts();
             GetOrderOut();
+            GetCrossOut();
 
             var workBook = new Workbook();
             var sheet = workBook.Worksheets[0];
@@ -1036,10 +1038,11 @@ namespace MySklad.ViewModel
             int index = 5;
             int count = 1;
 
-            List<CrossOrderOutApi> OrderOutByPeriod = CrossProductOrdersOut.FindAll(s => s.OrderOutId == s.OrderOutId).Where
+            List<CrossOrderOutApi> OrderOutByPeriod = CrossProductOrdersOut.Where
                 (
                     s => s.OrderOut.DateOrderOut >= firstDate && s.OrderOut.DateOrderOut <= lastDate &&
-                    s.OrderOut.SupplierId == s.OrderOut.Supplier.Id && s.OrderOut.ShopId == s.OrderOut.Shop.Id
+                    s.OrderOut.SupplierId == s.OrderOut.Supplier.Id && s.OrderOut.ShopId == s.OrderOut.Shop.Id &&
+                    s.ProductId == s.Product.Id
                 ).ToList();
 
             foreach (var order in OrderOutByPeriod)
@@ -1050,7 +1053,7 @@ namespace MySklad.ViewModel
                 sheet.Range[$"C{index}"].Value = order.OrderOut.Status;
                 sheet.Range[$"D{index}"].Value = order.OrderOut.Supplier.FirstName;
                 sheet.Range[$"E{index}"].Value = order.OrderOut.Shop.Name;
-                sheet.Range[$"F5{index}"].Value = order.Product.Title;
+                sheet.Range[$"F{index}"].Value = order.Product.Title;
 
                 index++;
             }
@@ -1211,8 +1214,8 @@ namespace MySklad.ViewModel
 
             sheet.Range[$"A1:D1"].BorderInside(LineStyleType.Thin);
             sheet.Range[$"A1:D1"].BorderAround(LineStyleType.Medium);
-            sheet.Range[$"A4:L{index - 1}"].BorderInside(LineStyleType.Thin);
-            sheet.Range[$"A4:L{index - 1}"].BorderAround(LineStyleType.Medium);
+            sheet.Range[$"A4:I{index - 1}"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A4:I{index - 1}"].BorderAround(LineStyleType.Medium);
             sheet.AllocatedRange.AutoFitColumns();
 
             Chart chart = sheet.Charts.Add(ExcelChartType.PieExploded);
@@ -1314,8 +1317,8 @@ namespace MySklad.ViewModel
 
             sheet.Range[$"A1:D1"].BorderInside(LineStyleType.Thin);
             sheet.Range[$"A1:D1"].BorderAround(LineStyleType.Medium);
-            sheet.Range[$"A4:L{index - 1}"].BorderInside(LineStyleType.Thin);
-            sheet.Range[$"A4:L{index - 1}"].BorderAround(LineStyleType.Medium);
+            sheet.Range[$"A4:I{index - 1}"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A4:I{index - 1}"].BorderAround(LineStyleType.Medium);
             sheet.AllocatedRange.AutoFitColumns();
             workBook.SaveToFile("testOrderOutByOrderOut.xls");
             Process p = new Process();
@@ -1421,7 +1424,6 @@ namespace MySklad.ViewModel
             };
             p.Start();
         }
-
 
     }
 }

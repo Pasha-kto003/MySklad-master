@@ -114,6 +114,8 @@
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Дата накладной" DisplayMemberBinding="{Binding OrderOut.DateOrderOut}"/>
+                                <GridViewColumn Header="Продукт накладной" DisplayMemberBinding="{Binding Product.Title}"/>
+                                <GridViewColumn Header="Увезено" DisplayMemberBinding="{Binding CountOutOrder}"/>
                                 <GridViewColumn Header="Поставщик товара" DisplayMemberBinding="{Binding OrderOut.Supplier.FirstName}"/>
                                 <GridViewColumn Header="Точка доставки" DisplayMemberBinding="{Binding OrderOut.Shop.Name}"/>
                                 <GridViewColumn Header="Статус накладной" DisplayMemberBinding="{Binding OrderOut.Status}"/>
