@@ -116,6 +116,8 @@ namespace MySklad.ViewModel
         private string selectedViewCountRows;
         public int rows = 0;
         public int CountPages = 0;
+        private int CountAll { get; set; }
+
         public WriteOffRegisterViewModel()
         {
 
@@ -196,7 +198,7 @@ namespace MySklad.ViewModel
 
         private void InitPagination()
         {
-            SearchCountRows = $"Найдено записей: {searchResult.Count} из {Registers.Count}";
+            SearchCountRows = $"Найдено записей: {searchResult.Count} из {CountAll}";
             paginationPageIndex = 0;
         }
 
@@ -225,6 +227,7 @@ namespace MySklad.ViewModel
             {
                 registerApi.Product = Products.First(s => s.Id == registerApi.ProductId);
             }
+            CountAll = Registers.Count;
             SignalChanged("Registers");
             InitPagination();
         }

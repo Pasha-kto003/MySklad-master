@@ -138,6 +138,7 @@ namespace MySklad.ViewModel
         private string selectedViewCountRows;
         public int rows = 0;
         public int CountPages = 0;
+        private int CountAll { get; set; }
 
         private string pages;
         public string Pages
@@ -221,7 +222,7 @@ namespace MySklad.ViewModel
 
         private void InitPagination()
         {
-            SearchCountRows = $"Найдено записей: {searchResult.Count} из {Orders.Count}";
+            SearchCountRows = $"Найдено записей: {searchResult.Count} из {CountAll}";
             paginationPageIndex = 0;
         }
 
@@ -253,6 +254,7 @@ namespace MySklad.ViewModel
                 orderIn.Supplier = Suppliers.First(s => s.Id == orderIn.SupplierId);
                 //orderIn.CrossProductOrders = CrossProductOrder.First(s => s.OrderInId == orderIn.Id);
             }
+            CountAll = Orders.Count;
             SignalChanged("Orders");
             SignalChanged("Suppliers");
 

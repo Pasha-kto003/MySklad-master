@@ -19,7 +19,7 @@
                     </Grid.RowDefinitions>
                     <DataGrid IsReadOnly="True" x:Name="UnitDataGrid" ItemsSource="{Binding Units}"
                               SelectedItem="{Binding SelectedUnit}"
-                              AutoGenerateColumns="False">
+                              AutoGenerateColumns="False" FontSize="16">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Идентификатор" Binding="{Binding Id}" Width="Auto"/>
                             <DataGridTextColumn Header="Название" Binding="{Binding Title}" Width="Auto"/>
@@ -44,7 +44,7 @@
                     </Grid.RowDefinitions>
                     <DataGrid x:Name="ProductTypeDataGrid" ItemsSource="{Binding ProductTypes}"
                               SelectedItem="{Binding SelectedProductType}"
-                              AutoGenerateColumns="False" Grid.ColumnSpan="2">
+                              AutoGenerateColumns="False" Grid.ColumnSpan="2" FontSize="16">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Идентификатор" Binding="{Binding Id}" Width="Auto"/>
                             <DataGridTextColumn Header="Название" Binding="{Binding Title}" Width="Auto"/>
@@ -67,7 +67,7 @@
                     </Grid.RowDefinitions>
                     <DataGrid x:Name="StatusDataGrid" ItemsSource="{Binding Statuses}"
                               SelectedItem="{Binding SelectedStatus}"
-                              AutoGenerateColumns="False" Grid.ColumnSpan="2">
+                              AutoGenerateColumns="False" Grid.ColumnSpan="2" FontSize="16">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Идентификатор" Binding="{Binding Id}" Width="Auto"/>
                             <DataGridTextColumn Header="Название" Binding="{Binding Title}" Width="Auto"/>

@@ -110,6 +110,7 @@ namespace MySklad.ViewModel
         private string selectedViewCountRows;
         public int rows = 0;
         public int CountPages = 0;
+        private int CountAll { get; set; }
 
         public CustomCommand BackPage { get; set; }
         public CustomCommand ForwardPage { get; set; }
@@ -132,6 +133,7 @@ namespace MySklad.ViewModel
         {
             var shop = await Api.GetListAsync<List<ShopApi>>("Shop");
             Shops = (List<ShopApi>)shop;
+            CountAll = Shops.Count;
         }
 
 
@@ -203,7 +205,7 @@ namespace MySklad.ViewModel
 
         private void InitPagination()
         {
-            SearchCountRows = $"Найдено записей: {searchResult.Count} из {Shops.Count()}";
+            SearchCountRows = $"Найдено записей: {searchResult.Count} из {CountAll}";
             paginationPageIndex = 0;
         }
 

@@ -81,17 +81,6 @@ namespace MySklad.ViewModel
                 Sort();
             }
         }
-
-        public List<StatusApi> StatusFilter { get; set; }
-        public StatusApi SelectedStatusFilter
-        {
-            get => selectedStatusFilter;
-            set
-            {
-                selectedStatusFilter = value;
-                Search();
-            }
-        }
         private List<ProductApi> products { get; set; }
         public List<ProductApi> Products
         {
@@ -149,6 +138,7 @@ namespace MySklad.ViewModel
         public int rows = 0;
         public int CountPages = 0;
         private StatusApi selectedStatusFilter;
+        public int CountAll { get; set; }
 
         private string pages;
         public string Pages
@@ -162,11 +152,13 @@ namespace MySklad.ViewModel
         }
 
         public ProductViewModel()
-        {          
+        {
+            GetProducts();
             Units = new List<UnitApi>();
             ProductTypes = new List<ProductTypeApi>();
             Products = new List<ProductApi>();
-            GetProducts();
+
+            
 
             ViewCountRows = new List<string>();
             ViewCountRows.AddRange(new string[] { "5", "все" });
@@ -183,6 +175,8 @@ namespace MySklad.ViewModel
             SearchType = new List<string>();
             SearchType.AddRange(new string[] { "Название", "Описание", "Тип" });
             selectedSearchType = SearchType.First();
+
+            CountAll = Products.Count;
 
             BackPage = new CustomCommand(() => {
                 if (searchResult == null)
@@ -230,15 +224,15 @@ namespace MySklad.ViewModel
                     GetProducts();
                 }
             });
-            SignalChanged("Products");
-            Search();
+            searchResult = Products;
+            
             InitPagination();
             Pagination();
         }
 
         private void InitPagination()
         {
-            SearchCountRows = $"Найдено записей: {searchResult.Count} из {Products.Count}";
+            SearchCountRows = $"Найдено записей: {searchResult.Count} из {CountAll}";
             paginationPageIndex = 0;
         }
 
@@ -269,7 +263,8 @@ namespace MySklad.ViewModel
                 product.Unit = Units.First(s => s.Id == product.UnitId);
                 product.ProductType = ProductTypes.First(s => s.Id == product.ProductTypeId);
             }
-            SignalChanged("Products");
+            CountAll = Products.Count;
+            //SignalChanged("Products");
             InitPagination();
         }
 
@@ -292,7 +287,7 @@ namespace MySklad.ViewModel
             paginationPageIndex = 0;
 
             Pagination();
-            SignalChanged("Products");
+            
         }
 
         private void Search()
@@ -312,7 +307,7 @@ namespace MySklad.ViewModel
             Sort();
             InitPagination();
             Pagination();
-            SignalChanged("Products");
+            
         }
     }
 }

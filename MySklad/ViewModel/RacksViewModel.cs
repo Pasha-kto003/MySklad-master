@@ -83,7 +83,7 @@ namespace MySklad.ViewModel
             }
         }
         private List<RackApi> racks { get; set; }
-        public List<RackApi> Racks 
+        public List<RackApi> Racks
         {
             get => racks;
             set
@@ -105,7 +105,7 @@ namespace MySklad.ViewModel
         }
 
         private List<PersonalApi> personals { get; set; }
-        public List<PersonalApi> Personals 
+        public List<PersonalApi> Personals
         {
             get => personals;
             set
@@ -119,10 +119,11 @@ namespace MySklad.ViewModel
         {
             Personals = await Api.GetListAsync<List<PersonalApi>>("Personal");
             Racks = await Api.GetListAsync<List<RackApi>>("Rack");
-            foreach(RackApi rackApi in Racks)
+            foreach (RackApi rackApi in Racks)
             {
                 rackApi.Personal = Personals.First(s => s.Id == rackApi.PersonalId);
             }
+            CountAll = Racks.Count;
         }
 
         public CustomCommand EditRack { get; set; }
@@ -135,6 +136,7 @@ namespace MySklad.ViewModel
         private string selectedViewCountRows;
         public int rows = 0;
         public int CountPages = 0;
+        private int CountAll { get; set; }
 
         private string pages;
         public string Pages
@@ -166,7 +168,7 @@ namespace MySklad.ViewModel
             selectedOrderType = OrderType.Last();
 
             SearchType = new List<string>();
-            SearchType.AddRange(new string[] { "Дата последнего изменения", "Сотрудник", "Вместительность" });
+            SearchType.AddRange(new string[] { "Дата последнего изменения", "Сотрудник", "Остаток мест", "Наименование" });
             selectedSearchType = SearchType.First();
 
             BackPage = new CustomCommand(() => {
@@ -217,7 +219,7 @@ namespace MySklad.ViewModel
 
         private void InitPagination()
         {
-            SearchCountRows = $"Найдено записей: {searchResult.Count} из {Racks.Count}";
+            SearchCountRows = $"Найдено записей: {searchResult.Count} из {CountAll}";
             paginationPageIndex = 0;
         }
 
@@ -278,10 +280,12 @@ namespace MySklad.ViewModel
                         .Where(c => c.Personal.LastName.ToLower().Contains(search)).ToList();
             else if (SelectedSearchType == "Остаток мест")
                 searchResult = Racks.Where(c => c.RemainingPlaces.ToString().ToLower().Contains(search)).ToList();
+            else if (SelectedSearchType == "Наименование")
+                searchResult = Racks.Where(c => c.Name.ToLower().Contains(search)).ToList();
             Sort();
             InitPagination();
             Pagination();
-            SignalChanged("Orders");
+            SignalChanged("Racks");
         }
     }
 }

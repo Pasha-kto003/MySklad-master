@@ -136,6 +136,8 @@ namespace MySklad.ViewModel
             }
         }
 
+        private int CountAll { get; set; }
+
         private async Task GetOrders()
         {
             Products = await Api.GetListAsync<List<ProductApi>>("Product");
@@ -147,6 +149,7 @@ namespace MySklad.ViewModel
                 order.Supplier = Suppliers.First(s => s.Id == order.SupplierId);
                 order.Shop = Shops.First(s => s.Id == order.ShopId);
             }
+            CountAll = Orders.Count;
             SignalChanged("Orders");
             InitPagination();
         }
@@ -244,7 +247,7 @@ namespace MySklad.ViewModel
 
         private void InitPagination()
         {
-            SearchCountRows = $"Найдено записей: {searchResult.Count} из {Orders.Count}";
+            SearchCountRows = $"Найдено записей: {searchResult.Count} из {CountAll}";
             paginationPageIndex = 0;
         }
 

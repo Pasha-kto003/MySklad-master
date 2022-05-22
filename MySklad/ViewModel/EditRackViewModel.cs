@@ -249,6 +249,11 @@ namespace MySklad.ViewModel
                     MessageBox.Show("Данная продукция уже есть на стеллаже!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
+                else if (SelectedProduct.CrossProductRack != null)
+                {
+                    MessageBox.Show("Данный продукт уже есть на стеллаже");
+                    return;
+                }
                 else if(SelectedProduct.Status == "Удален")
                 {
                     MessageBoxResult result = MessageBox.Show("Этот товар находится в реестре удалений, его невозможно поместить на стеллаж!", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning);
@@ -260,26 +265,7 @@ namespace MySklad.ViewModel
                     }
                 }
 
-                else if (SelectedProduct.CrossProductRack != null)
-                {
-                    MessageBoxResult result = MessageBox.Show("Ошибка, данная продукция уже расположена на стеллаже! Хотите переместить его?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                    Racks = new List<RackApi>();
-                    GetRackToUpdate();
-                    if (result == MessageBoxResult.Yes)
-                    {
-                        var search = CrossProductRacks.FirstOrDefault(s=> s.ProductId == SelectedProduct.Id);
-                        search.Product = Product.FirstOrDefault(s => s.Id == search.ProductId);
-                        if(search != null)
-                        {
-                            CrossProductRacks.Remove(search);
-                            MessageBox.Show("Перемещение подтверждено");
-                        }
-
-                        AddRackVM.CrossProductRacks = CrossProductRacks.Where(s => s.ProductId == search.ProductId);
-                        SelectedCrosses = AddRackVM.CrossProductRacks;
-                        SignalChanged("SelectedCrosses");
-                    }
-                }
+               
                 else
                 {
                     SelectedRackProduct = SelectedProduct;
@@ -363,7 +349,7 @@ namespace MySklad.ViewModel
                     //SelectedRackProduct.CountInStock = 0;
                     foreach (ProductApi product in SelectedRackProducts)
                     {
-                        SelectedRackProduct.CountInStock += product.CountInStock;
+                        SelectedProduct.CountInStock += product.CountInStock;
                     }
                     AddRackVM.RemainingPlaces = AddRackVM.Capacity - SelectedProduct.CountInStock / 2;
                     if (AddRackVM.RemainingPlaces < 0)
@@ -378,6 +364,24 @@ namespace MySklad.ViewModel
                     }
                     else
                     {
+                        if (SelectedProduct.CrossProductRack != null)
+                        {
+                            MessageBoxResult result = MessageBox.Show("Ошибка, данная продукция уже расположена на стеллаже! Хотите переместить его?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                            Racks = new List<RackApi>();
+                            GetRackToUpdate();
+                            if (result == MessageBoxResult.Yes)
+                            {
+                                var search = CrossProductRacks.FirstOrDefault(s => s.ProductId == SelectedProduct.Id);
+                                if (search != null)
+                                {
+                                    MessageBox.Show("Перемещение подтверждено");
+                                }
+                                search.RackId = AddRackVM.Id;
+                                AddRackVM.CrossProductRacks = CrossProductRacks.Where(s => s.ProductId == search.ProductId);
+                                SelectedCrosses = AddRackVM.CrossProductRacks;
+                                SignalChanged("SelectedCrosses");
+                            }
+                        }
                         EditRack(AddRackVM);
                         MessageBox.Show($"Вы только что изменили стелаж : {AddRackVM.Name}");
                     }

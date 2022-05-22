@@ -86,6 +86,7 @@ namespace MySklad.ViewModel
         {
             var companies = await Api.GetListAsync<List<CompanyApi>>("Company");
             Companies = (List<CompanyApi>)companies;
+            CountAll = Companies.Count;
             SignalChanged("Companies");
             InitPagination();
         }
@@ -97,6 +98,7 @@ namespace MySklad.ViewModel
         private string selectedViewCountRows;
         public int rows = 0;
         public int CountPages = 0;
+        private int CountAll { get; set; }
 
         private string pages;
         public string Pages
@@ -170,7 +172,7 @@ namespace MySklad.ViewModel
 
         private void InitPagination()
         {
-            SearchCountRows = $"Найдено записей: {searchResult.Count} из {Companies.Count}";
+            SearchCountRows = $"Найдено записей: {searchResult.Count} из {CountAll}";
             paginationPageIndex = 0;
         }
 

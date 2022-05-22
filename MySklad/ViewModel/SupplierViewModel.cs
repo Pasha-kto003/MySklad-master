@@ -147,6 +147,7 @@ namespace MySklad.ViewModel
         public int rows = 0;
         public int CountPages = 0;
         private StatusApi selectedStatusFilter;
+        private int CountAll { get; set; }
 
         public CustomCommand BackPage { get; set; }
         public CustomCommand ForwardPage { get; set; }
@@ -305,6 +306,7 @@ namespace MySklad.ViewModel
                 supplier.Company = Companies.First(s => s.Id == supplier.CompanyId);
             }
             SignalChanged("Suppliers");
+            CountAll = Suppliers.Count;
         }
 
         private async Task GetOrders()
@@ -344,7 +346,7 @@ namespace MySklad.ViewModel
 
         private void InitPagination()
         {
-            SearchCountRows = $"Найдено записей: {searchResult.Count} из {Suppliers.Count()}";
+            SearchCountRows = $"Найдено записей: {searchResult.Count} из {CountAll}";
             paginationPageIndex = 0;
         }
 

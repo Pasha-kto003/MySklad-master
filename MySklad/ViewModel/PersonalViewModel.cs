@@ -135,6 +135,7 @@ namespace MySklad.ViewModel
         public int rows = 0;
         public int CountPages = 0;
         private StatusApi selectedStatusFilter;
+        private int CountAll { get; set; }
 
         public CustomCommand BackPage { get; set; }
         public CustomCommand ForwardPage { get; set; }
@@ -241,6 +242,7 @@ namespace MySklad.ViewModel
             {
                 personal.Status = Statuses.First(s => s.Id == personal.StatusId);
             }
+            CountAll = Personals.Count;
             SignalChanged("Personals");
         }
 
@@ -267,7 +269,7 @@ namespace MySklad.ViewModel
 
         private void InitPagination()
         {
-            SearchCountRows = $"Найдено записей: {searchResult.Count} из {Personals.Count()}";
+            SearchCountRows = $"Найдено записей: {searchResult.Count} из {CountAll}";
             paginationPageIndex = 0;
         }
 
