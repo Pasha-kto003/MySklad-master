@@ -175,6 +175,12 @@ namespace MySklad.ViewModel
                         return;
                     }
 
+                    if(AddPersonalVM.DateEndWork.Value.Day - AddPersonalVM.DateStartWork.Value.Day >= 7 || AddPersonalVM.DateEndWork.Value.Day - AddPersonalVM.DateStartWork.Value.Day <= -7)
+                    {
+                        MessageBox.Show("Работник не может работать всю неделю. Измените даты");
+                        return;
+                    }
+
                     if(AddPersonalVM.Rating == null || AddPersonalVM.Rating < 0)
                     {
                         MessageBox.Show("Введен неверный рейтинг");

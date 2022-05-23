@@ -341,7 +341,7 @@ namespace MySklad.ViewModel
                     SelectedOrderProduct.CountProducts = NewCross;
                     //AddOrderVM.CrossProductOrderApi.CountInOrder = SelectedOrderProduct.CountProducts;
                     EditOrder(AddOrderVM);
-                    EditProduction(SelectedOrderProduct);
+                    EditProduction(SelectedProduct);
                     MessageBox.Show("Записано");
                 }
 
