@@ -786,11 +786,16 @@ namespace MySklad.ViewModel
             int index = 5;
             int count = 1;
 
-            sheet.Range[$"B{index}"].Value = orderIn.DateOrderIn.ToShortDateString();
+            sheet.Range["B1"].Value = "Стеллаж";
+            sheet.Range["C1"].Value = "Продукт";
+            sheet.Range["D1"].Value = "Количество";
+
+            sheet.Range[$"B{index}"].Value = orderIn.DateOrderIn.ToLongTimeString();
             foreach (var product in orderIn.Products)
             {
+                product.CrossProductOrderApi = CrossProductOrders.FirstOrDefault(s => s.ProductId == product.Id);
                 sheet.Range[$"C{index}"].Value = product.Title;
-                sheet.Range[$"D{index}"].Value2 = SelectedOrderIn.CountInOrder;
+                sheet.Range[$"D{index}"].Value = product.CrossProductOrderApi.CountInOrder.ToString();
                 index++;
             }
 
@@ -1172,7 +1177,6 @@ namespace MySklad.ViewModel
 
             var workBook = new Workbook();
             var sheet = workBook.Worksheets[0];
-            GetProducts();
             sheet.Range["A1"].Value = $"С ";
             sheet.Range["B1"].Value = $" { firstDate.Date.ToShortDateString()}";
             sheet.Range["D1"].Value = $"{lastDate.Date.ToShortDateString()}";
@@ -1212,12 +1216,6 @@ namespace MySklad.ViewModel
                 index++;
             }
 
-            sheet.Range[$"A1:D1"].BorderInside(LineStyleType.Thin);
-            sheet.Range[$"A1:D1"].BorderAround(LineStyleType.Medium);
-            sheet.Range[$"A4:I{index - 1}"].BorderInside(LineStyleType.Thin);
-            sheet.Range[$"A4:I{index - 1}"].BorderAround(LineStyleType.Medium);
-            sheet.AllocatedRange.AutoFitColumns();
-
             Chart chart = sheet.Charts.Add(ExcelChartType.PieExploded);
             chart.SeriesDataFromRange = false;
 
@@ -1250,10 +1248,15 @@ namespace MySklad.ViewModel
             serie1.SerieType = ExcelChartType.PieExploded;
             serie1.DataPoints.DefaultDataPoint.DataLabels.HasValue = true;
 
-            workBook.SaveToFile("testProductOut1.xls");
+            sheet.Range[$"A1:D1"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A1:D1"].BorderAround(LineStyleType.Medium);
+            sheet.Range[$"A4:I{index - 1}"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A4:I{index - 1}"].BorderAround(LineStyleType.Medium);
+            sheet.AllocatedRange.AutoFitColumns();
 
+            workBook.SaveToFile("testProduct.xls");
             Process p = new Process();
-            p.StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "/" + "testProductOut1.xls")
+            p.StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "/testProduct.xls")
             {
                 UseShellExecute = true
             };

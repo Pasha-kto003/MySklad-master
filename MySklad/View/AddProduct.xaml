@@ -56,7 +56,7 @@
                 <ColumnDefinition Width="500"/>
             </Grid.ColumnDefinitions>
             <Label Content="Тип продукции" Foreground="White" Height="30" VerticalAlignment="Top" FontSize="16"/>
-            <ComboBox ItemsSource="{Binding ProductTypes}" DisplayMemberPath="Title" SelectedItem="{Binding SelectedProductType}" Width="250" Height="30" IsEditable="True"/>
+            <ComboBox ItemsSource="{Binding ProductTypes}" DisplayMemberPath="Title" SelectedItem="{Binding SelectedProductType}" Width="250" Height="30" IsEditable="True" />
             <Label Content="Ед. измерения" Foreground="White" Grid.Column="1" Height="30" VerticalAlignment="Top" FontSize="16"/>
             <ComboBox ItemsSource="{Binding Units}" DisplayMemberPath="Title" SelectedItem="{Binding SelectedUnit}" Width="250" Height="30" IsEditable="True" Grid.Column="1"/>
         </Grid>
