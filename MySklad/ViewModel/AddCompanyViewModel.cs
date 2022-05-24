@@ -76,7 +76,8 @@ namespace MySklad.ViewModel
                     Email = companyApi.Email,
                     Phone = companyApi.Phone,
                     Image = companyApi.Image,
-                    RegistrationDate = companyApi.RegistrationDate
+                    RegistrationDate = companyApi.RegistrationDate,
+                    Address = companyApi.Address
                 };
 
                 if (ImageCompany == null)
@@ -131,6 +132,11 @@ namespace MySklad.ViewModel
                     if(AddCompanyVM.Email == null || !AddCompanyVM.Email.Contains("@") || !AddCompanyVM.Email.EndsWith(".com"))
                     {
                         MessageBox.Show("Неправильно введена почта предприятия");
+                        return;
+                    }
+                    if(AddCompanyVM.Address == null)
+                    {
+                        MessageBox.Show("Не введен адрес");
                         return;
                     }
                     if(AddCompanyVM.Id == 0)

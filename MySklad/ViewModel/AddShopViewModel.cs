@@ -50,7 +50,8 @@ namespace MySklad.ViewModel
                     Id = shopApi.Id,
                     Name = shopApi.Name,
                     Email = shopApi.Email,
-                    Phone = shopApi.Phone
+                    Phone = shopApi.Phone,
+                    Address = shopApi.Address
                 };
             }
 
@@ -71,6 +72,12 @@ namespace MySklad.ViewModel
                 if(AddShopVM.Phone == null)
                 {
                     MessageBox.Show("Не введен номер телефона компании");
+                    return;
+                }
+
+                if(AddShopVM.Address == null)
+                {
+                    MessageBox.Show("Не введен адрес");
                     return;
                 }
 

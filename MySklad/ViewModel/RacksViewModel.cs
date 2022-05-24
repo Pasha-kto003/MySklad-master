@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace MySklad.ViewModel
 {
@@ -126,11 +127,17 @@ namespace MySklad.ViewModel
             CountAll = Racks.Count;
         }
 
+        private async Task DeleteRack(RackApi rack)
+        {
+            var delete = await Api.DeleteAsync<RackApi>(rack, "Rack");
+        }
+
         public CustomCommand EditRack { get; set; }
         public CustomCommand CreateRack { get; set; }
         public CustomCommand BackPage { get; set; }
         public CustomCommand ForwardPage { get; set; }
         public CustomCommand UpdateList { get; set; }
+        public CustomCommand RemoveRack { get; set; }
 
         int paginationPageIndex = 0;
         private string searchCountRows;
@@ -215,6 +222,20 @@ namespace MySklad.ViewModel
                 EditRackView editRack = new EditRackView(SelectedRack);
                 editRack.ShowDialog();
                 GetRacks();
+            });
+
+            RemoveRack = new CustomCommand(() =>
+            {
+                if (SelectedRack == null) return;
+                MessageBoxResult result = MessageBox.Show("Вы действительно хотите удалить этот стеллаж?", "Поддьвердите ваше действие", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    DeleteRack(SelectedRack);
+                }
+                else
+                {
+                    return;
+                }
             });
 
             SignalChanged("Racks");

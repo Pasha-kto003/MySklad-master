@@ -93,6 +93,8 @@ namespace MySklad.ViewModel
             window.Close();
         }
 
+        public List<StatusApi> Statuses { get; set; }
+
         private IEnumerable<CrossProductRackApi> selectedCrosses { get; set; }
         public IEnumerable<CrossProductRackApi> SelectedCrosses
         {
@@ -164,7 +166,8 @@ namespace MySklad.ViewModel
             Units = await Api.GetListAsync<List<UnitApi>>("Unit");
             var cross = await Api.GetListAsync<List<CrossProductRackApi>>("CrossRack");
             CrossProductRacks = await Api.GetListAsync<List<CrossProductRackApi>>("CrossRack");
-
+            Statuses = await Api.GetListAsync<List<StatusApi>>("Status");
+            
             if (rackApi == null)
             {
                 SelectedPersonal = Personals.FirstOrDefault();
@@ -172,6 +175,7 @@ namespace MySklad.ViewModel
             else
             {
                 SelectedPersonal = Personals.FirstOrDefault(s => s.Id == rackApi.PersonalId);
+                
                 SelectedCrosses = cross.Where(s => s.RackId == AddRackVM.Id);
 
                 foreach (CrossProductRackApi crossProduct in SelectedCrosses)
@@ -265,7 +269,6 @@ namespace MySklad.ViewModel
                     }
                 }
 
-               
                 else
                 {
                     SelectedRackProduct = SelectedProduct;
@@ -277,10 +280,22 @@ namespace MySklad.ViewModel
 
             SaveRack = new CustomCommand(() =>
             {
-                
-                if(AddRackVM.PlacementDate == null)
+                SelectedPersonal.Status = Statuses.FirstOrDefault(s => s.Id == SelectedPersonal.StatusId);
+                if (AddRackVM.PlacementDate == null)
                 {
                     MessageBox.Show("Не введена дата создания стеллажа");
+                    return;
+                }
+
+                if(SelectedPersonal.Status.Title == "Болеет")
+                {
+                    MessageBox.Show("Данный сотрудник заболел и не может исполнять свои обязанности");
+                    return;
+                }
+
+                if(SelectedPersonal.Status.Title == "Уволен")
+                {
+                    MessageBox.Show("Данный сотрудник уволен и не может выполнять данную работу");
                     return;
                 }
 

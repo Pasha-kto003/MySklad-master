@@ -27,6 +27,8 @@
                     <TextBox Text="{Binding NameOfCompany}" Height="30"/>
                     <Label Content="Почта компании:" Foreground="White" FontSize="16"/>
                     <TextBox Text="{Binding Email}" Height="30"/>
+                    <Label Content="Адресс компании" Foreground="White" Margin="0 20 0 0" Height="30" FontSize="16"/>
+                    <TextBox Text="{Binding Address}" Height="30" FontSize="16"/>
                 </StackPanel>
                 <StackPanel Width="250" Grid.Column="1" >
                     <Label Content="Дата старта работы:" Foreground="White" FontSize="16"/>

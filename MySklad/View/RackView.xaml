@@ -103,7 +103,8 @@
             </ListBox.ItemTemplate>
             <ListBox.ContextMenu>
                 <ContextMenu>
-                    <Button Content="Изменить стеллаж" Command="{Binding EditRack}" Style="{StaticResource ButtonTheme}" Background="Transparent" BorderBrush="Transparent"/>
+                    <MenuItem Header="Изменить стеллаж" Command="{Binding EditRack}" BorderBrush="Transparent"/>
+                    <MenuItem Header="Удалить стеллаж" Command="{Binding RemoveRack}" BorderBrush="Transparent"/>
                 </ContextMenu>
             </ListBox.ContextMenu>
         </ListBox>

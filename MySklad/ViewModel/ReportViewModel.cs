@@ -67,7 +67,7 @@ namespace MySklad.ViewModel
                 SignalChanged();
             }
         }
-
+        //"Server=DESKTOP-2KIP198\SQLEXPRESS;Initial Catalog=MySklad_DB;Trusted_Connection=True; User=dbo" Microsoft.EntityFrameworkCore.SqlServer -OutputDir db -f
         public List<string> Types { get; set; }
         public List<string> TypesOut { get; set; }
         public List<string> TypesProduct { get; set; }

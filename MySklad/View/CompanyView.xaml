@@ -72,6 +72,10 @@
                                 <Label Content="Дата начала работы: " FontSize="16"/>
                                 <Label Content="{Binding RegistrationDate}" FontSize="16"/>
                             </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Адресс компании" FontSize="16"/>
+                                <Label Content="{Binding Address}" FontSize="16"/>
+                            </StackPanel>
                         </StackPanel>
                     </Grid>
                 </DataTemplate>
