@@ -75,7 +75,6 @@
                         <DataGrid.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Изменить" Command="{Binding EditStatus}"/>
-                                <MenuItem Header="Удалить" Command="{Binding DeleteStatus}"/>
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                     </DataGrid>

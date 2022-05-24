@@ -231,7 +231,11 @@ namespace MySklad.ViewModel
                         {
                             AddProductVM.CountInStock = AddProductVM.CountInStock / 2;
                         }
-                        else if (AddProductVM.CrossOrderOutApi == null)
+                        else if (AddProductVM.CrossOrderOutApi == null && AddProductVM.CrossProductOrderApi == null)
+                        {
+                            AddProductVM.CountInStock = 0;
+                        }
+                        else if(AddProductVM.CrossOrderOutApi == null && AddProductVM.CrossProductOrderApi != null)
                         {
                             AddProductVM.CountInStock = (int)AddProductVM.CrossProductOrderApi.CountInOrder / 2;
                         }

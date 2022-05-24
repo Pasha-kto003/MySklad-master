@@ -789,10 +789,6 @@ namespace MySklad.ViewModel
             int index = 5;
             int count = 1;
 
-            sheet.Range["B1"].Value = "Стеллаж";
-            sheet.Range["C1"].Value = "Продукт";
-            sheet.Range["D1"].Value = "Количество";
-
             sheet.Range[$"B{index}"].Value = orderIn.DateOrderIn.ToLongTimeString();
             foreach (var product in orderIn.Products)
             {
@@ -816,7 +812,7 @@ namespace MySklad.ViewModel
             chart.ChartArea.Border.Weight = ChartLineWeightType.Medium;
             chart.ChartArea.Border.Color = System.Drawing.Color.SandyBrown;
 
-            chart.ChartTitle = "Racks";
+            chart.ChartTitle = "Orders";
             chart.ChartTitleArea.FontName = "Calibri";
             chart.ChartTitleArea.Size = 10;
             chart.ChartTitleArea.IsBold = true;

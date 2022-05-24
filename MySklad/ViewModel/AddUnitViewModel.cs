@@ -58,10 +58,12 @@ namespace MySklad.ViewModel
                 if (AddUnitVM.Id == 0)
                 {
                     CreateUnit(AddUnitVM);
+                    MessageBox.Show("Создана новая единица измерения");
                 }
                 else
                 {
                     EditApi(AddUnitVM);
+                    MessageBox.Show("Единица измерения изменена");
                 }
                 foreach (Window window in Application.Current.Windows)
                 {

@@ -48,6 +48,8 @@ namespace MySklad.ViewModel
             }
         }
 
+        public List<ProductApi> Products { get; set; }
+
         public async Task UnitDelete(UnitApi unit)
         {
             var unitdelete = await Api.DeleteAsync<UnitApi>(unit, "Unit");
@@ -102,6 +104,11 @@ namespace MySklad.ViewModel
             }
         }
 
+        public async Task GetProducts()
+        {
+            Products = await Api.GetListAsync<List<ProductApi>>("Product");
+        }
+
         public async Task StatusDelete(StatusApi status)
         {
             var statusdelete = await Api.DeleteAsync<StatusApi>(status, "Status");
@@ -115,6 +122,7 @@ namespace MySklad.ViewModel
             UnitsApi();
             ProductTypesApi();
             StatusesApi();
+            GetProducts();
 
             AddUnit = new CustomCommand(() =>
             {
@@ -134,6 +142,12 @@ namespace MySklad.ViewModel
             DeleteUnit = new CustomCommand(() =>
             {
                 if (SelectedUnit == null) return;
+                var search = Products.Where(s=> s.UnitId == SelectedUnit.Id);
+                if(search.Count() != 0)
+                {
+                    MessageBox.Show("Единица измерения используется в продукции. Ее нельзя удалить");
+                    return;
+                }
                 MessageBoxResult result = MessageBox.Show($"Вы точно хотите удалить {SelectedUnit.Title}", "Подтвердите действие", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if(result == MessageBoxResult.Yes)
                 {
@@ -157,16 +171,16 @@ namespace MySklad.ViewModel
                 StatusesApi();
             });
 
-            DeleteStatus = new CustomCommand(() =>
-            {
-                if (SelectedStatus == null) return;
-                MessageBoxResult result = MessageBox.Show($"Вы точно хотите удалить {SelectedStatus.Title}", "Подтвердите действие", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (result == MessageBoxResult.Yes)
-                {
-                    StatusDelete(SelectedStatus);
-                    StatusesApi();
-                }
-            });
+            //DeleteStatus = new CustomCommand(() =>
+            //{
+            //    if (SelectedStatus == null) return;
+            //    MessageBoxResult result = MessageBox.Show($"Вы точно хотите удалить {SelectedStatus.Title}", "Подтвердите действие", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            //    if (result == MessageBoxResult.Yes)
+            //    {
+            //        StatusDelete(SelectedStatus);
+            //        StatusesApi();
+            //    }
+            //});
 
             AddType = new CustomCommand(() =>
             {
@@ -185,7 +199,13 @@ namespace MySklad.ViewModel
 
             DeleteProductType = new CustomCommand(() =>
             {
-                if (SelectedProductType == null) return;            
+                if (SelectedProductType == null) return;
+                var search = Products.Where(s => s.ProductTypeId == SelectedProductType.Id);
+                if (search.Count() != 0)
+                {
+                    MessageBox.Show("Тип продукции используется в продукции. Его нельзя удалить");
+                    return;
+                }
                 MessageBoxResult result = MessageBox.Show($"Вы точно хотите удалить {SelectedProductType.Title}", "Подтвердите действие", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {

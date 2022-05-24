@@ -16,8 +16,6 @@ namespace MySklad.ViewModel
         public CustomCommand SaveStatus { get; set; }
         public CustomCommand DeleteStatus { get; set; }
 
-        
-
         public void CloseWindow(object obj)
         {
             Window window = obj as Window;
@@ -59,10 +57,12 @@ namespace MySklad.ViewModel
                 if (AddStatusVM.Id == 0)
                 {
                     CreateStatus(AddStatusVM);
+                    MessageBox.Show("Создан новый статус");
                 }
                 else
                 {
                     EditApi(AddStatusVM);
+                    MessageBox.Show("Статус изменен");
                 }
                 foreach (Window window in Application.Current.Windows)
                 {

@@ -54,10 +54,12 @@ namespace MySklad.ViewModel
                 if (AddTypeVM.Id == 0)
                 {
                     CreateType(AddTypeVM);
+                    MessageBox.Show("Создан новый тип продукции");
                 }
                 else
                 {
                     EditType(AddTypeVM);
+                    MessageBox.Show("Тип продукции изменен");
                 }
                 foreach (Window window in Application.Current.Windows)
                 {
