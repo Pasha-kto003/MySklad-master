@@ -172,6 +172,11 @@ namespace MySklad.ViewModel
             var prod = Api.PutAsync<ProductApi>(productApi, "Product");
         }
 
+        async Task EditSupplier(SupplierApi supplier)
+        {
+            var supplierApi = await Api.PutAsync<SupplierApi>(supplier, "Supplier");
+        }
+
         async Task GetShops()
         {
             var shops = await Api.GetListAsync<List<ShopApi>>("Shop");
@@ -264,7 +269,8 @@ namespace MySklad.ViewModel
                 {
                     SelectedOrderProduct = SelectedProduct;
                     SelectedOrderProduct.CountProductsOut = Cross;
-                    SelectedCross.CountOutOrder = Cross;
+                    SelectedProduct.CountProductsOut = Cross;
+                    //SelectedCross.CountOutOrder = Cross;
                     EditProduction(SelectedOrderProduct);
                     SelectedOrderProduct.CrossProductOrderApi = CrossProductOrders.FirstOrDefault(s => s.ProductId == SelectedOrderProduct.Id);
                     SelectedOrderProduct.CrossOrderOutApi = CrossOrderOuts.FirstOrDefault(s => s.ProductId == SelectedOrderProduct.Id);
@@ -320,6 +326,16 @@ namespace MySklad.ViewModel
                     }
                     AddOrderVM.SupplierId = SelectedSupplier.Id;
                     AddOrderVM.ShopId = SelectedShop.Id;
+                    if (AddOrderVM.SupplierId != 0)
+                    {
+                        MessageBoxResult result = MessageBox.Show($"Поставщик {SelectedSupplier.FirstName} Успешно доставил груз! Поднять ему рейтинг?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            SelectedSupplier.Rating += 10;
+                            EditSupplier(SelectedSupplier);
+                            MessageBox.Show($"Поставщику {SelectedSupplier.FirstName} был поднят рейтинг!");
+                        }
+                    }
                     PostOrder(AddOrderVM);
                 }
                 else
