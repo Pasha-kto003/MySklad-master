@@ -524,6 +524,9 @@ namespace MySklad.ViewModel
 
             CountAll = new CustomCommand(() =>
             {
+                ProductInOrderIn = 0;
+                ProductInOrderOut = 0;
+                ProductDeleteCount = 0;
                 OrderInCount = OrdersIn.Where
                 (
                     s => s.DateOrderIn >= SelectedAfterDate && s.DateOrderIn <= SelectedBeforeDate
@@ -566,7 +569,7 @@ namespace MySklad.ViewModel
 
                 PersonalSick = Personals.FindAll(s => s.Id == s.Id).Where
                 (
-                    s=> s.Status.Title == "Болеет"
+                    s=> s.StatusId == 2
                 ).Count();
 
                 PersonalSickCount = PersonalSick * 100 / PersonalCount;

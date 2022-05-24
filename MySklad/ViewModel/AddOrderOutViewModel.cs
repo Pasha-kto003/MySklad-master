@@ -264,6 +264,7 @@ namespace MySklad.ViewModel
                 {
                     SelectedOrderProduct = SelectedProduct;
                     SelectedOrderProduct.CountProductsOut = Cross;
+                    SelectedCross.CountOutOrder = Cross;
                     EditProduction(SelectedOrderProduct);
                     SelectedOrderProduct.CrossProductOrderApi = CrossProductOrders.FirstOrDefault(s => s.ProductId == SelectedOrderProduct.Id);
                     SelectedOrderProduct.CrossOrderOutApi = CrossOrderOuts.FirstOrDefault(s => s.ProductId == SelectedOrderProduct.Id);
