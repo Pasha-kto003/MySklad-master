@@ -69,6 +69,11 @@
                             <DataGridTextColumn Header="Дата конца срока годности продукта" Binding="{Binding Product.BestBeforeDateEnd}"/>
                             <DataGridTextColumn Header="Тип продукции" Binding="{Binding Product.ProductType.Title}"/>
                         </DataGrid.Columns>
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Редактировать" Command="{Binding EditProduct}"/>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
                     </DataGrid>
                 </ScrollViewer>
 

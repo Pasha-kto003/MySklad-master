@@ -362,6 +362,19 @@ namespace MySklad.ViewModel
                 }
                 SignalChanged("OrderOuts");
             });
+
+            EditProduct = new CustomCommand(() =>
+            {
+                if (SelectedCross == null) return;
+                else
+                {
+                    AddProduct product = new AddProduct(SelectedCross.Product);
+                    product.ShowDialog();
+                    MessageBox.Show("Переход на редактирование продукта");
+
+                }
+            });
+
             EditProductCount = new CustomCommand(() =>
             {
                 if (SelectedOrderProduct == null)

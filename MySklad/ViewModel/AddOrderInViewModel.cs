@@ -134,9 +134,10 @@ namespace MySklad.ViewModel
 
         public CustomCommand SaveOrder { get; set; }
         public CustomCommand AddProduct { get; set; }
-        public CustomCommand EditProduct { get; set; }
+        //public CustomCommand EditProduct { get; set; }
         public CustomCommand RemoveProduct { get; set; }
         public CustomCommand EditProductCount { get; set; }
+        public CustomCommand EditProduct { get; set; }
 
         public void CloseWindow(object obj)
         {
@@ -354,6 +355,19 @@ namespace MySklad.ViewModel
                 }
                 SignalChanged("OrderIns");
             });
+
+            EditProduct = new CustomCommand(() =>
+            {
+                if (SelectedCross == null) return;
+                else
+                {
+                    AddProduct product = new AddProduct(SelectedCross.Product);
+                    product.ShowDialog();
+                    MessageBox.Show("Переход на редактирование продукта");
+
+                }
+            });
+
             EditProductCount = new CustomCommand(() =>
             {
                 if(SelectedOrderProduct == null)
