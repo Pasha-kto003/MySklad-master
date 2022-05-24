@@ -164,7 +164,7 @@ namespace MySklad.ViewModel
             Product = await Api.GetListAsync<List<ProductApi>>("Product");
             ProductTypes = await Api.GetListAsync<List<ProductTypeApi>>("ProductType");
             Units = await Api.GetListAsync<List<UnitApi>>("Unit");
-            var cross = await Api.GetListAsync<List<CrossProductRackApi>>("CrossRack");
+            //var cross = await Api.GetListAsync<List<CrossProductRackApi>>("CrossRack");
             CrossProductRacks = await Api.GetListAsync<List<CrossProductRackApi>>("CrossRack");
             Statuses = await Api.GetListAsync<List<StatusApi>>("Status");
             
@@ -176,7 +176,8 @@ namespace MySklad.ViewModel
             {
                 SelectedPersonal = Personals.FirstOrDefault(s => s.Id == rackApi.PersonalId);
                 
-                SelectedCrosses = cross.Where(s => s.RackId == AddRackVM.Id);
+                SelectedCrosses = CrossProductRacks.Where(s => s.RackId == AddRackVM.Id);
+                rackApi.CrossProductRacks = CrossProductRacks.Where(s => s.RackId == AddRackVM.Id);
 
                 foreach (CrossProductRackApi crossProduct in SelectedCrosses)
                 {
@@ -275,6 +276,7 @@ namespace MySklad.ViewModel
                     AddRackVM.ChangedDate = DateTime.Now;
                     SelectedRackProducts.Add(SelectedProduct);
                     SignalChanged("SelectedRackProducts");
+
                 }
             });
 
@@ -301,6 +303,7 @@ namespace MySklad.ViewModel
 
                 //AddRackVM.CrossProductRacks = CrossProductRacks.FirstOrDefault(s => s.RackId == AddRackVM.Id);
                 AddRackVM.Products = SelectedRackProducts;
+                SelectedCrosses = AddRackVM.CrossProductRacks; //
                 if (AddRackVM.Id == 0)
                 {
                     if(SelectedPersonal == null)
