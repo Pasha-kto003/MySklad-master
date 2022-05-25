@@ -10,7 +10,7 @@ using System.Windows;
 namespace MySklad.ViewModel
 {
     public class EditRackViewModel : BaseViewModel
-    {
+    { 
         public RackApi AddRackVM { get; set; }
 
         public int CountAllProducts { get; set; }
@@ -38,7 +38,7 @@ namespace MySklad.ViewModel
         }
 
         private List<ProductApi> product { get; set; }
-        public List<ProductApi> Product 
+        public List<ProductApi> Product
         {
             get => product;
             set
@@ -95,8 +95,8 @@ namespace MySklad.ViewModel
 
         public List<StatusApi> Statuses { get; set; }
 
-        private IEnumerable<CrossProductRackApi> selectedCrosses { get; set; }
-        public IEnumerable<CrossProductRackApi> SelectedCrosses
+        private List<CrossProductRackApi> selectedCrosses { get; set; }
+        public List<CrossProductRackApi> SelectedCrosses
         {
             get => selectedCrosses;
             set
@@ -167,7 +167,7 @@ namespace MySklad.ViewModel
             //var cross = await Api.GetListAsync<List<CrossProductRackApi>>("CrossRack");
             CrossProductRacks = await Api.GetListAsync<List<CrossProductRackApi>>("CrossRack");
             Statuses = await Api.GetListAsync<List<StatusApi>>("Status");
-            
+
             if (rackApi == null)
             {
                 SelectedPersonal = Personals.FirstOrDefault();
@@ -175,9 +175,9 @@ namespace MySklad.ViewModel
             else
             {
                 SelectedPersonal = Personals.FirstOrDefault(s => s.Id == rackApi.PersonalId);
-                
-                SelectedCrosses = CrossProductRacks.Where(s => s.RackId == AddRackVM.Id);
-                rackApi.CrossProductRacks = CrossProductRacks.Where(s => s.RackId == AddRackVM.Id);
+
+                SelectedCrosses = CrossProductRacks.FindAll(s => s.RackId == AddRackVM.Id);
+                rackApi.CrossProductRacks = CrossProductRacks.FindAll(s => s.RackId == AddRackVM.Id);
 
                 foreach (CrossProductRackApi crossProduct in SelectedCrosses)
                 {
@@ -237,12 +237,16 @@ namespace MySklad.ViewModel
                 {
                     SelectedRackProducts = rackApi.Products;
                 }
-            }    
+            }
 
             GetRacks(AddRackVM);
 
             AddProduct = new CustomCommand(() =>
             {
+                CrossProductRackApi cross = new CrossProductRackApi();
+                cross.ProductId = SelectedProduct.Id;
+                cross.Rack = AddRackVM;
+                cross.DateProductPlacement = DateTime.Now;
                 SelectedProduct.CrossProductRack = CrossProductRacks.FirstOrDefault(s => s.ProductId == SelectedProduct.Id);
                 if (SelectedProduct == null)
                 {
@@ -259,10 +263,10 @@ namespace MySklad.ViewModel
                     MessageBox.Show("Данный продукт уже есть на стеллаже");
                     return;
                 }
-                else if(SelectedProduct.Status == "Удален")
+                else if (SelectedProduct.Status == "Удален")
                 {
                     MessageBoxResult result = MessageBox.Show("Этот товар находится в реестре удалений, его невозможно поместить на стеллаж!", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                    if(result == MessageBoxResult.Yes)
+                    if (result == MessageBoxResult.Yes)
                     {
                         SelectedRackProducts.Remove(SelectedRackProduct);
                         //CrossProductRacks.Remove(AddRackVM.CrossProductRacks);
@@ -272,6 +276,7 @@ namespace MySklad.ViewModel
 
                 else
                 {
+                    SelectedCrosses.Add(cross);
                     SelectedRackProduct = SelectedProduct;
                     AddRackVM.ChangedDate = DateTime.Now;
                     SelectedRackProducts.Add(SelectedProduct);
@@ -289,13 +294,13 @@ namespace MySklad.ViewModel
                     return;
                 }
 
-                if(SelectedPersonal.Status.Title == "Болеет")
+                if (SelectedPersonal.Status.Title == "Болеет")
                 {
                     MessageBox.Show("Данный сотрудник заболел и не может исполнять свои обязанности");
                     return;
                 }
 
-                if(SelectedPersonal.Status.Title == "Уволен")
+                if (SelectedPersonal.Status.Title == "Уволен")
                 {
                     MessageBox.Show("Данный сотрудник уволен и не может выполнять данную работу");
                     return;
@@ -303,10 +308,11 @@ namespace MySklad.ViewModel
 
                 //AddRackVM.CrossProductRacks = CrossProductRacks.FirstOrDefault(s => s.RackId == AddRackVM.Id);
                 AddRackVM.Products = SelectedRackProducts;
-                SelectedCrosses = AddRackVM.CrossProductRacks; //
+                SelectedCrosses = AddRackVM.CrossProductRacks;
+                //SelectedCrosses = CrossProductRacks.Where(s => s.RackId == AddRackVM.Id);
                 if (AddRackVM.Id == 0)
                 {
-                    if(SelectedPersonal == null)
+                    if (SelectedPersonal == null)
                     {
                         MessageBox.Show("Добавьте сотрудника на стеллаж");
                         return;
@@ -343,11 +349,10 @@ namespace MySklad.ViewModel
                         {
                             cross.DateProductPlacement = time;
                         }
-                        CrossProductRackApi crossrack = new CrossProductRackApi { ProductId = SelectedProduct.Id, RackId = AddRackVM.Id};
                         PostRack(AddRackVM);
                         MessageBox.Show("Добавлен новый стеллаж");
                     }
-                    
+
                 }
                 else
                 {
@@ -395,7 +400,7 @@ namespace MySklad.ViewModel
                                     MessageBox.Show("Перемещение подтверждено");
                                 }
                                 search.RackId = AddRackVM.Id;
-                                AddRackVM.CrossProductRacks = CrossProductRacks.Where(s => s.ProductId == search.ProductId);
+                                //AddRackVM.CrossProductRacks = CrossProductRacks.Where(s => s.ProductId == search.ProductId);
                                 SelectedCrosses = AddRackVM.CrossProductRacks;
                                 SignalChanged("SelectedCrosses");
                             }
@@ -416,3 +421,4 @@ namespace MySklad.ViewModel
         }
     }
 }
+

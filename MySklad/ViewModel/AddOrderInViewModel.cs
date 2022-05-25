@@ -285,7 +285,7 @@ namespace MySklad.ViewModel
                     return;
                 }
                 AddOrderVM.Products = SelectedOrderProducts;
-                SelectedOrderProduct.CountProducts = NewCross;
+                SelectedProduct.CountProducts = NewCross;
                 if (AddOrderVM.Id == 0)
                 {
                     if(AddOrderVM.Products == null)
@@ -346,14 +346,15 @@ namespace MySklad.ViewModel
                     MessageBox.Show("Записано");
                 }
 
-                foreach (Window window in Application.Current.Windows)
-                {
-                    if (window.DataContext == this)
-                    {
-                        CloseWindow(window);
-                    }
-                }
-                SignalChanged("OrderIns");
+                //foreach (Window window in Application.Current.Windows)
+                //{
+                //    if (window.DataContext == this)
+                //    {
+                //        CloseWindow(window);
+                //    }
+                //}
+                SelectedCrosses = AddOrderVM.CrossProductOrders;
+                SignalChanged("SelectedCrosses");
             });
 
             EditProduct = new CustomCommand(() =>
