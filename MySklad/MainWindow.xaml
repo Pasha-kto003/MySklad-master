@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MySklad"
         mc:Ignorable="d"
         Background="Transparent"
-        Title="MainWindow" Height="550" Width="900">
+        Title="MainWindow" WindowStartupLocation="CenterScreen" WindowState="Maximized" Width="800">
     <Border Background="#325f63" CornerRadius="20">
         <Grid>
             <Grid.RowDefinitions>

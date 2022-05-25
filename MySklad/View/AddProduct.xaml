@@ -56,17 +56,17 @@
                 <ColumnDefinition Width="500"/>
             </Grid.ColumnDefinitions>
             <Label Content="Тип продукции" Foreground="White" Height="30" VerticalAlignment="Top" FontSize="16"/>
-            <ComboBox ItemsSource="{Binding ProductTypes}" DisplayMemberPath="Title" SelectedItem="{Binding SelectedProductType}" Width="250" Height="30" IsEditable="True" />
+            <ComboBox ItemsSource="{Binding ProductTypes}" DisplayMemberPath="Title" SelectedItem="{Binding SelectedProductType}" Width="250" Height="30" IsEditable="True" FontSize="16"/>
             <Label Content="Ед. измерения" Foreground="White" Grid.Column="1" Height="30" VerticalAlignment="Top" FontSize="16"/>
-            <ComboBox ItemsSource="{Binding Units}" DisplayMemberPath="Title" SelectedItem="{Binding SelectedUnit}" Width="250" Height="30" IsEditable="True" Grid.Column="1"/>
+            <ComboBox ItemsSource="{Binding Units}" DisplayMemberPath="Title" SelectedItem="{Binding SelectedUnit}" Width="250" Height="30" IsEditable="True" Grid.Column="1" FontSize="16"/>
         </Grid>
         <Grid Grid.Row="3" HorizontalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="500"/>
                 <ColumnDefinition Width="500"/>
             </Grid.ColumnDefinitions>
-            <Button Content="Отмена" Click="Button_Click" Style="{StaticResource ButtonTheme}" HorizontalAlignment="Center" Width="200" Height="30"/>
-            <Button Content="Сохранить продукцию" Command="{Binding SaveProduct}" Style="{StaticResource ButtonTheme}" HorizontalAlignment="Center" Width="200" Height="30" Grid.Column="1"/>
+            <Button Content="Отмена" Click="Button_Click" Style="{StaticResource ButtonTheme}" HorizontalAlignment="Center" Width="200" Height="30" FontSize="16"/>
+            <Button Content="Сохранить продукцию" Command="{Binding SaveProduct}" Style="{StaticResource ButtonTheme}" HorizontalAlignment="Center" Width="200" Height="30" Grid.Column="1" FontSize="16"/>
         </Grid>
     </Grid>
 </Window>
