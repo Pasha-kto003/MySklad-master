@@ -65,7 +65,7 @@ namespace MySklad.ViewModel
         {
             if (companyApi == null)
             {
-                AddCompanyVM = new CompanyApi { Phone = "12345", NameOfCompany = "Название компании", RegistrationDate = DateTime.Now };
+                AddCompanyVM = new CompanyApi { Phone = "12345", NameOfCompany = "Название компании", RegistrationDate = DateTime.Now, Address = "г.  ул. " };
             }
             else
             {
@@ -139,6 +139,7 @@ namespace MySklad.ViewModel
                         MessageBox.Show("Не введен адрес");
                         return;
                     }
+                    
                     if(AddCompanyVM.Id == 0)
                     {
                         PostCompany(AddCompanyVM);

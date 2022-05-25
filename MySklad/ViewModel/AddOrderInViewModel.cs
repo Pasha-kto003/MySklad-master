@@ -323,6 +323,11 @@ namespace MySklad.ViewModel
                         MessageBox.Show("Выберите другого поставщика");
                         return;
                     }
+                    if (SelectedSupplier == null)
+                    {
+                        MessageBox.Show("Выберите поставщика");
+                        return;
+                    }
                     AddOrderVM.SupplierId = SelectedSupplier.Id;
                     if(AddOrderVM.SupplierId != 0)
                     {

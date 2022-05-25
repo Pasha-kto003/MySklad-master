@@ -41,7 +41,7 @@ namespace MySklad.ViewModel
             Shops = new List<ShopApi>();
             if (shopApi == null)
             {
-                AddShopVM = new ShopApi { Phone = "+7(___)-XXX-XXX-XX-XX", Email = "examplemail@gmail.com" };
+                AddShopVM = new ShopApi { Phone = "XXX-XXX-XX-XX", Email = "examplemail@gmail.com" };
             }
             else
             {

@@ -138,6 +138,10 @@ namespace MySklad.ViewModel
             SearchType = new List<string>();
             SearchType.AddRange(new string[] { "Название" });
             SearchType.AddRange(new string[] { "Email" });
+            SearchType.AddRange(new string[] { "Телефон" });
+            SearchType.AddRange(new string[] { "Адрес" });
+            SearchType.AddRange(new string[] { "Дата регистрации" });
+
             selectedSearchType = SearchType.First();
 
             BackPage = new CustomCommand(() => {
@@ -240,6 +244,12 @@ namespace MySklad.ViewModel
             else if (SelectedSearchType == "Email")
                 searchResult = Companies
                     .Where(s => s.Email.ToLower().Contains(search)).ToList();
+            else if (SelectedSearchType == "Адрес")
+                searchResult = Companies.Where(c => c.Address.ToLower().Contains(search)).ToList();
+            else if (SelectedSearchType == "Телефон")
+                searchResult = Companies.Where(c => c.Phone.ToLower().Contains(search)).ToList();
+            else if (SelectedSearchType == "Дата регистрации")
+                searchResult = Companies.Where(c => c.RegistrationDate.ToString().ToLower().Contains(search)).ToList();
             InitPagination();
             Pagination();
             SignalChanged("Companies");

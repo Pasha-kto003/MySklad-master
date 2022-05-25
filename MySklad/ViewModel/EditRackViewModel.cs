@@ -319,6 +319,12 @@ namespace MySklad.ViewModel
                     return;
                 }
 
+                if(SelectedPersonal == null)
+                {
+                    MessageBox.Show("Выберите сотрудника для стеллажа");
+                    return;
+                }
+
                 if (SelectedPersonal.Status.Title == "Болеет")
                 {
                     MessageBox.Show("Данный сотрудник заболел и не может исполнять свои обязанности");
