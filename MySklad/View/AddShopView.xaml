@@ -5,13 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MySklad.View"
         mc:Ignorable="d"
-        Title="AddShopView" Height="450" Width="800">
+        Title="AddShopView" Height="500" Width="800">
     <Grid Background="#325f63">
         <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
             <RowDefinition/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" DataContext="{Binding AddShopVM}" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
+        <StackPanel Grid.Row="0">
+            <Label Content="Редактирование магазина" Foreground="White" FontSize="22"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" DataContext="{Binding AddShopVM}" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
             <Label Content="Наименование" Margin="0 0 0 5" Width="150" HorizontalContentAlignment="Center" Foreground="White" FontSize="16"/>
             <TextBox Text="{Binding Name}" Margin="0 5 0 0" Width="250" FontSize="16"/>
             <Label Content="Телефон" Margin="0 0 0 5" Width="150" HorizontalContentAlignment="Center" Foreground="White" FontSize="16"/>
@@ -21,7 +25,7 @@
             <Label Content="Адресс компании" Foreground="White" Margin="0 20 0 0" Height="30" FontSize="16"/>
             <TextBox Text="{Binding Address}" Height="30" FontSize="16"/>
         </StackPanel>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>

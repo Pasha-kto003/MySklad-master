@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace MySklad.ViewModel
 {
@@ -68,6 +69,7 @@ namespace MySklad.ViewModel
 
         public CustomCommand AddCompany { get; set; }
         public CustomCommand EditCompany { get; set; }
+        public CustomCommand DeleteCompany { get; set; }
         public CustomCommand BackPage { get; set; }
         public CustomCommand ForwardPage { get; set; }
         public CustomCommand UpdateList { get; set; }
@@ -83,6 +85,13 @@ namespace MySklad.ViewModel
             }
         }
 
+        public List<SupplierApi> Suppliers { get; set; }
+
+        private async Task GetSuppliers()
+        {
+            Suppliers = await Api.GetListAsync<List<SupplierApi>>("Supplier");
+        }
+
         private async Task GetCompanies()
         {
             var companies = await Api.GetListAsync<List<CompanyApi>>("Company");
@@ -90,6 +99,11 @@ namespace MySklad.ViewModel
             CountAll = Companies.Count;
             SignalChanged("Companies");
             InitPagination();
+        }
+
+        private async Task CompanyDelete(CompanyApi company)
+        {
+            var companyApi = await Api.DeleteAsync<CompanyApi>(company, "Company");
         }
 
         public List<CompanyApi> searchResult;
@@ -116,7 +130,7 @@ namespace MySklad.ViewModel
         {
             Companies = new List<CompanyApi>();
             GetCompanies();
-            
+            GetSuppliers();
             ViewCountRows = new List<string>();
             ViewCountRows.AddRange(new string[] { "5", "все" });
             selectedViewCountRows = ViewCountRows.Last();
@@ -168,6 +182,25 @@ namespace MySklad.ViewModel
                 AddCompanyView addCompany = new AddCompanyView(SelectedCompany);
                 addCompany.ShowDialog();
                 GetCompanies();
+            });
+
+            DeleteCompany = new CustomCommand(() =>
+            {
+                GetSuppliers();
+                if (SelectedCompany == null) return;
+                var search = Suppliers.Where(s => s.CompanyId == SelectedCompany.Id);
+                if (search.Count() != 0)
+                {
+                    MessageBox.Show("У компании есть поставщики, ее нельзя удалить");
+                    return;
+                }
+                MessageBoxResult result = MessageBox.Show($"Вы точно хотите удалить {SelectedCompany.NameOfCompany}", "Подтвердите действие", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    CompanyDelete(SelectedCompany);
+                    GetCompanies();
+                }
+
             });
 
             SignalChanged("Companies");

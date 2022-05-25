@@ -90,7 +90,7 @@
             </ListBox.ContextMenu>
         </ListBox>
         <StackPanel Grid.Row="2" Orientation="Horizontal">
-            <Label Content="{Binding SearchCountRows}"/>
+            <Label Content="{Binding SearchCountRows}" Foreground="White"/>
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Content="&lt;" Width="20" Command="{Binding BackPage}" BorderBrush="Transparent" Background="Transparent"/>
                 <Label Content="{Binding Pages}"/>

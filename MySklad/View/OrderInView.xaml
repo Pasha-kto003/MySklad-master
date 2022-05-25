@@ -64,6 +64,10 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel  Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Left">
                             <StackPanel Orientation="Horizontal">
+                                <Label Content="№ накладной:"/>
+                                <Label Content="{Binding Id}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
                                 <Label Content="Дата накладной:"/>
                                 <Label Content="{Binding DateOrderIn}">
                                 </Label>

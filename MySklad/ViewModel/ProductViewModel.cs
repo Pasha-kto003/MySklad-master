@@ -174,7 +174,7 @@ namespace MySklad.ViewModel
             selectedOrderType = OrderType.Last();
 
             SearchType = new List<string>();
-            SearchType.AddRange(new string[] { "Название", "Описание", "Тип" });
+            SearchType.AddRange(new string[] { "Название", "Описание", "Тип", "Статус" });
             selectedSearchType = SearchType.First();
 
             CountAll = Products.Count;
@@ -305,6 +305,8 @@ namespace MySklad.ViewModel
             else if (SelectedSearchType == "Описание")
                 searchResult = Products
                         .Where(c => c.Description.ToLower().Contains(search)).ToList();
+            else if (SelectedSearchType == "Статус")
+                searchResult = Products.Where(c => c.Status == "Удален").ToList();
             else if (SelectedSearchType == "Тип")
             {
                 searchResult = Products

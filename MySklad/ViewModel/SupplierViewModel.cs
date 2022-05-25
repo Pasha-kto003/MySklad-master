@@ -184,9 +184,12 @@ namespace MySklad.ViewModel
             SortType.AddRange(new string[] { "Рейтинг" });
             selectedSortType = SortType.First();
 
+            OrderType = new List<string>();
+            OrderType.AddRange(new string[] { "По умолчанию", "По убыванию", "По возрастанию" });
+            selectedOrderType = OrderType.First();
 
             SearchType = new List<string>();
-            SearchType.AddRange(new string[] { "Имя поставщика", "Рейтинг"});
+            SearchType.AddRange(new string[] { "Имя поставщика", "Фамилия", "Отчество", "Статус", "Рейтинг", "Почта" });
             selectedSearchType = SearchType.First();
 
             BackPage = new CustomCommand(() => {
@@ -345,7 +348,6 @@ namespace MySklad.ViewModel
                     searchResult.Sort((x, y) => ((Int32)x.Rating).CompareTo(y.Rating));
             }
             paginationPageIndex = 0;
-
             Pagination();
             SignalChanged("Suppliers");
         }
@@ -383,8 +385,12 @@ namespace MySklad.ViewModel
             }
             else if (SelectedSearchType == "Рейтинг")
                 searchResult = Suppliers.Where(c => c.Rating.ToString().ToLower().Contains(search)).ToList();
-            else if(SelectedSearchType == "Почта")
+            else if (SelectedSearchType == "Почта")
                 searchResult = Suppliers.Where(c => c.Email.ToLower().Contains(search)).ToList();
+            else if (SelectedSearchType == "Фамилия")
+                searchResult = Suppliers.Where(c => c.LastName.ToLower().Contains(search)).ToList();
+            else if (SelectedSearchType == "Отчество")
+                searchResult = Suppliers.Where(c => c.Patronimyc.ToLower().Contains(search)).ToList();
             Sort();
             InitPagination();
             Pagination();
