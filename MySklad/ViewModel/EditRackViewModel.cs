@@ -84,7 +84,7 @@ namespace MySklad.ViewModel
         public CustomCommand SaveRack { get; set; }
         public CustomCommand AddProduct { get; set; }
         public CustomCommand EditProduct { get; set; }
-        public CustomCommand RemoveProduct { get; set; }
+        public CustomCommand DeleteFromRack { get; set; }
         public CustomCommand CountProduct { get; set; }
 
         public void CloseWindow(object obj)
@@ -156,6 +156,11 @@ namespace MySklad.ViewModel
         {
             var personals = await Api.GetListAsync<List<PersonalApi>>("Personal");
             Personals = (List<PersonalApi>)personals;
+        }
+
+        async Task DeleteCross(CrossProductRackApi crossProductRack)
+        {
+            var crossproduct = await Api.PostAsync<CrossProductRackApi>(crossProductRack, "CrossRack");
         }
 
         async Task GetRacks(RackApi rackApi)
@@ -280,10 +285,30 @@ namespace MySklad.ViewModel
                     SelectedRackProduct = SelectedProduct;
                     AddRackVM.ChangedDate = DateTime.Now;
                     SelectedRackProducts.Add(SelectedProduct);
+                    SignalChanged("SelectedCross");
                     SignalChanged("SelectedRackProducts");
 
                 }
             });
+
+            //DeleteFromRack = new CustomCommand(() =>
+            //{
+            //    var time = DateTime.Now;
+            //    if (SelectedCross == null) return;
+            //    MessageBoxResult result = MessageBox.Show("Удалить товар со стеллажа?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            //    if(result == MessageBoxResult.Yes)
+            //    {
+            //        SelectedCross.DateProductDelete = time;
+            //        SignalChanged("SelectedCross");
+            //        //DeleteCross(SelectedCross);
+            //    }
+            //    if(result == MessageBoxResult.No)
+            //    {
+            //        MessageBox.Show("Хорошо, возвращаемся назад");
+            //        return;
+            //    }
+            //    SignalChanged("SelectedCross");
+            //});
 
             SaveRack = new CustomCommand(() =>
             {
@@ -397,12 +422,14 @@ namespace MySklad.ViewModel
                                 var search = CrossProductRacks.FirstOrDefault(s => s.ProductId == SelectedProduct.Id);
                                 if (search != null)
                                 {
+                                    search.RackId = AddRackVM.Id;
+                                    //AddRackVM.CrossProductRacks = CrossProductRacks.Where(s => s.ProductId == search.ProductId);
+                                    SelectedCrosses.Add(search);
+                                    AddRackVM.CrossProductRacks.Add(search);
+                                    SignalChanged("SelectedCrosses");
                                     MessageBox.Show("Перемещение подтверждено");
                                 }
-                                search.RackId = AddRackVM.Id;
-                                //AddRackVM.CrossProductRacks = CrossProductRacks.Where(s => s.ProductId == search.ProductId);
-                                SelectedCrosses = AddRackVM.CrossProductRacks;
-                                SignalChanged("SelectedCrosses");
+                                
                             }
                         }
                         EditRack(AddRackVM);

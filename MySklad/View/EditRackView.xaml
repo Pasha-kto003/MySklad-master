@@ -86,12 +86,17 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Продукция" Binding="{Binding Product.Title}"/>
                             <DataGridTextColumn Header="Количество продукции на стеллаже" Binding="{Binding Product.CountInStock}" Width="100"/>
-                            <DataGridTextColumn Header="Дата добавления" Binding="{Binding DateProductPlacement}"/>
+                            <DataGridTextColumn Header="Дата добавления на стеллаж" Binding="{Binding DateProductPlacement}"/>
                             <DataGridTextColumn Header="Ед. измерения" Binding="{Binding Product.Unit.Title}"/>
                             <DataGridTextColumn Header="Дата начала срока годности продукта" Binding="{Binding Product.BestBeforeDateStart}"/>
                             <DataGridTextColumn Header="Дата конца срока годности продукта" Binding="{Binding Product.BestBeforeDateEnd}"/>
                             <DataGridTextColumn Header="Тип продукции" Binding="{Binding Product.ProductType.Title}"/>
                         </DataGrid.Columns>
+                        <!--<DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Удалить со стеллажа" Command="{Binding DeleteFromRack}"/>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>-->
                     </DataGrid>
                 </ScrollViewer>
 
