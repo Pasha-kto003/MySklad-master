@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace MySklad.ViewModel
 {
@@ -90,6 +91,8 @@ namespace MySklad.ViewModel
             }
         }
 
+        public List<OrderOutApi> Orders { get; set; }
+
         public List<string> SortType { get; set; }
         private string selectedSortType;
         public string SelectedSortType
@@ -116,6 +119,7 @@ namespace MySklad.ViewModel
         public CustomCommand ForwardPage { get; set; }
         public CustomCommand AddShop { get; set; }
         public CustomCommand EditShop { get; set; }
+        public CustomCommand DeleteShop { get; set; }
         public CustomCommand UpdateList { get; set; }
 
         private string pages;
@@ -129,6 +133,11 @@ namespace MySklad.ViewModel
             }
         }
 
+        async Task GetOrders()
+        {
+            Orders = await Api.GetListAsync<List<OrderOutApi>>("OrderOut");
+        }
+
         async Task ShopsApi()
         {
             var shop = await Api.GetListAsync<List<ShopApi>>("Shop");
@@ -136,12 +145,16 @@ namespace MySklad.ViewModel
             CountAll = Shops.Count;
         }
 
+        public async Task ShopDelete(ShopApi shopApi)
+        {
+            var shopDelete = await Api.DeleteAsync<ShopApi>(shopApi, "Shop");
+        }
 
         public ShopViewModel()
         {
             Shops = new List<ShopApi>();
             ShopsApi();
-
+            GetOrders();
             ViewCountRows = new List<string>();
             ViewCountRows.AddRange(new string[] { "4", "все" });
             selectedViewCountRows = ViewCountRows.Last();
@@ -202,6 +215,28 @@ namespace MySklad.ViewModel
                 addShop.ShowDialog();
                 ShopsApi();
             });
+
+            DeleteShop = new CustomCommand(() =>
+            {
+                
+                var search = Orders.Where(s => s.ShopId == SelectedShop.Id);
+                if (SelectedShop == null) return;
+
+                //var search = Orders.Where(s => s.ShopId == SelectedShop.Id);
+
+                if (search.Count() != 0)
+                {
+                    MessageBox.Show("Нельзя удалить данный магазин. На него записана расходная");
+                    return;
+                }
+                MessageBoxResult result = MessageBox.Show($"Вы точно хотите удалить {SelectedShop.Name}", "Подтвердите действие", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    ShopDelete(SelectedShop);
+                    ShopsApi();
+                }
+            });
+
             Search();
             ShopsApi();
             InitPagination();
