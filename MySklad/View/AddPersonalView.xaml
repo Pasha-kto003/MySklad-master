@@ -29,11 +29,11 @@
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0" Width="300" Height="210" >
                     <Label Content="Имя сотрудника" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" Grid.Row="0" Grid.Column="1" FontSize="16"/>
-                    <TextBox Text="{Binding FirstName}" VerticalAlignment="Bottom" HorizontalAlignment="Center" Foreground="White" Grid.Row="0" Grid.Column="1" Margin="0 0 0 40" Width="250" FontSize="16"/>
+                    <TextBox Text="{Binding FirstName}" VerticalAlignment="Bottom" HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="1" Margin="0 0 0 40" Width="250" FontSize="16"/>
                     <Label Content="Фамилия сотрудника" Margin="0 -30 0 0" Foreground="White" FontSize="16"/>
-                    <TextBox Text="{Binding LastName}" VerticalAlignment="Bottom" HorizontalAlignment="Center" Foreground="White" Grid.Row="0" Grid.Column="1" Margin="0 0 0 40" Width="250" FontSize="16"/>
+                    <TextBox Text="{Binding LastName}" VerticalAlignment="Bottom" HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="1" Margin="0 0 0 40" Width="250" FontSize="16"/>
                     <Label Content="Отчество сотрудника" Margin="0 -30 0 0" Foreground="White" FontSize="16"/>
-                    <TextBox Text="{Binding Patronimyc}" VerticalAlignment="Bottom" HorizontalAlignment="Center" Foreground="White" Grid.Row="0" Grid.Column="1" Margin="0 0 0 40" Width="250" FontSize="16"/>
+                    <TextBox Text="{Binding Patronimyc}" VerticalAlignment="Bottom" HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="1" Margin="0 0 0 40" Width="250" FontSize="16"/>
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1" Width="300" Margin="0,0,0,0">
                     <Label Content="Номер телефона сотрудника"  HorizontalAlignment="Center" Foreground="White" FontSize="16"/>
