@@ -420,12 +420,13 @@ namespace MySklad.ViewModel
                             if (result == MessageBoxResult.Yes)
                             {
                                 var search = CrossProductRacks.FirstOrDefault(s => s.ProductId == SelectedProduct.Id);
-                                if (search != null)
+                                CrossProductRackApi crossProductRack = new CrossProductRackApi { RackId = AddRackVM.Id, ProductId = SelectedProduct.Id };
+                                if (crossProductRack != null)
                                 {
-                                    search.RackId = AddRackVM.Id;
+                                    //search.RackId = AddRackVM.Id;
                                     //AddRackVM.CrossProductRacks = CrossProductRacks.Where(s => s.ProductId == search.ProductId);
-                                    SelectedCrosses.Add(search);
-                                    AddRackVM.CrossProductRacks.Add(search);
+                                    SelectedCrosses.Add(crossProductRack);
+                                    AddRackVM.CrossProductRacks.Add(crossProductRack);
                                     SignalChanged("SelectedCrosses");
                                     MessageBox.Show("Перемещение подтверждено");
                                 }

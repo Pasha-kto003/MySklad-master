@@ -33,21 +33,21 @@
                     <RowDefinition />
                     
                 </Grid.RowDefinitions>
-                <Label Content="Поиск:" Foreground="White"/>
-                <Label Grid.Column="1" Content="Критерий поиска:" Foreground="White"/>
-                <TextBox Width="200" Grid.Row="1" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
-                <ComboBox IsEditable="True" Width="200" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}"/>
+                <Label Content="Поиск:" Foreground="White" FontSize="16"/>
+                <Label Grid.Column="1" Content="Критерий поиска:" Foreground="White" FontSize="16"/>
+                <TextBox Width="200" Grid.Row="1" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" FontSize="16"/>
+                <ComboBox IsEditable="True" Width="200" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}" FontSize="16"/>
                 
             </Grid>
             <StackPanel Grid.Column="2">
                 <Label Content="Выбор сортирвки" Foreground="White"/>
                 <!--<Button Command="{Binding Sortirovka}" Content="Сортировать"/>-->
-                <ComboBox IsEditable="True" Width="200" ItemsSource="{Binding SortType}" SelectedItem="{Binding SelectedSortType}"/>
+                <ComboBox IsEditable="True" Width="200" ItemsSource="{Binding SortType}" SelectedItem="{Binding SelectedSortType}" FontSize="16"/>
             </StackPanel>
             <StackPanel Grid.Column="3">
                 <Label Content="Сортировка по типу" Foreground="White"/>
                 <!--<Button Command="{Binding Sortirovka}" Content="Сортировать"/>-->
-                <ComboBox IsEditable="True" Width="200" ItemsSource="{Binding OrderType}" SelectedItem="{Binding SelectedOrderType}"/>
+                <ComboBox IsEditable="True" Width="200" ItemsSource="{Binding OrderType}" SelectedItem="{Binding SelectedOrderType}" FontSize="16"/>
             </StackPanel>
             <StackPanel Grid.Column="4">
                 <Button Command="{Binding UpdateList}" Content="Обновить" Style="{StaticResource ButtonTheme}" FontSize="16" Width="150" Margin="10 24 0 0"/>

@@ -34,8 +34,8 @@
                 </Grid.RowDefinitions>
                 <Label Content="Поиск:" Foreground="White" FontSize="16"/>
                 <Label Grid.Column="1" Content="Критерий поиска:" Foreground="White" FontSize="16"/>
-                <TextBox Width="200" Grid.Row="1" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
-                <ComboBox IsEditable="True" Width="200" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}"/>
+                <TextBox Width="200" Grid.Row="1" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" FontSize="16"/>
+                <ComboBox IsEditable="True" Width="200" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}" FontSize="16"/>
 
             </Grid>
             <StackPanel Grid.Column="2">
