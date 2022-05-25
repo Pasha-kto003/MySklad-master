@@ -346,14 +346,14 @@ namespace MySklad.ViewModel
                     MessageBox.Show("Записано");
                 }
 
-                //foreach (Window window in Application.Current.Windows)
-                //{
-                //    if (window.DataContext == this)
-                //    {
-                //        CloseWindow(window);
-                //    }
-                //}
-                SelectedCrosses = AddOrderVM.CrossProductOrders;
+                foreach (Window window in Application.Current.Windows)
+                {
+                    if (window.DataContext == this)
+                    {
+                        CloseWindow(window);
+                    }
+                }
+                //SelectedCrosses = AddOrderVM.CrossProductOrders;
                 SignalChanged("SelectedCrosses");
             });
 

@@ -527,6 +527,7 @@ namespace MySklad.ViewModel
                 ProductInOrderIn = 0;
                 ProductInOrderOut = 0;
                 ProductDeleteCount = 0;
+
                 OrderInCount = OrdersIn.Where
                 (
                     s => s.DateOrderIn >= SelectedAfterDate && s.DateOrderIn <= SelectedBeforeDate
@@ -717,8 +718,8 @@ namespace MySklad.ViewModel
             }
             sheet.Range[$"A1:D1"].BorderInside(LineStyleType.Thin);
             sheet.Range[$"A1:D1"].BorderAround(LineStyleType.Medium);
-            sheet.Range[$"A4:L{index - 1}"].BorderInside(LineStyleType.Thin);
-            sheet.Range[$"A4:L{index - 1}"].BorderAround(LineStyleType.Medium);
+            sheet.Range[$"A4:G{index - 1}"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A4:G{index - 1}"].BorderAround(LineStyleType.Medium);
             sheet.AllocatedRange.AutoFitColumns();
             workBook.SaveToFile("test.xls");
 
@@ -833,8 +834,8 @@ namespace MySklad.ViewModel
 
             sheet.Range[$"A1:D1"].BorderInside(LineStyleType.Thin);
             sheet.Range[$"A1:D1"].BorderAround(LineStyleType.Medium);
-            sheet.Range[$"A4:L{index - 1}"].BorderInside(LineStyleType.Thin);
-            sheet.Range[$"A4:L{index - 1}"].BorderAround(LineStyleType.Medium);
+            sheet.Range[$"A4:D{index - 1}"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A4:D{index - 1}"].BorderAround(LineStyleType.Medium);
             sheet.AllocatedRange.AutoFitColumns();
             workBook.SaveToFile("testOrderInByOrderIn.xls");
             Process p = new Process();
@@ -888,8 +889,8 @@ namespace MySklad.ViewModel
             }
             sheet.Range[$"B1:E2"].BorderInside(LineStyleType.Thin);
             sheet.Range[$"B1:E2"].BorderAround(LineStyleType.Medium);
-            sheet.Range[$"A4:G{index - 1}"].BorderInside(LineStyleType.Thin);
-            sheet.Range[$"A4:G{index - 1}"].BorderAround(LineStyleType.Medium);
+            sheet.Range[$"A4:H{index - 1}"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A4:H{index - 1}"].BorderAround(LineStyleType.Medium);
             sheet.AllocatedRange.AutoFitColumns();
             workBook.SaveToFile("testRackPeriod.xls");
             Process p = new Process();
@@ -936,8 +937,8 @@ namespace MySklad.ViewModel
 
             sheet.Range[$"B1:F2"].BorderInside(LineStyleType.Thin);
             sheet.Range[$"B1:F2"].BorderAround(LineStyleType.Medium);
-            sheet.Range[$"A4:G{index - 1}"].BorderInside(LineStyleType.Thin);
-            sheet.Range[$"A4:G{index - 1}"].BorderAround(LineStyleType.Medium);
+            sheet.Range[$"A4:F{index - 1}"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A4:F{index - 1}"].BorderAround(LineStyleType.Medium);
             sheet.AllocatedRange.AutoFitColumns();
             workBook.SaveToFile("testsupp.xls");
             Process p = new Process();
@@ -1006,8 +1007,8 @@ namespace MySklad.ViewModel
 
             sheet.Range[$"A1:D1"].BorderInside(LineStyleType.Thin);
             sheet.Range[$"A1:D1"].BorderAround(LineStyleType.Medium);
-            sheet.Range[$"A4:L{index - 1}"].BorderInside(LineStyleType.Thin);
-            sheet.Range[$"A4:L{index - 1}"].BorderAround(LineStyleType.Medium);
+            sheet.Range[$"A4:D{index - 1}"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A4:D{index - 1}"].BorderAround(LineStyleType.Medium);
             sheet.AllocatedRange.AutoFitColumns();
 
             workBook.SaveToFile("testRackByRack.xls");
@@ -1063,8 +1064,8 @@ namespace MySklad.ViewModel
             }
             sheet.Range[$"A1:D1"].BorderInside(LineStyleType.Thin);
             sheet.Range[$"A1:D1"].BorderAround(LineStyleType.Medium);
-            sheet.Range[$"A4:L{index - 1}"].BorderInside(LineStyleType.Thin);
-            sheet.Range[$"A4:L{index - 1}"].BorderAround(LineStyleType.Medium);
+            sheet.Range[$"A4:F{index - 1}"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A4:F{index - 1}"].BorderAround(LineStyleType.Medium);
             sheet.AllocatedRange.AutoFitColumns();
 
             workBook.SaveToFile("testOrderOut.xls");
@@ -1116,8 +1117,8 @@ namespace MySklad.ViewModel
             }
             sheet.Range[$"B1:E2"].BorderInside(LineStyleType.Thin);
             sheet.Range[$"B1:E2"].BorderAround(LineStyleType.Medium);
-            sheet.Range[$"A4:G{index - 1}"].BorderInside(LineStyleType.Thin);
-            sheet.Range[$"A4:G{index - 1}"].BorderAround(LineStyleType.Medium);
+            sheet.Range[$"A4:J{index - 1}"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A4:J{index - 1}"].BorderAround(LineStyleType.Medium);
             sheet.AllocatedRange.AutoFitColumns();
             workBook.SaveToFile("testOrderOutSupp.xls");
             Process p = new Process();
@@ -1233,13 +1234,13 @@ namespace MySklad.ViewModel
             chart.ChartTitleArea.FontName = "Calibri";
             chart.ChartTitleArea.Size = 10;
             chart.ChartTitleArea.IsBold = true;
-            chart.DataRange = sheet.Range[$"F5:F{Products.Count}"];
+            chart.DataRange = sheet.Range[$"F5:F{Products.Count + 4}"];
             chart.HasLegend = true;
             chart.Legend.Position = LegendPositionType.Right;
             chart.Legend.HasDataTable = true;
 
             ChartSerie cs = chart.Series[0];
-            cs.CategoryLabels = sheet.Range[$"B5:B{Products.Count}"];
+            cs.CategoryLabels = sheet.Range[$"B5:B{Products.Count + 4}"];
             cs.Values = sheet.Range[$"F5:F{Products.Count}"];
 
             IChartSerie serie1 = chart.Series[0];
@@ -1319,8 +1320,8 @@ namespace MySklad.ViewModel
 
             sheet.Range[$"A1:D1"].BorderInside(LineStyleType.Thin);
             sheet.Range[$"A1:D1"].BorderAround(LineStyleType.Medium);
-            sheet.Range[$"A4:I{index - 1}"].BorderInside(LineStyleType.Thin);
-            sheet.Range[$"A4:I{index - 1}"].BorderAround(LineStyleType.Medium);
+            sheet.Range[$"A4:D{index - 1}"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A4:D{index - 1}"].BorderAround(LineStyleType.Medium);
             sheet.AllocatedRange.AutoFitColumns();
             workBook.SaveToFile("testOrderOutByOrderOut.xls");
             Process p = new Process();
@@ -1371,8 +1372,8 @@ namespace MySklad.ViewModel
 
             sheet.Range[$"A1:D1"].BorderInside(LineStyleType.Thin);
             sheet.Range[$"A1:D1"].BorderAround(LineStyleType.Medium);
-            sheet.Range[$"A4:L{index - 1}"].BorderInside(LineStyleType.Thin);
-            sheet.Range[$"A4:L{index - 1}"].BorderAround(LineStyleType.Medium);
+            sheet.Range[$"A4:E{index - 1}"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A4:E{index - 1}"].BorderAround(LineStyleType.Medium);
             sheet.AllocatedRange.AutoFitColumns();
             workBook.SaveToFile("testWriteOffRegister.xls");
 
@@ -1415,8 +1416,8 @@ namespace MySklad.ViewModel
             }
             sheet.Range[$"B1:E2"].BorderInside(LineStyleType.Thin);
             sheet.Range[$"B1:E2"].BorderAround(LineStyleType.Medium);
-            sheet.Range[$"A4:G{index - 1}"].BorderInside(LineStyleType.Thin);
-            sheet.Range[$"A4:G{index - 1}"].BorderAround(LineStyleType.Medium);
+            sheet.Range[$"A4:E{index - 1}"].BorderInside(LineStyleType.Thin);
+            sheet.Range[$"A4:E{index - 1}"].BorderAround(LineStyleType.Medium);
             sheet.AllocatedRange.AutoFitColumns();
             workBook.SaveToFile("testWriteOffProduct.xls");
             Process p = new Process();
