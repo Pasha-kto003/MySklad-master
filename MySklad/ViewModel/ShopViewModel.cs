@@ -168,7 +168,7 @@ namespace MySklad.ViewModel
             selectedOrderType = OrderType.Last();
 
             SearchType = new List<string>();
-            SearchType.AddRange(new string[] { "Наименование", "Email" });
+            SearchType.AddRange(new string[] { "Наименование", "Email", "Адрес" });
             selectedSearchType = SearchType.First();
 
 
@@ -268,13 +268,15 @@ namespace MySklad.ViewModel
 
         private void Search()
         {
-            var search = SearchText.ToLower();         
+            var search = SearchText.ToLower();
             if (SelectedSearchType == "Наименование")
                 searchResult = Shops
                     .Where(c => c.Name.ToLower().Contains(search)).ToList();
             else if (SelectedSearchType == "Email")
                 searchResult = Shops
-                        .Where(c => c.Email.ToLower().Contains(search)).ToList();          
+                        .Where(c => c.Email.ToLower().Contains(search)).ToList();
+            else if (SelectedSearchType == "Адрес")
+                searchResult = Shops.Where(c => c.Address.ToLower().Contains(search)).ToList();
             Sort();
             InitPagination();
             Pagination();         

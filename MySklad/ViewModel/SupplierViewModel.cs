@@ -189,7 +189,7 @@ namespace MySklad.ViewModel
             selectedOrderType = OrderType.First();
 
             SearchType = new List<string>();
-            SearchType.AddRange(new string[] { "Имя поставщика", "Фамилия", "Отчество", "Статус", "Рейтинг", "Почта" });
+            SearchType.AddRange(new string[] { "Имя поставщика", "Фамилия", "Отчество", "Статус", "Рейтинг", "Почта", "Телефон" });
             selectedSearchType = SearchType.First();
 
             BackPage = new CustomCommand(() => {
@@ -391,6 +391,8 @@ namespace MySklad.ViewModel
                 searchResult = Suppliers.Where(c => c.LastName.ToLower().Contains(search)).ToList();
             else if (SelectedSearchType == "Отчество")
                 searchResult = Suppliers.Where(c => c.Patronimyc.ToLower().Contains(search)).ToList();
+            else if (SelectedSearchType == "Телефон")
+                searchResult = Suppliers.Where(c => c.Phone.ToLower().Contains(search)).ToList();
             Sort();
             InitPagination();
             Pagination();

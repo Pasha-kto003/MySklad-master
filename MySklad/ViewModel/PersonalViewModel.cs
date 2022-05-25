@@ -165,7 +165,7 @@ namespace MySklad.ViewModel
             selectedViewCountRows = ViewCountRows.Last();
 
             SortType = new List<string>();
-            SortType.AddRange(new string[] { "Рейтинг", "Телефон" });
+            SortType.AddRange(new string[] { "Рейтинг"});
             selectedSortType = SortType.First();
 
             OrderType = new List<string>();
@@ -173,7 +173,7 @@ namespace MySklad.ViewModel
             selectedOrderType = OrderType.Last();
 
             SearchType = new List<string>();
-            SearchType.AddRange(new string[] { "Фамилия", "Рейтинг", "Имя", "Отчество", "Статус", "Дата начала работы", "Дата окончания работы" });
+            SearchType.AddRange(new string[] { "Фамилия", "Рейтинг", "Имя", "Отчество", "Статус", "Дата начала работы", "Дата окончания работы", "Телефон" });
             selectedSearchType = SearchType.First();
 
             BackPage = new CustomCommand(() => {
@@ -313,12 +313,14 @@ namespace MySklad.ViewModel
             else if (SelectedSearchType == "Статус")
                 searchResult = Personals
                         .Where(c => c.Status.Title.ToLower().Contains(search)).ToList();
-            else if(SelectedSearchType == "Дата начала работы")
+            else if (SelectedSearchType == "Дата начала работы")
                 searchResult = Personals
                         .Where(c => c.DateStartWork.ToString().ToLower().Contains(search)).ToList();
             else if (SelectedSearchType == "Дата окончания работы")
                 searchResult = Personals
                         .Where(c => c.DateEndWork.ToString().ToLower().Contains(search)).ToList();
+            else if (SelectedSearchType == "Телефон")
+                searchResult = Personals.Where(c => c.Phone.ToLower().Contains(search)).ToList();
             Sort();
             InitPagination();
             Pagination();
