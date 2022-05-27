@@ -42,6 +42,7 @@
 
   <ItemGroup>
     <PackageReference Include="FreeSpire.XLS" Version="12.2.0" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-beta.240" />
   </ItemGroup>
 
   <ItemGroup>

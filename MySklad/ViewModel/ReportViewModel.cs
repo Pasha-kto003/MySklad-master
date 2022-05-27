@@ -1,4 +1,6 @@
-﻿using ModelApi;
+﻿using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
+using ModelApi;
 using MySklad.Core;
 using Spire.Xls;
 using Spire.Xls.Charts;
@@ -89,8 +91,8 @@ namespace MySklad.ViewModel
 
         public int OrderInCount { get; set; }
         public int OrderOutCount { get; set; }
-        public int ProductInOrderIn { get; set; }
-        public int ProductInOrderOut { get; set; }
+        public double ProductInOrderIn { get; set; }
+        public double ProductInOrderOut { get; set; }
         public int RackCount { get; set; }
         public int ProductCount { get; set; }
         public int ProductDeleteCount { get; set; }
@@ -335,6 +337,7 @@ namespace MySklad.ViewModel
         public CustomCommand EditReportWriteOff { get; set; }
         public CustomCommand EditReportRack { get; set; }
         public CustomCommand CountAllProduct { get; set; }
+        public CustomCommand CreateDiagram { get; set; }
 
         async Task GetProducts()
         {
@@ -459,6 +462,9 @@ namespace MySklad.ViewModel
             }
         }
 
+        public ISeries[] Series { get; set; }
+          
+
         async Task GetWriteOffRegisters()
         {
             WriteOffRegisters = await Api.GetListAsync<List<WriteOffRegisterApi>>("WriteOffRegister");
@@ -474,9 +480,12 @@ namespace MySklad.ViewModel
         //    var suppliers = await Api.GetListAsync<List<SupplierApi>>("Supplier");
         //}
 
+        int sum = 0;
+
         public ReportViewModel()
         {
             GetProducts();
+
             GetOrderIn();
             GetOrderOut();
             GetRacks();
@@ -494,6 +503,8 @@ namespace MySklad.ViewModel
                 "Период",
                 "Заказ"
             };
+            Products = new List<ProductApi>();
+            GetProducts();
 
             TypesOut = new List<string>
             {
@@ -556,7 +567,9 @@ namespace MySklad.ViewModel
                     SignalChanged(nameof(MidleCountValueOut));
                 }
 
-                ProductCount = ProductInOrderIn - ProductInOrderOut;
+               
+
+                ProductCount = (int)(ProductInOrderIn - ProductInOrderOut);
 
                 Products.Sort((x, y) => x.CountInStock.CompareTo(y.CountInStock));
                 MaxValueCount = Products.Last().Title.ToString();
@@ -642,6 +655,32 @@ namespace MySklad.ViewModel
                 }
             });
 
+                //GetOrderIn();
+                //GetCrossIn();
+
+            //foreach (CrossProductOrderApi cross in CrossProductOrders.Where(s => s.ProductId != 0 && s.OrderIn.DateOrderIn >= SelectedAfterDate && s.OrderIn.DateOrderIn <= SelectedBeforeDate))
+            //{
+            //    if (cross.CountInOrder != null)
+            //    {
+            //        ProductInOrderIn += (int)cross.CountInOrder / 2;
+            //    }
+
+            //    MidleCountValue = ProductInOrderIn / CrossProductOrders.Count;
+            //    SignalChanged(nameof(MidleCountValue));
+            //}
+            //CreateDiagram = new CustomCommand(() =>
+            //{
+
+            //});
+            //double del = ProductInOrderIn;
+            //    Series = new ISeries[]
+            //    {
+
+            //        new PieSeries<double> {Name = "Товары", Values = new double[] { del } },
+            //        new PieSeries<double> {Name = "Товары", Values = new double[] { 122 } }
+
+            //    };
+            
             EditReportProduct = new CustomCommand(() =>
             {
                 switch (SelectedTypeProduct)
