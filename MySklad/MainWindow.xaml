@@ -32,6 +32,7 @@
                 <RadioButton Style="{StaticResource MenuButtonTheme9}" Height="35" Margin="0 0 0 5" Content="Компании" Command="{Binding OpenCompany}" Foreground="White" FontSize="16"/>
                 <RadioButton Style="{StaticResource MenuButtonTheme10}" Height="35" Margin="0 0 0 5" Content="Прочее" Command="{Binding OpenCatalog}" Foreground="White" FontSize="16"/>
                 <RadioButton Style="{StaticResource MenuButtonTheme11}" Height="35" Margin="0 0 0 5" Content="Отчеты" Command="{Binding OpenReport}" Foreground="White" FontSize="16"/>
+                <RadioButton Style="{StaticResource MenuButtonTheme11}" Height="35" Margin="0 0 0 5" Content="Диаграма" Command="{Binding OpenDiagram}" Foreground="White" FontSize="16"/>
             </StackPanel>
             <Button Grid.Column="1" Grid.Row="0" 
                     Content="X" Style="{StaticResource ButtonTheme}" 

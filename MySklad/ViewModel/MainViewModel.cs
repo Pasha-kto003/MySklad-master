@@ -24,6 +24,7 @@ namespace MySklad.ViewModel
         public CustomCommand OpenCatalog { get; set; }
         public CustomCommand OpenCompany { get; set; }
         public CustomCommand OpenReport { get; set; }
+        public CustomCommand OpenDiagram { get; set; }
 
         private Page _currentView;
 
@@ -84,6 +85,10 @@ namespace MySklad.ViewModel
             OpenReport = new CustomCommand(() =>
             {
                 CurrentView = new ReportView();
+            });
+            OpenDiagram = new CustomCommand(() =>
+            {
+                CurrentView = new DiagramView();
             });
         }
     }
